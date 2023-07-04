@@ -3,7 +3,7 @@ import { store } from 'store';
 import { setCreditsAction } from 'store/actions/requests';
 import { clearToken, getToken } from 'utils/auth.token';
 
-api.defaults.baseURL = process.env.NODE_ENV === 'development' ? `http://${window.location.hostname}:8000/peleza-backend/api/` : 'http://172.105.95.169/peleza-backend-test/api/'
+api.defaults.baseURL = process.env.NODE_ENV === 'development' ? `http://${window.location.hostname}:8000/api/` : 'http://172.105.95.169/peleza-backend-server/api/'
 api.defaults.headers.common['Authorization'] = 'Bearer ' + getToken();
 
 api.interceptors.response.use(function (a) {
