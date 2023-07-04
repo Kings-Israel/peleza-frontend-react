@@ -1,0 +1,104 @@
+.app-page-title {
+  margin: 0 !important;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+$primary: #255468;
+
+.form_title h3 strong {
+  background-color: $primary;
+}
+.blur-cont {
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+  background: rgba(255, 255, 255, 0.7) !important;
+}
+label {
+  opacity: 0.9;
+  line-height: 0%;
+  margin: 0 0 0 -0.2rem;
+}
+label,
+.mono {
+  font-size: 14px;
+  letter-spacing: -0.491px;
+}
+::-webkit-input-placeholder {
+  font-size: 14px;
+  letter-spacing: -0.491px;
+}
+::-moz-placeholder {
+  font-size: 14px;
+  letter-spacing: -0.491px;
+}
+:-ms-input-placeholder {
+  font-size: 14px;
+  letter-spacing: -0.491px;
+}
+:-moz-placeholder {
+  font-size: 14px;
+  letter-spacing: -0.491px;
+}
+
+$input-btn-focus-box-shadow: none;
+$input-btn-focus-width: 0;
+
+@import "~bootstrap/scss/bootstrap.scss";
+// $body-bg: $light;
+
+.floating-error {
+  position: absolute;
+  margin-top: -1.5px;
+}
+
+.overflow-y-scroll {
+  overflow-y: scroll;
+}
+.hide-scroll::-webkit-scrollbar {
+  display: none;
+}
+.hide-scroll {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.modal-open {
+  overflow: hidden !important;
+  body {
+    overflow: hidden !important;
+  }
+}
+
+.spinner-sm {
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 0.17em solid currentColor;
+  border-right-color: transparent;
+}
+
+.bg-primary {
+  background: #153f56 !important;
+}
+.bg-primary-light {
+  background-color: #255468 !important;
+}
+
+.primaryColor {
+  background-color: #929e36 !important;
+}
+button.btn:hover,
+button.btn:focus {
+  box-shadow: none;
+}
+
+table.data-table {
+  font-size: 10pt;
+  td {
+    word-break: break-all;
+    max-width: 120px;
+  }
+  td:first-of-type,
+  th:first-of-type {
+    width: 50px;
+  }
+}

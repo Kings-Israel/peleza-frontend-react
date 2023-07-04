@@ -1,0 +1,35 @@
+// SHARE CAPITAL
+
+<div className="seperator" />
+        <table className="table-no-padding w-100 dark-table center">
+          <thead className="dark-header">
+            <tr>
+              <HData colSpan={12}>SHARE CAPITAL</HData>
+            </tr>
+            <tr>
+              <HData>Name</HData>
+              <HData>Nominal Value</HData>
+              <HData>No of Shares</HData>
+            </tr>
+          </thead>
+          <tbody>
+            {business?.share_capital ? (
+              business.share_capital.filter(onlyUnique).map((i, index) => {
+                return (
+                  <tr key={index}>
+                    <Data>{i?.name}</Data>
+                    <Data>{i.nominal_value ? i.nominal_value : "-"}</Data>
+                    <Data>{i.number_of_shares ? i.number_of_shares : "-"}</Data>
+                  </tr>
+                );
+              })
+            ) : (
+              <tr>
+                <Data>-</Data>
+                <Data>-</Data>
+                <Data>-</Data>
+              </tr>
+            )}
+          </tbody>
+        </table>
+        
