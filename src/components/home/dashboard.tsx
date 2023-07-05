@@ -3,10 +3,11 @@ import BarChartIcon from "@material-ui/icons/BarChart";
 import { Component } from "react";
 import { apiGetStats } from "api/requests";
 import { connect } from "react-redux";
+import ReactPaginate  from 'react-paginate';
+
 import { State } from "store";
 import { Row, HeadFooterRow } from "./abstract";
 import Select from 'react-select';
-
 import "react-datepicker/dist/react-datepicker.css";
 // import DateFnsUtils from '@date-io/date-fns';
 // import {
@@ -79,7 +80,10 @@ class _Dashboard extends Component<{
   dispatch: any;
 
 }> {
-  state = { loading: true};
+  state = { 
+    loading: true
+  
+  };
 
   handleSelect(rangesByKey: any){
    // console.log("**********",rangesByKey); // native Date object
@@ -122,7 +126,7 @@ class DataTable extends Component<{
   className?: string;
 }> 
 {
-  state = { sortField: { field: "request_date", sorting: "" }, filter: "" , fromDate: new Date() , toDate: new Date()};
+  state = { sortField: { field: "request_date", sorting: "" }, filter: "" , fromDate: new Date() , toDate: new Date(), currentPage: 1};
   constructor(props: any) {
     super(props);
     this.setFilter = this.setFilter.bind(this);
@@ -176,7 +180,26 @@ class DataTable extends Component<{
     this.setState({fromDate:date});
    };
 
+   handlePageChange = (selectedPage: { selected: number }) => {
+    this.setState({ currentPage: selectedPage.selected + 1 });
+  };
+
+  
+
+
+
   render() {
+    const { currentPage } = this.state;
+    const itemsPerPage = 3; // Adjust this value based on your requirement
+    const totalItems = this.recentReports.length;
+    const pageCount = Math.ceil(totalItems / itemsPerPage);
+ 
+     // Calculate the start and end indexes for the current page
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+ 
+     // Slice the recentReports array based on the current page
+    const paginatedReports = this.recentReports.slice(startIndex, endIndex);
     return (
       <div
         className={`bg-white shadow my-4 py-3 px-3 text-muted ${this.props.className}`}
@@ -243,13 +266,18 @@ class DataTable extends Component<{
                 <HeadFooterRow {...{ setSortField: this.setSortField }} />
               </thead>
               <tbody>
-                {this.recentReports && this.recentReports.length ? (
+                 {paginatedReports.length ? (
+                    paginatedReports.map((obj: any, index: number) => (
+                      <Row key={index} obj={obj} index={index} />
+                 ))
+                ) : (
+               this.recentReports && this.recentReports.length ? (
                 
                   this.recentReports.map((obj: any, index: number) => (
                   
                     <Row key={index} obj={obj} index={index} />
                   ))
-                ) : (
+                ) : ( 
                   <tr>
                     <td align="center" colSpan={10}>
                       <h6 className="text-muted text center">
@@ -259,12 +287,32 @@ class DataTable extends Component<{
                       </h6>
                     </td>
                   </tr>
+                )
                 )}
               </tbody>
               <tfoot>
                 <HeadFooterRow />
               </tfoot>
             </table>
+            <div className="pagination-container">
+            <ReactPaginate
+            pageCount={pageCount}
+            pageRangeDisplayed={1} // Set the page range to 1 to display only the current page
+            marginPagesDisplayed={1} // Adjust this value based on your requirement
+            onPageChange={this.handlePageChange}
+            containerClassName="pagination"
+            pageClassName="page-item"
+            pageLinkClassName="page-link"
+            previousClassName="page-item"
+            previousLinkClassName="page-link"
+            nextClassName="page-item"
+            nextLinkClassName="page-link"
+            activeClassName="active"
+            previousLabel={<span>&#8592;</span>} // Custom arrow for previous page
+            nextLabel={<span>&#8594;</span>} // Custom arrow for next page
+          />
+
+           </div>
           </div>
         </div>
       </div>

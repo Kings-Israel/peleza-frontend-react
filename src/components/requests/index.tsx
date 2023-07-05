@@ -59,7 +59,8 @@ const headers = [
     { label: 'Company Email', key: "companyEmail" },
 ];
 
-const kyc_types=[ {
+
+  const kyc_types: { label: string; value: string; Package_id: number; module_id: number; }[]  =[ {
   label: "COMPANY SEARCH",
   value: "co",
   Package_id: 52,
@@ -253,7 +254,7 @@ class DataTable extends Component<{
   search?: (resultlength: string) => any;
   className?: string;
 }> {
-  state = {  loading:false,sortField: { field: "", sorting: "" }, filter: "", tempData:[] , selected_type:"",FromselectedDate:new Date(),ToselectedDate:new Date(),kyc_selected:"",rows:[],columns:[],status_selected:"new"};
+  state = {  loading:false,sortField: { field: "", sorting: "" }, filter: "", tempData:[] , selected_type:"",FromselectedDate:new Date(),ToselectedDate:new Date(),kyc_selected:null,rows:[],columns:[],status_selected:null};
  
   constructor(props: any) {
     super(props);
@@ -413,6 +414,8 @@ class DataTable extends Component<{
 
 
   render() {
+
+
     // console.log(this.requestData)
     let csvdata: RequestData[] = Object.values(this.requestData);
     // const business = report.business;
@@ -446,8 +449,8 @@ class DataTable extends Component<{
         companyEmail:item.dataset_ibg_dataset_email_no
 
       
-    }))
-
+    }));
+  
     //const [selectedDate, handleDateChange] = useState(new Date());
      
     const handleDateChange =(dt:any) =>{
@@ -460,6 +463,7 @@ class DataTable extends Component<{
         FromselectedDate: dt.toDate()
       });
     };
+    
 
     if(this.state.loading){
       return ( 
@@ -479,17 +483,20 @@ class DataTable extends Component<{
         <p className="font-weight-bold pt-3">
           <BarChartIcon />
           {this.props.title}
-          {this.state.filter}
+         
         </p>
 
         <div></div>
   
         <div className="row">  
         <div className="col-md-4">
-            <Select 
-            options={kyc_types}  
-            onChange={this.handleToKyc}
-            />
+        <label >Selected Kyc :  {this.state.filter} </label>
+        <Select
+          options={kyc_types}
+          onChange={this.handleToKyc}
+          value={kyc_types.find(option => option.value === this.state.filter)}
+        />
+
           </div>
           <div className='col-md-4'>
        
@@ -532,7 +539,8 @@ class DataTable extends Component<{
           <div className="col-md-4">
             <label >Selected Status : {this.state.status_selected} </label>
               <Select 
-              options={status}  
+              options={status} 
+              value={status.find(option => option.value === this.state.status_selected)}
               onChange={this.statusChange}
               />
             </div> 

@@ -54,6 +54,15 @@ div[data-size="A4"] {
   display: flex;
   flex-wrap: wrap;
 }
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px; /* Adjust as needed */
+}
+
+
+
 .logo {
   width: 70mm;
   margin-bottom: 0.85rem;
