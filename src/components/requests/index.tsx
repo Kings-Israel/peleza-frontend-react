@@ -580,9 +580,7 @@ class DataTable extends Component<{
         </div>
         <table className={`table table-striped data-table ${this.props.className}`}
         >
-
         </table>
- 
       </div>
     );
     }
