@@ -22,6 +22,7 @@ import CompanySearchReport from "components/reports/companySearch";
 import LLPSearchReport from "components/reports/llpSearch";
 import { removeNotificationAction } from "store/actions/notification";
 import BatchRequest from "components/home/BatchRequest";
+import { Register } from "components/register";
 
 const Base = connect(function (state) {
   return {
@@ -155,6 +156,9 @@ export default class AppRouter extends Component {
         <Switch>
           <Route path="/login" exact={true}>
             <Login />
+          </Route>
+          <Route path="/register" exact={true}>
+            <Register />
           </Route>
           <Route path="/">
             <Notifications />

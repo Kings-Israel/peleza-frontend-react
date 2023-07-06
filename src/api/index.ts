@@ -6,10 +6,29 @@ import { setRequestsAction, setStatsAction } from "store/actions/requests";
 import { clearToken, setToken } from "utils/auth.token";
 import { requestKey } from "utils/functions";
 import api from "./api";
+import { setCountries } from "store/actions/countries";
+import { setCompanies } from "store/actions/companies";
+import { setIndustries } from "store/actions/industries";
 
 export const ApiLogin = (info: any) => {
 
   const request = api.post("auth/login/", info);
+  request.then((data) => {
+    console.log(data)
+    if (data.status === 200) {
+      setToken(data.data);
+      localStorage.setItem('company_logo', data.data.company_logo);
+    } else {
+      clearToken();
+    }
+    return data;
+  });
+
+  return request;
+};
+
+export const ApiRegister = (info: any) => {
+  const request = api.post("auth/register/", info);
   request.then((data) => {
     console.log(data)
     if (data.status === 200) {
@@ -148,4 +167,40 @@ export const ReportData =async (info: any) => {
          return reject(err)
     }
   }) 
+}
+
+export const ApiGetCountries = async (store: any, callback: (data: any) => void) => {
+  return new Promise(async function(resolve, reject) {
+    await api.get("/countries")
+    .then(response => {
+      store.dispatch(setCountries(response.data))
+      callback(response.data)
+      resolve(response)
+    })
+    .catch(err => reject(err))
+  })
+}
+
+export const ApiGetCompanies = async (store: any, callback: (data: any) => void) => {
+  return new Promise(async function(resolve, reject) {
+    await api.get("/companies")
+    .then(response => {
+      store.dispatch(setCompanies(response.data))
+      callback(response.data)
+      resolve(response.data)
+    })
+    .catch(err => reject(err))
+  })
+}
+
+export const ApiGetIndustries = async (store: any, callback: (data: any) => void) => {
+  return new Promise(async function(resolve, reject) {
+    await api.get("/industries")
+    .then(response => {
+      store.dispatch(setIndustries(response.data))
+      callback(response.data)
+      resolve(response.data)
+    })
+    .catch(err => reject(err))
+  })
 }

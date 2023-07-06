@@ -13,3 +13,9 @@ export const SET_REPORT = "setReport";
 
 export const ADD_NOTIFICATION = "addNotification";
 export const REMOVE_NOTIFICATION = "removeNotification";
+
+export const SET_COUNTRIES = "setCountries";
+
+export const SET_COMPANIES = "setCompanies";
+
+export const SET_INDUSTRIES = "setIndustries";
