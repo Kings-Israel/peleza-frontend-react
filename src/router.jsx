@@ -3,6 +3,7 @@ import { NewRequest } from "components/home/newrequest";
 // import { BatchUpload } from "components/home/batchupload";
 import { Login } from "components/login";
 import { SideBar } from "components/sidebar";
+// eslint-disable-next-line no-unused-vars
 import { Component, useCallback, useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
@@ -22,6 +23,7 @@ import CompanySearchReport from "components/reports/companySearch";
 import LLPSearchReport from "components/reports/llpSearch";
 import { removeNotificationAction } from "store/actions/notification";
 import BatchRequest from "components/home/BatchRequest";
+import { Register } from "components/register";
 
 const Base = connect(function (state) {
   return {
@@ -37,7 +39,8 @@ const Base = connect(function (state) {
 
       if ((!user || !user.access) && !currentURL.startsWith("/login")) {
         const currentState = location.state;
-        history.push(`/login?next=${encodeURIComponent(currentURL)}`, {
+        // history.push(`/login?next=${encodeURIComponent(currentURL)}`, {
+          history.push(`/login`, {
           nextState: currentState,
         });
       }
@@ -46,7 +49,10 @@ const Base = connect(function (state) {
     useEffect(() => {
       window.onload = window.onresize = () => getBodyHeight(setBodyHeight);
       watchUserAuthentication();
-    }, [watchUserAuthentication, setBodyHeight]);
+    }, [
+      watchUserAuthentication,
+      setBodyHeight
+    ]);
 
     return (
       <>
@@ -155,6 +161,9 @@ export default class AppRouter extends Component {
         <Switch>
           <Route path="/login" exact={true}>
             <Login />
+          </Route>
+          <Route path="/register">
+            <Register />
           </Route>
           <Route path="/">
             <Notifications />
