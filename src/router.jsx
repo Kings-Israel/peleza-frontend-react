@@ -34,22 +34,23 @@ const Base = connect(function (state) {
     let [bodyHeight, setBodyHeight] = useState(0);
     const height = `${bodyHeight}px`;
 
-    // const watchUserAuthentication = useCallback(() => {
-    //   const currentURL = window.location.href;
+    const watchUserAuthentication = useCallback(() => {
+      const currentURL = window.location.href;
 
-    //   if ((!user || !user.access) && !currentURL.startsWith("/login")) {
-    //     const currentState = location.state;
-    //     history.push(`/login?next=${encodeURIComponent(currentURL)}`, {
-    //       nextState: currentState,
-    //     });
-    //   }
-    // }, [location, history, user]);
+      if ((!user || !user.access) && !currentURL.startsWith("/login")) {
+        const currentState = location.state;
+        // history.push(`/login?next=${encodeURIComponent(currentURL)}`, {
+          history.push(`/login`, {
+          nextState: currentState,
+        });
+      }
+    }, [location, history, user]);
 
     useEffect(() => {
       window.onload = window.onresize = () => getBodyHeight(setBodyHeight);
-      // watchUserAuthentication();
+      watchUserAuthentication();
     }, [
-      // watchUserAuthentication,
+      watchUserAuthentication,
       setBodyHeight
     ]);
 
