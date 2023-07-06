@@ -1,59 +1,91 @@
-import { useEffect, useState } from "react";
-import { getQueryString } from "utils/functions";
-import { ApiLogin } from "../../api/index";
-
+import { ApiGetCompanies, } from "api";
+import { Component } from "react";
+import { connect } from "react-redux";
+import { State, store } from "store";
+import { Base64 } from "utils/functions";
+import { ApiRegister } from "../../api/index";
+import { Link } from "react-router-dom";
 import logo from "../../assets/images/banner-logo.png";
+import Select from 'react-select';
 
-export function Login(props: any) {
-  useEffect(() => {
-    document.onload = () => {
-      const element = document.getElementById("scroll-here");
-
-      element?.scrollIntoView({
-        behavior: "smooth",
-        block: "end",
-        inline: "nearest",
-      });
-    };
-  }, []);
-
-  const [formData, setFormData] = useState({
-    username: null,
-    client_id: null,
+class _Register extends Component<{ countries: any, companies: any, industries: any }> {
+  state = {
+    loading: false,
+    first_name: null,
+    last_name: null,
+    email: null,
+    mobile_number: null,
     password: null,
-  });
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState({
-    client_id: null,
-    username: null,
-    password: null,
-    detail: null,
-  });
-
-  function handleChange(e: any) {
-    const name: "username" | "client_id" | "password" = e.target.name;
-    setFormData({ ...formData, [name]: e.target.value });
+    company_id: null,
+    // country: null,
+    company: null,
+    // client_type: 'psmt',
+    // industry: null,
+    city: null,
+  };
+  constructor(props: any) {
+    super(props);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleCompanyChange = this.handleCompanyChange.bind(this);
+    this.handleCountryChange = this.handleCountryChange.bind(this);
+    this.handleIndustryChange = this.handleIndustryChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  function handleSubmit(e: any) {
+  componentDidMount() {
+    // ApiGetCountries(store, (data: any) =>
+    //   this.setState({ ...this.state })
+    // );
+    ApiGetCompanies(store, (data: any) => {
+      this.setState({ ...this.state });
+    })
+    // ApiGetIndustries(store, (data: any) => {
+    //   this.setState({ ...this.state });
+    // })
+  }
+
+  handleChange(e: any) {
+    this.setState({ [e.target.name]: e.target.value });
+  }
+
+  handleCompanyChange(e: any) {
+    this.setState({ company_id: e.value })
+  }
+
+  handleCountryChange(e: any) {
+    this.setState({ country: e.value })
+  }
+
+  handleIndustryChange(e: any) {
+    this.setState({ industry: e.value })
+  }
+
+  handleSubmit(e: any) {
     e.preventDefault();
-    setLoading(true);
-
-    setError({ client_id: null, password: null, username: null, detail: null });
-
-    ApiLogin(formData)
+    const data = {
+      first_name: this.state.first_name,
+      last_name: this.state.last_name,
+      email: this.state.email,
+      mobile_number: this.state.mobile_number,
+      password: Base64.encode(this.state.password),
+      // country: this.state.country,
+      company_id: this.state.company_id,
+      // account_type: this.state.client_type,
+      // client_industry: this.state.industry,
+      company: this.props.companies.filter((company: any) => company.value === this.state.company_id)[0].label,
+      city: this.state.city,
+    }
+    ApiRegister(data)
       .then(() => {
-        const next = decodeURIComponent(getQueryString("next"));
-        window.location.replace(next ? next : "/");
+        window.location.replace("/");
       })
-      .catch((e) => {
-        setError(e.response?.data || error);
+      .catch((e: any) => {
+        console.error(e);
       })
-      .finally(() => setLoading(false));
   }
-
-  return (
-    <>
+  render() {
+    return (
+      <>
       <div
         id="mm-0"
         className="mm-page mm-slideout"
@@ -91,7 +123,7 @@ export function Login(props: any) {
           </header>
           <main>
             <div id="hero_register" className="py-5">
-              <div className="container-fluid margin_120_95_login px-4">
+              <div className="container-fluid px-4">
                 <div className="row">
                   <div className="col-lg-6">
                     <h1>Redefining Background Screening!</h1>
@@ -126,61 +158,125 @@ export function Login(props: any) {
                   </div>
                   <div
                     className="col-lg-5 ml-auto"
-                    style={{ marginTop: "50px" }}
+                    style={{ marginTop: "10px" }}
                   >
-                    {error.detail && (
-                      <p className="text-danger text-center w-100 pt-1 floating-error px-5">
-                        {error?.detail}
-                      </p>
-                    )}
                     <div className="box_form">
                       <div id="message-register"></div>
                       <form
                         name="loginuser"
-                        onSubmit={handleSubmit}
+                        onSubmit={this.handleSubmit}
                         method="POST"
                       >
+                         <div className="row">
+                          <div className="col-lg-6">
+                            <div className="form-group">
+                              <input
+                                type="text"
+                                className="form-control"
+                                placeholder="First Name"
+                                name="first_name"
+                                id="first_name"
+                                required
+                                onChange={this.handleChange}
+                                autoFocus
+                              />
+                            </div>
+                          </div>
+                          <div className="col-lg-6">
+                            <div className="form-group">
+                              <input
+                                type="text"
+                                className="form-control"
+                                placeholder="Last Name"
+                                name="last_name"
+                                id="last_name"
+                                required
+                                onChange={this.handleChange}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <div className="row">
+                          <div className="col-md-12 ">
+                            <div className="form-group">
+                              <input
+                                type="email"
+                                className="form-control"
+                                placeholder="Email"
+                                name="email"
+                                autoComplete=""
+                                onChange={this.handleChange}
+                                required
+                              />
+                            </div>
+                          </div>
+                        </div>
                         <div className="row">
                           <div className="col-md-12 ">
                             <div className="form-group">
                               <input
                                 type="text"
                                 className="form-control"
-                                placeholder="Client Login ID"
-                                name="client_id"
+                                placeholder="Mobile Number"
+                                name="mobile_number"
                                 autoComplete=""
-                                onChange={handleChange}
-                                autoFocus
+                                onChange={this.handleChange}
                                 required
                               />
-                              {error.client_id && (
-                                <small className="text-danger px-2 floating-error">
-                                  {error?.client_id}
-                                </small>
-                              )}
                             </div>
                           </div>
                         </div>
                         <div className="row">
-                          <div className="col-lg-12">
+                          <div className="col-md-12 ">
                             <div className="form-group">
                               <input
-                                type="email"
+                                type="text"
                                 className="form-control"
-                                placeholder="Username"
-                                name="username"
-                                id="username"
+                                placeholder="Enter City"
+                                name="city"
+                                autoComplete=""
+                                onChange={this.handleChange}
                                 required
-                                onChange={handleChange}
                               />
-                              {error.username && (
-                                <small className="text-danger px-2 floating-error">
-                                  {error?.username}
-                                </small>
-                              )}
                             </div>
                           </div>
                         </div>
+                        {/* <div className="row">
+                          <div className="col-md-12">
+                            <div className="form-group">
+                              <Select
+                                options={this.props.countries}
+                                onChange={this.handleCountryChange}
+                                placeholder="Select Country..."
+                                name="country"
+                              />
+                            </div>
+                          </div>
+                        </div> */}
+                        <div className="row">
+                          <div className="col-md-12">
+                            <div className="form-group">
+                              <Select
+                                options={this.props.companies}
+                                onChange={this.handleCompanyChange}
+                                placeholder="Select Company..."
+                                name="company"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        {/* <div className="row">
+                          <div className="col-md-12">
+                            <div className="form-group">
+                              <Select
+                                options={this.props.industries}
+                                onChange={this.handleIndustryChange}
+                                placeholder="Select Industry..."
+                                name="industry"
+                              />
+                            </div>
+                          </div>
+                        </div> */}
                         <div className="row">
                           <div className="col-md-12">
                             <div className="form-group">
@@ -191,13 +287,8 @@ export function Login(props: any) {
                                 name="password"
                                 id="password"
                                 required
-                                onChange={handleChange}
+                                onChange={this.handleChange}
                               />
-                              {error.password && (
-                                <small className="text-danger px-2 floating-error">
-                                  {error?.password}
-                                </small>
-                              )}
                             </div>
                           </div>
                         </div>
@@ -205,20 +296,31 @@ export function Login(props: any) {
                           <div className="col">
                             <div className="form-group">
                               <button
-                                disabled={loading}
+                                disabled={this.state.loading}
                                 type="submit"
                                 className="btn bg-primary py-1 small mono text-light"
                               >
-                                LOGIN
+                                REGISTER
                               </button>
                               <span id="scroll-here"></span>
                             </div>
                           </div>
-                          {loading && (
+                          {this.state.loading && (
                             <div className="spinner-border text-info spinner-sm"></div>
                           )}
                         </div>
                       </form>
+                    </div>
+                    <div>
+                      <span>Already Have an Account? </span>
+                        <Link to="/login">
+                          <button
+                            disabled={this.state.loading}
+                            className="btn bg-secondary py-1 small mono text-light"
+                          >
+                            LOGIN
+                          </button>
+                        </Link>
                     </div>
                   </div>
                 </div>
@@ -248,5 +350,15 @@ export function Login(props: any) {
         </footer>
       </div>
     </>
-  );
+    );
+  }
 }
+
+const mapStateToProps = (state: State) => {
+  return {
+    countries: state.global.countries,
+    companies: state.global.companies,
+    industries: state.global.industries,
+  };
+};
+export const Register = connect(mapStateToProps)(_Register);

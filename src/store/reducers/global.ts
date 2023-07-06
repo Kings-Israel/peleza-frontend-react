@@ -127,6 +127,9 @@ let defaultState: any = {
     "Friday",
     "Saturday",
   ],
+  countries: [],
+  companies: [],
+  industries: [],
 };
 
 export default function global(
@@ -174,6 +177,12 @@ export default function global(
 
     case types.SET_REPORT:
       return { ...state, report: action.payload };
+    case types.SET_COUNTRIES:
+      return { ...state, countries: action.payload };
+    case types.SET_COMPANIES:
+      return { ...state, companies: action.payload };
+    case types.SET_INDUSTRIES:
+      return { ...state, industries: action.payload };
     default:
       return state;
   }
