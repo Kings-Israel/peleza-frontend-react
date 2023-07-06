@@ -8,6 +8,7 @@ export const setCompanies = (payload: any) => {
       value: company.pk
     })
   });
+  console.log(companies)
   return {
     type: SET_COMPANIES,
     payload: companies

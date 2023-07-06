@@ -157,7 +157,7 @@ export default class AppRouter extends Component {
           <Route path="/login" exact={true}>
             <Login />
           </Route>
-          <Route path="/register" exact={true}>
+          <Route path="/register">
             <Register />
           </Route>
           <Route path="/">
