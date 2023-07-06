@@ -3,6 +3,7 @@ import { NewRequest } from "components/home/newrequest";
 // import { BatchUpload } from "components/home/batchupload";
 import { Login } from "components/login";
 import { SideBar } from "components/sidebar";
+// eslint-disable-next-line no-unused-vars
 import { Component, useCallback, useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
@@ -33,21 +34,24 @@ const Base = connect(function (state) {
     let [bodyHeight, setBodyHeight] = useState(0);
     const height = `${bodyHeight}px`;
 
-    const watchUserAuthentication = useCallback(() => {
-      const currentURL = window.location.href;
+    // const watchUserAuthentication = useCallback(() => {
+    //   const currentURL = window.location.href;
 
-      if ((!user || !user.access) && !currentURL.startsWith("/login")) {
-        const currentState = location.state;
-        history.push(`/login?next=${encodeURIComponent(currentURL)}`, {
-          nextState: currentState,
-        });
-      }
-    }, [location, history, user]);
+    //   if ((!user || !user.access) && !currentURL.startsWith("/login")) {
+    //     const currentState = location.state;
+    //     history.push(`/login?next=${encodeURIComponent(currentURL)}`, {
+    //       nextState: currentState,
+    //     });
+    //   }
+    // }, [location, history, user]);
 
     useEffect(() => {
       window.onload = window.onresize = () => getBodyHeight(setBodyHeight);
-      watchUserAuthentication();
-    }, [watchUserAuthentication, setBodyHeight]);
+      // watchUserAuthentication();
+    }, [
+      // watchUserAuthentication,
+      setBodyHeight
+    ]);
 
     return (
       <>
