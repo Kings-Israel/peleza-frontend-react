@@ -39,8 +39,8 @@ const Base = connect(function (state) {
 
       if ((!user || !user.access) && !currentURL.startsWith("/login")) {
         const currentState = location.state;
-        // history.push(`/login?next=${encodeURIComponent(currentURL)}`, {
-          history.push(`/login`, {
+        history.push(`/login?next=${encodeURIComponent(currentURL)}`, {
+          // history.push(`/login`, {
           nextState: currentState,
         });
       }

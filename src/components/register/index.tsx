@@ -2,7 +2,6 @@ import { ApiGetCompanies, } from "api";
 import { Component } from "react";
 import { connect } from "react-redux";
 import { State, store } from "store";
-import { Base64 } from "utils/functions";
 import { ApiRegister } from "../../api/index";
 import { Link } from "react-router-dom";
 import logo from "../../assets/images/banner-logo.png";
@@ -67,7 +66,7 @@ class _Register extends Component<{ countries: any, companies: any, industries: 
       last_name: this.state.last_name,
       email: this.state.email,
       mobile_number: this.state.mobile_number,
-      password: Base64.encode(this.state.password),
+      password: this.state.password,
       // country: this.state.country,
       company_id: this.state.company_id,
       // account_type: this.state.client_type,
