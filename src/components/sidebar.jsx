@@ -3,6 +3,7 @@ import "./sidebar.scss";
 import DashboardOutlined from "@material-ui/icons/DashboardOutlined";
 import PostAddRounded from "@material-ui/icons/PostAddRounded";
 import HistoryOutlined from "@material-ui/icons/HistoryOutlined";
+import { HelpOutline } from '@mui/icons-material';
 import { CloudUploadOutlined, Person } from "@material-ui/icons";
 import SettingsApplications from "@material-ui/icons/TimelineRounded";
 // import { State } from "store";
@@ -108,6 +109,12 @@ export function SideBar() {
                 <Link to="/requests?q=all" className="nav-link">
                   <SettingsApplications className="mr-2" />
                   All Requests
+                </Link>
+              </li>
+              <li className="nav-item rounded mb-2">
+                <Link to="/help" className="nav-link">
+                  <HelpOutline className="mr-2" />
+                  Help
                 </Link>
               </li>
             </ul>

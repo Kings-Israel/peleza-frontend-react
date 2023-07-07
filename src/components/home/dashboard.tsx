@@ -256,6 +256,7 @@ class DataTable extends Component<{
               <Select
                 options={kyc_types}  
                 onChange={this.handleToKyc}
+                value={kyc_types.find(option => option.value === this.state.filter)}
                 placeholder="Select Type..."
               />
             </div>

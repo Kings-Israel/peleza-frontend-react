@@ -18,6 +18,7 @@ import { connect } from "react-redux";
 import BusinessSearchReport from "components/reports/businessSearch";
 import { clearToken } from "utils/auth.token";
 import { Requests } from "components/requests";
+import   QuestionForm   from "components/help/index";
 import { NGOSearchReport } from "components/reports/ngoSearch";
 import CompanySearchReport from "components/reports/companySearch";
 import LLPSearchReport from "components/reports/llpSearch";
@@ -75,6 +76,9 @@ const Base = connect(function (state) {
               </Route>
               <Route exact path="/profile">
                 <Profile />
+              </Route>
+              <Route exact path="/help">
+                <QuestionForm    />
               </Route>
 
               <Route path="/reports/clg">

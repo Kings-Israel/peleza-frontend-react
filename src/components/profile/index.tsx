@@ -4,6 +4,7 @@ import { Component } from "react";
 import { connect } from "react-redux";
 import { State, store } from "store";
 import { Base64 } from "utils/functions";
+// import QuestionForm from 'components/help';
 
 class _Profile extends Component<{ profile: UserProfile }> {
   state = {
@@ -55,8 +56,10 @@ class _Profile extends Component<{ profile: UserProfile }> {
   }
   render() {
     const disable = this.disabled;
+    // const { profile } = this.props;
     return (
       <>
+    
         {this.state.loading === true ? (
           <div className="vh-100 vw-100 fixed-top d-flex justify-content-center align-items-center">
             <div className="spinner-border"></div>
