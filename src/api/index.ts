@@ -43,6 +43,21 @@ export const ApiHelp = (formData: FormData) => {
     });
 };
 
+export const ApiAddUser = (userformData: FormData) => {
+  return api
+    .post("add-user/", userformData)
+    .then((response) => {
+      
+      console.log(response.data);
+      // Handle successful response
+      return response.data;
+    })
+    .catch((error: AxiosError) => {
+      console.log(error);
+      // Handle error response
+      throw error;
+    });
+};
 
 export const ApiRegister = (info: any) => {
   const request = api.post("auth/register/", info);

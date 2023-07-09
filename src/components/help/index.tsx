@@ -1,51 +1,55 @@
 import React, { useEffect, useState } from "react";
 import { ApiHelp } from "../../api/index";
-
+import { UserProfile } from "models";
+import {  store } from "store";
+import { apiGetProfile } from "api";
 
 interface QuestionFormProps {
-  firstName: string | undefined;
-  lastName: string | undefined;
-  email: string | undefined;
-  phoneNumber: string | undefined;
   subject:  string | undefined;
   image: string | undefined;
   message:  string | undefined;
+  profile: UserProfile | null;
 }
 
 
 
 const QuestionForm: React.FC<QuestionFormProps> = ({
-  firstName,
-  lastName,
-  email,
-  phoneNumber,
   subject,
   image,
-  message
+  message,
+  profile,
 }) => {
-  useEffect(() => {
-    document.onload = () => {
-      const element = document.getElementById("scroll-here");
+  
 
-      element?.scrollIntoView({
-        behavior: "smooth",
-        block: "end",
-        inline: "nearest",
-      });
-    };
-  }, []);
-  
-  
+  const [loading, setLoading] = useState(true);
+
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phoneNumber: "",
+    firstName:  "", 
+    lastName:  "",
+    email:  "",
+    phoneNumber: "", 
     subject: "",
     image: "",
     message: "",
   });
-  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    apiGetProfile(store, (data: any) => {
+      const userProfile = data?.data;
+      
+      setFormData({
+        firstName: userProfile?.client_first_name || "",
+        lastName: userProfile?.client_last_name || "",
+        email: userProfile?.client_login_username || "",
+        phoneNumber: userProfile?.client_mobile_number || "",
+        subject: "",
+        image: "",
+        message: "",
+      });
+      setLoading(false);
+    });
+  }, []);
+ // const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState(""); 
 
@@ -90,18 +94,7 @@ const QuestionForm: React.FC<QuestionFormProps> = ({
         // Handle the response
         setLoading(false);
         console.log(response);
-  
-        // Clear the form fields
-        setFormData({
-          firstName: "",
-          lastName: "",
-          email: "",
-          phoneNumber: "",
-          subject: "",
-          image: "",
-          message: "",
-        });
-  
+
         // Set a success message (replace "successMessage" with your desired state variable)
         setSuccessMessage("Form submitted successfully");
         setTimeout(() => {
@@ -142,7 +135,7 @@ const QuestionForm: React.FC<QuestionFormProps> = ({
                 name="firstName"
                 value={formData.firstName}
                 onChange={handleChange}
-               
+               readOnly
               />
             </div>
             <div className="form-group">
@@ -153,7 +146,7 @@ const QuestionForm: React.FC<QuestionFormProps> = ({
                 name="lastName"
                 value={formData.lastName}
                 onChange={handleChange}
-                
+                readOnly
               />
             </div>
             <div className="form-group">
@@ -164,7 +157,7 @@ const QuestionForm: React.FC<QuestionFormProps> = ({
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                
+                readOnly
               />
             </div>
             <div className="form-group">
@@ -175,7 +168,7 @@ const QuestionForm: React.FC<QuestionFormProps> = ({
                 name="phoneNumber"
                 value={formData.phoneNumber}
                 onChange={handleChange}
-               
+                readOnly
               />
             </div>
             <div className="form-group">

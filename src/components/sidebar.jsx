@@ -4,6 +4,7 @@ import DashboardOutlined from "@material-ui/icons/DashboardOutlined";
 import PostAddRounded from "@material-ui/icons/PostAddRounded";
 import HistoryOutlined from "@material-ui/icons/HistoryOutlined";
 import { HelpOutline } from '@mui/icons-material';
+import PeopleIcon from '@mui/icons-material/People';
 import { CloudUploadOutlined, Person } from "@material-ui/icons";
 import SettingsApplications from "@material-ui/icons/TimelineRounded";
 // import { State } from "store";
@@ -79,6 +80,12 @@ export function SideBar() {
                 <Link to="/" className="nav-link">
                   <DashboardOutlined className="mr-2" />
                   Dashboard
+                </Link>
+              </li>
+              <li className="nav-item rounded mb-2">
+                <Link to="/users" className="nav-link">
+                  <PeopleIcon className="mr-2" />
+                   Users
                 </Link>
               </li>
               <li className="nav-item rounded mb-2">

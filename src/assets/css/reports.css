@@ -173,3 +173,37 @@ table table tr td {
   line-height: 16pt;
   font-size: 9pt;
 }
+.user-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.user-table th,
+.user-table td {
+  padding: 8px;
+  border: 1px solid #ccc;
+}
+
+.user-table th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.user-table td {
+  text-align: left;
+}
+
+.user-table button {
+  background-color: #4caf50;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  border-radius: 4px;
+}
+
+.user-table button:hover {
+  background-color: #45a049;
+}

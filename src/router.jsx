@@ -19,6 +19,8 @@ import BusinessSearchReport from "components/reports/businessSearch";
 import { clearToken } from "utils/auth.token";
 import { Requests } from "components/requests";
 import   QuestionForm   from "components/help/index";
+import  UserList   from "components/users/index";
+import   AddUserForm  from "components/users/AddUser";
 import { NGOSearchReport } from "components/reports/ngoSearch";
 import CompanySearchReport from "components/reports/companySearch";
 import LLPSearchReport from "components/reports/llpSearch";
@@ -79,6 +81,12 @@ const Base = connect(function (state) {
               </Route>
               <Route exact path="/help">
                 <QuestionForm    />
+              </Route>
+              <Route exact path="/users">
+                <UserList   />
+              </Route>
+              <Route exact path="/add-user">
+                <AddUserForm   />
               </Route>
 
               <Route path="/reports/clg">
