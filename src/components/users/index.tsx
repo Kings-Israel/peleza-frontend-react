@@ -3,12 +3,12 @@ import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 
 interface User {
-  first_name: string;
-  last_name: string;
-  email: string;
-  phone_number: string;
-  address: string;
-  city: string;
+  client_first_name: string;
+  client_last_name: string;
+  client_login_username: string;
+  client_mobile_number: string;
+  client_postal_address: string;
+  client_city: string;
   added_by:string;
 }
 
@@ -27,7 +27,7 @@ const UserList: React.FC<DashboardProps> = ({ user, onLogout }) => {
     const fetchUsers = async () => {
       try {
         const response = await axios.get(`get-add-users/`);
-        
+        console.log(response.data.data)
         setUsers(response.data.data);
         setLoading(false);
       } catch (error) {
@@ -70,12 +70,12 @@ const UserList: React.FC<DashboardProps> = ({ user, onLogout }) => {
           <tbody>
             {users.map((user, index) => (
               <tr key={index}>
-                <td>{user.first_name}</td>
-                <td>{user.last_name}</td>
-                <td>{user.email}</td>
-                <td>{user.phone_number}</td>
-                <td>{user.city}</td>
-                <td>{user.address}</td>
+                <td>{user.client_first_name}</td>
+                <td>{user.client_last_name}</td>
+                <td>{user.client_login_username}</td>
+                <td>{user.client_mobile_number}</td>
+                <td>{user.client_city}</td>
+                <td>{user.client_postal_address}</td>
               </tr>
             ))}
           </tbody>
