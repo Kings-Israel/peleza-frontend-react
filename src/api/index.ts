@@ -14,7 +14,6 @@ export const ApiLogin = (info: any) => {
 
   const request = api.post("auth/login/", info);
   request.then((data) => {
-    console.log(data)
     if (data.status === 200) {
       setToken(data.data);
       localStorage.setItem('company_logo', data.data.company_logo);

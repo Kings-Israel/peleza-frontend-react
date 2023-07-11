@@ -51,11 +51,13 @@ const UserList: React.FC<DashboardProps> = ({ user, onLogout }) => {
 
 
   return (
-    <div>
-      <h2>Users</h2>
-      <button onClick={handleAddUser} style={{ backgroundColor: 'red', color: 'white' }}>
-        Add User
-      </button>
+    <div className='container my-2'>
+      <div className="d-flex justify-content-between mb-2">
+        <h2>Users</h2>
+        <button className="btn btn-sm btn-primary" onClick={handleAddUser}>
+          Add User
+        </button>
+      </div>
       {users.length > 0 ? (
         <table className="user-table">
           <thead>

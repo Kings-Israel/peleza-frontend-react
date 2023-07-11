@@ -43,7 +43,7 @@ const Base = connect(function (state) {
       if ((!user || !user.access) && !currentURL.startsWith("/login")) {
         const currentState = location.state;
         history.push(`/login?next=${encodeURIComponent(currentURL)}`, {
-          // history.push(`/login`, {
+        // history.push(`/login`, {
           nextState: currentState,
         });
       }
@@ -273,7 +273,7 @@ function Header() {
             style={{ borderRadius: "2px" }}
             onClick={handleLogout}
           >
-            SIGN OUT
+            LOGOUT
           </button>
         </div>
       </nav>
