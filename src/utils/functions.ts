@@ -324,3 +324,11 @@ export const Base64 = {
     return t;
   },
 };
+
+export function checkPermission(permission: string) {
+  const permissions = JSON.parse(localStorage.getItem('permissions') || "");
+  if (permissions.includes(permission)) {
+    return true;
+  }
+  return false;
+}
