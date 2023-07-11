@@ -105,6 +105,7 @@
     height: auto;
     padding: 0;
   }
+
   .main-menu ul ul li a {
     font-size: 13px;
     font-size: 0.8125rem;
@@ -191,4 +192,5 @@
     color: #555 !important;
     display: block;
   }
+
 }

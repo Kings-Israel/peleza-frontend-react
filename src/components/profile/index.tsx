@@ -4,7 +4,6 @@ import { Component } from "react";
 import { connect } from "react-redux";
 import { State, store } from "store";
 import { Base64 } from "utils/functions";
-// import QuestionForm from 'components/help';
 
 class _Profile extends Component<{ profile: UserProfile }> {
   state = {

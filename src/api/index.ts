@@ -14,10 +14,10 @@ export const ApiLogin = (info: any) => {
 
   const request = api.post("auth/login/", info);
   request.then((data) => {
-    console.log(data)
     if (data.status === 200) {
       setToken(data.data);
       localStorage.setItem('company_logo', data.data.company_logo);
+      localStorage.setItem('permissions', JSON.stringify(data.data.permissions));
     } else {
       clearToken();
     }
@@ -43,14 +43,29 @@ export const ApiHelp = (formData: FormData) => {
     });
 };
 
+export const ApiAddUser = (userformData: FormData) => {
+  return api
+    .post("add-user/", userformData)
+    .then((response) => {
+      
+      console.log(response.data);
+      // Handle successful response
+      return response.data;
+    })
+    .catch((error: AxiosError) => {
+      console.log(error);
+      // Handle error response
+      throw error;
+    });
+};
 
 export const ApiRegister = (info: any) => {
   const request = api.post("auth/register/", info);
   request.then((data) => {
-    console.log(data)
     if (data.status === 200) {
       setToken(data.data);
       localStorage.setItem('company_logo', data.data.company_logo);
+      localStorage.setItem('permissions', JSON.stringify(data.data.permissions));
     } else {
       clearToken();
     }
