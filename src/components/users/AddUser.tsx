@@ -40,7 +40,7 @@ const AddUserForm: React.FC<AddUserFormProps> = ({
   useEffect(() => {
     apiGetProfile(store, (data: any) => {
       const userProfile = data?.data;
-
+      
       setFormData({
         firstName: "",
         lastName: "",
@@ -49,7 +49,7 @@ const AddUserForm: React.FC<AddUserFormProps> = ({
         city: "",
         address: "",
         added_by_id: userProfile?.client_id || "",
-        company: userProfile?.client_parent_company || "",
+        company: userProfile?.client_parent_company.company_name || "",
       });
       setLoading(false);
     });

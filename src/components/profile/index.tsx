@@ -6,6 +6,7 @@ import { State, store } from "store";
 import { Base64 } from "utils/functions";
 
 
+
 class _Profile extends Component<{ profile: UserProfile }> {
   state = {
     loading: true,
@@ -121,7 +122,7 @@ class _Profile extends Component<{ profile: UserProfile }> {
                             className="form-control"
                             placeholder="00 44 678 94329"
                             defaultValue={
-                              this.props.profile.company?.company_country
+                              this.props.profile.client_parent_company?.company_country
                             }
                             readOnly
                           />
@@ -137,7 +138,7 @@ class _Profile extends Component<{ profile: UserProfile }> {
                             className="form-control"
                             placeholder="00 44 678 94329"
                             defaultValue={
-                              this.props.profile.company?.company_name
+                              this.props.profile.client_parent_company?.company_name
                             }
                             readOnly
                           />
@@ -153,7 +154,7 @@ class _Profile extends Component<{ profile: UserProfile }> {
                             className="form-control"
                             placeholder="00 44 678 94329"
                             defaultValue={
-                              this.props.profile.company?.company_industry
+                              this.props.profile.client_parent_company?.company_industry
                             }
                             readOnly
                           />

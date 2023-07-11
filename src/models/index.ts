@@ -17,7 +17,7 @@ export interface Company {
 
 export interface UserProfile {
   client_id: number;
-  company: Company;
+  client_parent_company: Company;
   client_company_id: string;
   client_login_username: string;
   client_password: string;
