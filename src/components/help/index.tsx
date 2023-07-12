@@ -32,11 +32,11 @@ const QuestionForm: React.FC<QuestionFormProps> = ({
     image: "",
     message: "",
   });
-
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null); // State variable to hold user profile data
   useEffect(() => {
     apiGetProfile(store, (data: any) => {
       const userProfile = data?.data;
-      
+      setUserProfile(userProfile);
       setFormData({
         firstName: userProfile?.client_first_name || "",
         lastName: userProfile?.client_last_name || "",
@@ -100,7 +100,20 @@ const QuestionForm: React.FC<QuestionFormProps> = ({
         setTimeout(() => {
           setSuccessMessage("");
         }, 5000); // 5000 milliseconds = 5 seconds
-      
+        setFormData({
+          firstName: userProfile?.client_first_name || "",
+          lastName: userProfile?.client_last_name || "",
+          email: userProfile?.client_login_username || "",
+          phoneNumber: userProfile?.client_mobile_number || "",
+          subject: "",
+          image: "",
+          message: "",
+         
+        });
+        const imageInput = document.getElementById("image") as HTMLInputElement;
+        if (imageInput) {
+          imageInput.value = "";
+        }
 
       })
       .catch((error) => {
@@ -126,7 +139,7 @@ const QuestionForm: React.FC<QuestionFormProps> = ({
           </div>
           {error && <p className="error-message" style={{ color: "red" }}>{error}</p>}
           {successMessage && <p id="success-message" style={{ color: "green" }}>{successMessage}</p>}
-          <form name="questionForm" onSubmit={handleSubmit} action="/submit-help" method="POST">
+          <form name="questionForm" onSubmit={handleSubmit} action="submit-help/" method="POST">
             <div className="form-group">
               <input
                 type="text"

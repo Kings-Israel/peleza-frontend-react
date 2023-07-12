@@ -11,19 +11,22 @@ interface Props extends RouteComponentProps {
   invalid: number;
 } 
 class _DashBoardStats extends Component<Props> {
+  handleTileClick = (status: string) => {
+    const { history } = this.props;
+    history.push(`/requests/?q=mine&status=${status}`);
+  }
   render() {
+    const { new: newRequests, in_progress: inProgress, final, invalid } = this.props;
     return (
       <>
         <div className="d-flex justify-content-around flex-wrap">
           <div
             className="cursor-pointer"
-            onClick={() =>
-              this.props.history.push("/requests/?q=mine&status=new")
-            }
+            onClick={() => this.handleTileClick("new")}
           >
             <div
               className="card border-0"
-              style={{ backgroundColor: "rgba(51, 0, 118, 0.7)", minWidth: "180px", }}
+              style={{ backgroundColor: "rgba(51, 0, 118, 0.9)", minWidth: "180px", }}
             >
               <div className="card-body py-3">
                 <div className="main-card text-white">
@@ -40,11 +43,9 @@ class _DashBoardStats extends Component<Props> {
 
           <div
             className="cursor-pointer"
-            onClick={() =>
-              this.props.history.push("/requests/?q=mine&status=in_progress")
-            }
+            onClick={() => this.handleTileClick("in_progress")}
           >
-            <div className="card border-0" style={{ backgroundColor: "rgba(0, 0, 255, 0.7)", minWidth: "180px" }}>
+            <div className="card border-0" style={{ backgroundColor: "rgba(0, 0, 255, 0.9)", minWidth: "180px" }}>
               <div className="card-body py-3">
                 <div className="main-card text-white">
                   <div className="card-body text-center">
@@ -60,11 +61,9 @@ class _DashBoardStats extends Component<Props> {
 
           <div
             className="cursor-pointer"
-            onClick={() =>
-              this.props.history.push("/requests/?q=mine&status=completed")
-            }
+            onClick={() => this.handleTileClick("completed")}
           >
-            <div className="card border-0" style={{ backgroundColor: "rgba(0, 128, 0, 0.7)", minWidth: "180px" }}>
+            <div className="card border-0" style={{ backgroundColor: "rgba(0, 128, 0, 0.9)", minWidth: "180px" }}>
               <div className="card-body py-3">
                 <div className="main-card text-white">
                   <div className="card-body text-center">
@@ -79,10 +78,8 @@ class _DashBoardStats extends Component<Props> {
           </div>
 
           <div className="cursor-pointer"
-              onClick={() =>
-                this.props.history.push("/requests/?q=mine&status=interim")
-              }>
-            <div className="card border-0" style={{ backgroundColor: "rgba(255, 165, 0, 0.7)", minWidth: "180px" }}>
+              onClick={() => this.handleTileClick("interim")}>
+            <div className="card border-0" style={{ backgroundColor: "rgba(255, 165, 0, 0.9)", minWidth: "180px" }}>
               <div className="card-body py-3">
                 <div className="main-card text-white">
                   <div className="card-body text-center">
@@ -97,10 +94,8 @@ class _DashBoardStats extends Component<Props> {
           </div>
 
           <div className="cursor-pointer"
-              onClick={() =>
-                this.props.history.push("/requests/?q=mine&status=invalid")
-              }>
-            <div className="card border-0" style={{ backgroundColor: "rgba(255, 0, 0, 0.7)", minWidth: "180px" }}>
+              onClick={() => this.handleTileClick("invalid")}>
+            <div className="card border-0" style={{ backgroundColor: "rgba(255, 0, 0, 0.9)", minWidth: "180px" }}>
               <div className="card-body py-3">
                 <div className="main-card text-white">
                   <div className="card-body text-center">

@@ -90,7 +90,8 @@ export const ApiNewRequest = (
       const body = "Your request has been queued for processing.";
       store.dispatch(addNotificationAction(body, "success"));
       store.dispatch(setRequestsAction([response.data]));
-
+      
+      
       const state = store.getState();
 
       store.dispatch(

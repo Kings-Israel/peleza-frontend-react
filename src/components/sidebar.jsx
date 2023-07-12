@@ -109,13 +109,13 @@ export function SideBar() {
               <li className="nav-item rounded mb-2">
                 <Link to="/requests?q=mine" className="nav-link">
                   <HistoryOutlined className="mr-2" />
-                  My Requests
+                  My Reports
                 </Link>
               </li>
               <li className="nav-item rounded mb-2">
                 <Link to="/requests?q=all" className="nav-link">
                   <SettingsApplications className="mr-2" />
-                  All Requests
+                  All Reports
                 </Link>
               </li>
               <li className="nav-item rounded mb-2">

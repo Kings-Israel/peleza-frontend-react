@@ -31,6 +31,7 @@ export const apiGetRequests = (
     .get(url, { params: { page: page <= 0 ? 1 : page, q, status } })
     .then((data) => {
       store.dispatch(setRequestsAction(data.data));
+      
     })
     .catch((error) => {
       callback(error.response?.data || "Network Error");
@@ -51,6 +52,7 @@ export const apiGetStats = (dispatch: any, final: () => void) => {
     .then((response) => {
       //console.log(" === Response Data for stats  == ",response.data)
       dispatch(setStatsAction(response.data));
+      console.log(response.data.recent)
     })
     .finally(() => {
       final();

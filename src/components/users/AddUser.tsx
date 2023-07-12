@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, ChangeEvent  } from "react";
 import { ApiAddUser } from "../../api/index";
 import { store } from "store";
 import { apiGetProfile } from "api";
@@ -12,6 +12,7 @@ interface AddUserFormProps {
   address: string | undefined;
   added_by_id: string | undefined;
   company: string | undefined;
+  userTitle: string | undefined;
 }
 
 const AddUserForm: React.FC<AddUserFormProps> = ({
@@ -23,6 +24,7 @@ const AddUserForm: React.FC<AddUserFormProps> = ({
   address,
   added_by_id,
   company,
+  userTitle,
 }) => {
   const [loading, setLoading] = useState(false);
 
@@ -35,6 +37,7 @@ const AddUserForm: React.FC<AddUserFormProps> = ({
     address: "",
     added_by_id: "",
     company: "",
+    userTitle: "",
   });
 
   useEffect(() => {
@@ -50,6 +53,7 @@ const AddUserForm: React.FC<AddUserFormProps> = ({
         address: "",
         added_by_id: userProfile?.client_id || "",
         company: userProfile?.client_parent_company.company_name || "",
+        userTitle: "",
       });
       setLoading(false);
     });
@@ -67,7 +71,7 @@ const AddUserForm: React.FC<AddUserFormProps> = ({
     view_batch_request: false,
   });
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+  function handleChange(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   }
@@ -93,6 +97,7 @@ const AddUserForm: React.FC<AddUserFormProps> = ({
     userformDataToSend.append("address", userformData.address || "");
     userformDataToSend.append("added_by_id", userformData.added_by_id || "");
     userformDataToSend.append("company", userformData.company || "");
+    userformDataToSend.append("userTitle", userformData.userTitle || "");
 
     Object.entries(permissions).forEach(([key, value]) => {
         userformDataToSend.append(key, value ? "1" : "0");
@@ -114,6 +119,7 @@ const AddUserForm: React.FC<AddUserFormProps> = ({
             address: "",
             added_by_id: "",
             company: "",
+            userTitle: "",
           });
           setPermissions({
             create_request: false,
@@ -150,6 +156,20 @@ const AddUserForm: React.FC<AddUserFormProps> = ({
         {successMessage && <p id="success-message" style={{ color: "green" }}>{successMessage}</p>}
         <form name="questionForm" onSubmit={handleSubmit} action="add-user/" method="POST">
           {/* Form Fields */}
+          <div className="form-group">
+            <select
+              className="form-control"
+              name="userTitle"
+              value={userformData.userTitle}
+              onChange={handleChange}
+              required
+            >
+              <option value="">Select User Title</option>
+              <option value="Mr">Mr</option>
+              <option value="Miss">Miss</option>
+              <option value="Mrs">Mrs</option>
+            </select>
+          </div>
           <div className="form-group">
             <input
               type="text"

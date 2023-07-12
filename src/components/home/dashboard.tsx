@@ -4,7 +4,9 @@ import { Component } from "react";
 import { apiGetStats } from "api/requests";
 import { connect } from "react-redux";
 import ReactPaginate  from 'react-paginate';
-
+import { useHistory } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { State } from "store";
 import { Row, HeadFooterRow } from "./abstract";
 import Select from 'react-select';
@@ -75,7 +77,7 @@ const kyc_types=[
   },
 ]
 
-class _Dashboard extends Component<{
+class _Dashboard extends Component<RouteComponentProps & {
   stats: any;
   dispatch: any;
 
@@ -95,7 +97,12 @@ class _Dashboard extends Component<{
       })
     );
   }
- 
+
+  handleCreateInquiry = () => {
+    const { history } = this.props;
+    history.push('/help'); // Replace "/submit-help" with the actual route path for the submit-help page
+  };
+
   render() {
     return (
       <>
@@ -108,7 +115,9 @@ class _Dashboard extends Component<{
             <DataTable
               className="small"
               data={Object.values(this.props?.stats?.recent)}
+              
               title={`RECENT REPORTS`}
+              onCreateInquiry={this.handleCreateInquiry} // Pass the handleCreateInquiry function as a prop
             />
           )}
         </div>
@@ -116,14 +125,16 @@ class _Dashboard extends Component<{
     );
   }
 }
-export const Dashboard = connect((state: State) => ({
+
+export const Dashboard = withRouter(connect((state: State) => ({
   stats: state.global.stats,
-}))(_Dashboard);
+}))(_Dashboard));
 
 class DataTable extends Component<{
   data: any;
   title: string;
   className?: string;
+  onCreateInquiry: () => void;
 }> 
 {
   state = { sortField: { field: "request_date", sorting: "" }, filter: "" , fromDate: new Date() , toDate: new Date(), currentPage: 1};
@@ -135,7 +146,7 @@ class DataTable extends Component<{
 
   get recentReports() {
     const filter: string = this.state.filter;
-
+    
     let _recentReports: any = sortBy(
       this.props.data,
       this.state.sortField["field"],
@@ -146,8 +157,9 @@ class DataTable extends Component<{
       filter && filter.length
         ? filterObjectArray(this.props.data, filter)
         : _recentReports;
-
+    
     return _recentReports;
+    
   }
 
   setSortField(field: string) {
@@ -183,6 +195,9 @@ class DataTable extends Component<{
    handlePageChange = (selectedPage: { selected: number }) => {
     this.setState({ currentPage: selectedPage.selected + 1 });
   };
+  
+
+  
 
   
 
@@ -209,6 +224,7 @@ class DataTable extends Component<{
           {this.props.title}
           {this.state.filter}
         </p>
+
         {/* <div className="row py-4">
           <div className="col-md-8 ">
             <MuiPickersUtilsProvider utils={MomentUtils}>
@@ -260,6 +276,9 @@ class DataTable extends Component<{
                 placeholder="Select Type..."
               />
             </div>
+            <button onClick={this.props.onCreateInquiry} style={{ backgroundColor: 'red', color: 'white' }}>
+               Create Inquiry
+           </button>
           </div>
           <div className="table-responsive table-body">
             <table className="table table-striped data-table">

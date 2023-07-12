@@ -159,7 +159,9 @@ class _Requests extends Component<RouteComponentProps> {
 
   get requestData(): any {
     return this.request.data;
+   
   }
+  
   get request(): Request {
     return store.getState().requests;
   }
@@ -224,6 +226,7 @@ class _Requests extends Component<RouteComponentProps> {
   render() {
     // Dynamic data.
     let data: RequestData[] = Object.values(this.requestData);
+    
 
     return (
       <div className="container-fluid">
