@@ -193,9 +193,11 @@ const QuestionForm: React.FC<QuestionFormProps> = ({
         {helpItems.length > 0 ? (
           <table className="user-table">
             <thead>
-              <th>Subject</th>
-              <th>Message</th>
-              <th>Response</th>
+              <tr>
+                <th>Subject</th>
+                <th>Message</th>
+                <th>Response</th>
+              </tr>
             </thead>
             <tbody>
               {helpItems.map((helpItem, index) => (
