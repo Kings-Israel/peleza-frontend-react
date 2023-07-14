@@ -584,7 +584,7 @@ class DataTable extends Component<{
         );
 
        
-    } else if (q === 'mine' && status_selected) {
+    } else if (status_selected) {
       return (
         <div className="bg-white shadow my-4 py-3 px-3 text-muted">
           <p className="font-weight-bold pt-3">
