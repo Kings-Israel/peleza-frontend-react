@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/peleza/static/css/main.f8d47719.chunk.css",
-    "main.js": "/peleza/static/js/main.13f0f604.chunk.js",
-    "main.js.map": "/peleza/static/js/main.13f0f604.chunk.js.map",
+    "main.js": "/peleza/static/js/main.62a7bc0b.chunk.js",
+    "main.js.map": "/peleza/static/js/main.62a7bc0b.chunk.js.map",
     "runtime-main.js": "/peleza/static/js/runtime-main.70e1f4ee.js",
     "runtime-main.js.map": "/peleza/static/js/runtime-main.70e1f4ee.js.map",
     "static/css/2.689ac3d2.chunk.css": "/peleza/static/css/2.689ac3d2.chunk.css",
@@ -28,6 +28,6 @@
     "static/css/2.689ac3d2.chunk.css",
     "static/js/2.b5598962.chunk.js",
     "static/css/main.f8d47719.chunk.css",
-    "static/js/main.13f0f604.chunk.js"
+    "static/js/main.62a7bc0b.chunk.js"
   ]
 }

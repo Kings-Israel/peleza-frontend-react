@@ -73,6 +73,12 @@ const kyc_types = [
     module_id: 94,
   },
   {
+    label: "INTERNATIONAL COMPANY SEARCH",
+    value: "ico",
+    Package_id: 52,
+    module_id: 96,
+  },
+  {
     label: "LIMITED LIABILITY PARTNERSHIPS",
     value: "llp",
     Package_id: 52,
@@ -191,7 +197,7 @@ class DataTable extends Component<{
 
   render() {
     const { currentPage } = this.state;
-    const itemsPerPage = 3; // Adjust this value based on your requirement
+    const itemsPerPage = 10; // Adjust this value based on your requirement
     const totalItems = this.recentReports.length;
     const pageCount = Math.ceil(totalItems / itemsPerPage);
 
