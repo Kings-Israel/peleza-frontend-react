@@ -82,5 +82,6 @@
     "@types/react-date-range": "^1.4.1",
     "@types/react-datepicker": "^4.3.2",
     "@types/react-select": "^5.0.1"
-  }
+  },
+  "homepage": "http://209.38.220.196/peleza/"
 }
