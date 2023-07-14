@@ -15,23 +15,21 @@ export const apiGetRequests = (
   store: any,
   location: any,
   page?: any,
+  status?: string,
   callback: (error: string | null | undefined) => void = () => void null,
   recents: boolean = false
 ) => {
   const key = requestKey();
   store.dispatch(setLoadingAction(key));
 
-  const _qs = getQueryString("q", location);
-  const status = getQueryString("status", location);
-
+  const q = recents === true ? "recents" : getQueryString("q", location);
   const url = "/requests/";
-  const q = recents === true ? "recents" : _qs;
 
   api
     .get(url, { params: { page: page <= 0 ? 1 : page, q, status } })
-    .then((data) => {
-      store.dispatch(setRequestsAction(data.data));
-      
+    .then((response) => {
+      store.dispatch(setRequestsAction(response.data));
+     
     })
     .catch((error) => {
       callback(error.response?.data || "Network Error");
@@ -40,8 +38,11 @@ export const apiGetRequests = (
       store.dispatch(setLoadedAction(key));
       callback(null);
     });
+  
   return key;
+  
 };
+
 
 export const apiGetStats = (dispatch: any, final: () => void) => {
   const key = requestKey();
@@ -52,7 +53,7 @@ export const apiGetStats = (dispatch: any, final: () => void) => {
     .then((response) => {
       //console.log(" === Response Data for stats  == ",response.data)
       dispatch(setStatsAction(response.data));
-      console.log(response.data.recent)
+      
     })
     .finally(() => {
       final();
@@ -71,6 +72,7 @@ export const apiGetReport = (store: any) =>
     )
     .then((data) => {
       store.dispatch(setReportAction(data.data));
+      console.log(data.data)
   });
 
   export const apiGetSummary= async (
@@ -96,6 +98,7 @@ export const apiGetReport = (store: any) =>
     return new Promise(async function(resolve, reject) {
       try {
         let resp = await api.get("/list/?module_code="+kyc_type + "&date_from="+from_date+"&date_to="+to_date+"&status="+status);
+        
         return resolve(resp);
       }
       catch (err) {
@@ -103,6 +106,38 @@ export const apiGetReport = (store: any) =>
       }
     })  
   }
+
+  export const apiReq = (status: any) => {
+    return new Promise(async function(resolve, reject) {
+      try {
+        let resp = await api.get("req/");
+        const transformedData = transformData(resp.data);
+        
+        resolve(transformedData); 
+      } catch (err) {
+        return reject(err);
+      }
+    });
+  };
+  
+  function transformData(data: any[]) {
+    return data.map((item, index) => ({
+      id: index,
+      request_id: item[2],
+      search_id: item[0],
+      client_number: item[50],
+      company_name: item[28],
+      email_address: item[5],
+      registration_number: item[49],
+      request_plan: item[1],
+      request_date: item[40],
+      module_code: item[1],
+      package_id: item[52],
+      request_ref_number: item[3],
+      country: item[8],
+    }));
+  }
+  
 
   export const apiSummaryDownload =(kyc_type:any,from_date:any,to_date:any,status:any) => {
     return new Promise(async function(resolve, reject) {

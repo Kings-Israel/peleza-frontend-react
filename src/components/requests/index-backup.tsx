@@ -139,32 +139,23 @@ class _Requests extends Component<RouteComponentProps> {
     return store.getState().requests;
   }
 
-  getRequestData(page?: string, keyword?: string) {
+   getRequestData(page?: string | number, keyword?: string, status?: string) {
     if (this.state.key) return;
-    let key;
     const updateRequest = (data: any) => {
       this.setState({ ...this.state, key: null, error: data });
+      
     };
-
-    if (page === "next" && this.request.next) {
-      key = apiGetRequests(
-        store,
-        this.props.location,
-        this.page + 1,
-        updateRequest
-      );
-    } else if (page === "prev" && this.request.prev) {
-      key = apiGetRequests(
-        store,
-        this.props.location,
-        this.page - 1,
-        updateRequest
-      );
-    } else {
-      key = apiGetRequests(store, this.props.location, 1, updateRequest);
-    }
-
+    
+    const key =
+      page === "next" && this.request.next
+        ? apiGetRequests(store, this.props.location, this.page + 1, status, updateRequest)
+        
+        : page === "prev" && this.request.prev
+        ? apiGetRequests(store, this.props.location, this.page - 1, status, updateRequest)
+        : apiGetRequests(store, this.props.location, 1, status, updateRequest);
+  
     if (key) this.setState({ ...this.state, key });
+   
   }
   setPage = this.getRequestData;
 

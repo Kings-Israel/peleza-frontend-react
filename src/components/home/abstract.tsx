@@ -62,13 +62,13 @@ export const HeadFooterRow = ({
   return (
     <tr>
       {/* <TH name="#">#</TH> */}
-      <TH name="name" onClick={() => _setSortField("client_number")}>
+      <TH name="client_number" onClick={() => _setSortField("client_number")}>
         Client Number
       </TH>
       <TH name="request_plan" onClick={() => _setSortField("request_plan")}>
         Plan
       </TH>
-      <TH name="name" onClick={() => _setSortField("name")}>
+      <TH name="dataset_name" onClick={() => _setSortField("dataset_name")}>
         Company Name
       </TH>
 

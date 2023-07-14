@@ -7,7 +7,7 @@ import ChevronLeft from "@material-ui/icons/ChevronLeft";
 import ChevronRight from "@material-ui/icons/ChevronRight";
 import { RouteComponentProps } from "react-router-dom";
 import { apiGetRequests ,
-  // apiGetSummary,
+   apiGetSummary, apiReq,
   apiSummary ,apiSummaryDownload } from "api/requests";
 import { Request, RequestData } from "store/reducers/requests";
 import { throttle } from "lodash";
@@ -104,7 +104,7 @@ const headers = [
 },
 {
   label: "TRUSTS SEARCH",
-  value: "trusts",
+  value: "tr",
   Package_id: 52,
   module_id: 94
 },
@@ -123,27 +123,79 @@ const status=[
   },
   {
     label: "In Progress",
-    value: "in-progress",
+    value: "in_progress",
   },
   {
     label: "Complete",
-    value: "complete",
+    value: "completed",
   },
   {
     label: "Interim",
     value: "interim",
   },
+  {
+    label: "Ivalid",
+    value: "invalid",
+  },
 ]
+interface DataItem {
+  id: number;
+  pk: number;
+  request_id: string | null;
+  search_id: number;
+  client_number: string;
+  company_name: string;
+  email_address: string | null;
+  registration_number: string;
+  request_plan: string;
+  request_date: string;
+  module_code: string;
+  package_id: number;
+  request_ref_number: string;
+  country: string;
+}
 
-class _Requests extends Component<RouteComponentProps> {
-  state = { key: "" };
+interface _RequestsState {
+  key: string | null;
+  filter: string;
+  status_selected: string;
+  FromselectedDate: Date;
+  ToselectedDate: Date;
+  columns: string[];
+  rows: any[];
+  showAllRequests: boolean; // Add showAllRequests property to state interface
+  loading: boolean;
+  
+}
+
+class _Requests extends Component<RouteComponentProps, _RequestsState> {
+  state: _RequestsState = {
+    key: "",
+    filter: "", // Set filter to an empty string
+    status_selected: "",
+    FromselectedDate: new Date(),
+    ToselectedDate: new Date(),
+    columns: [],
+    rows: [],
+    loading: true,
+    showAllRequests: false, // Add this line
+  
+  };
   constructor(props: any) {
     super(props);
     this.getRequestData = this.getRequestData.bind(this);
     this.setState = this.setState.bind(this);
     this.setPage = this.setPage.bind(this);
-    this.search = this.search.bind(this);
+    this.dateFormater = this.dateFormater.bind(this); // Add this line
   }
+
+  dateFormater = (d: any) => {
+    let ye = new Intl.DateTimeFormat("en", { year: "numeric" }).format(d);
+    let mo = new Intl.DateTimeFormat("en", { month: "2-digit" }).format(d);
+    let da = new Intl.DateTimeFormat("en", { day: "2-digit" }).format(d);
+    let fd = `${ye}-${mo}-${da}`;
+    return fd;
+  };
 
   // SEARCH
   search = throttle(
@@ -158,44 +210,48 @@ class _Requests extends Component<RouteComponentProps> {
   
 
   get requestData(): any {
+    //console.log(this.request.data)
     return this.request.data;
-   
   }
   
   get request(): Request {
+    //console.log(store.getState().requests)
     return store.getState().requests;
   }
 
-  getRequestData(page?: string, keyword?: string) {
+  getRequestData(page?: string | number, keyword?: string, status?: string) {
     if (this.state.key) return;
-    let key;
     const updateRequest = (data: any) => {
-      this.setState({ ...this.state, key: null, error: data });
+      this.setState({ ...this.state, key: null});
     };
-
-    if (page === "next" && this.request.next) {
-      key = apiGetRequests(
-        store,
-        this.props.location,
-        this.page + 1,
-        updateRequest
-      );
-    } else if (page === "prev" && this.request.prev) {
-      key = apiGetRequests(
-        store,
-        this.props.location,
-        this.page - 1,
-        updateRequest
-      );
-    } else {
-      key = apiGetRequests(store, this.props.location, 1, updateRequest);
-    }
-
+  
+    // Fetch requests based on showAllRequests flag
+    const key = this.state.showAllRequests
+      ? apiGetRequests(store, this.props.location, 1, status, updateRequest)
+      : page === "next" && this.request.next
+      ? apiGetRequests(store, this.props.location, this.page + 1, status, updateRequest)
+      : page === "prev" && this.request.prev
+      ? apiGetRequests(store, this.props.location, this.page - 1, status, updateRequest)
+      : apiGetRequests(store, this.props.location, 1, status, updateRequest);
+  
     if (key) this.setState({ ...this.state, key });
   }
+  
+  toggleShowAllRequests = () => {
+    this.setState((prevState) => ({
+      showAllRequests: !prevState.showAllRequests,
+    }), () => {
+      this.getRequestData(); // Call getRequestData after updating showAllRequests state
+    });
+  };
+  
+  
+  
   setPage = this.getRequestData;
+  
 
   get page() {
+   
     return this.request.page ? this.request.page : 1;
   }
 
@@ -209,11 +265,29 @@ class _Requests extends Component<RouteComponentProps> {
        // this.getRequestData();
       }
     });
+    const queryParams = new URLSearchParams(window.location.search);
+    const status = queryParams.get("status");
+
+    if (status) {
+      this.setState({
+        status_selected: status
+      });
+    } else {
+      this.setState({
+        status_selected: ""
+      });
+    } 
+    
+
     this.getRequestData();
+    
   }
   componentWillUnmount() {
     this.unlisten();
   }
+
+  
+
 
   get loading() {
     return this.state.key ? true : false;
@@ -226,22 +300,23 @@ class _Requests extends Component<RouteComponentProps> {
   render() {
     // Dynamic data.
     let data: RequestData[] = Object.values(this.requestData);
-    
-
+    //console.log(this.requestData)
+    //const { columns, rows } = this.state;
+  
+ 
     return (
       <div className="container-fluid">
-        {this.loading && (
-          <span className="spinner-border float-right m-4 spinner-sm text-info"></span>
-        )}
+       
         <DataTable
-          className="small"
-          data={data}
-          title={`${this.q === "all" ? "ALL" : "MY"} REPORTS`}
-          page={this.page}
-          setPage={this.setPage}
-          next={this.request.next}
-          search={this.search}
-        />
+         data={data} 
+         title={`${this.q === "all" ? "ALL" : "MY"} REPORTS`}
+         page={this.page}
+         setPage={this.setPage}
+         next={this.request.next}
+         search={this.search}
+         className="small"
+         
+         />  
       </div>
     );
   }
@@ -257,53 +332,49 @@ class DataTable extends Component<{
   search?: (resultlength: string) => any;
   className?: string;
 }> {
-  state = {  loading:false,sortField: { field: "", sorting: "" }, filter: "", tempData:[] , selected_type:"",FromselectedDate:new Date(),ToselectedDate:new Date(),kyc_selected:null,rows:[],columns:[],status_selected:null};
+  state = {  loading:false,sortField: { field: "", sorting: "" }, filter: "", tempData:[] , selected_type:"",FromselectedDate:new Date(),ToselectedDate:new Date(),kyc_selected:null,rows:[],columns:[],status_selected:null, showTable: true,};
  
   constructor(props: any) {
     super(props);
     this.setFilter = this.setFilter.bind(this);
     this.setSortField = this.setSortField.bind(this);
   }
-
+  _isMounted = false;
   componentDidMount() {
-    const queryParams = new URLSearchParams(window.location.search)
-    const status = queryParams.get("status")
-    console.log(" === Mounted data table =======",  status)
-    if(status) {
-      this.setState({
-        status_selected:status
-      });   
-    } else{
-      this.setState({
-        status_selected:'new'
-      });   
-    }
-      
-
-  }
-  componentWillUnmount() {
+    this._isMounted = true;
+    const queryParams = new URLSearchParams(window.location.search);
+    const status = queryParams.get("status");
     
+    if (status) {
+      this.setState({
+        status_selected: status
+      });
+    } else {
+      this.setState({
+        status_selected: ""
+      });
+    }
+  }
+  
+  componentWillUnmount() {
+    this._isMounted = false; 
   }
   
 
   get requestData() {
-    const filter: string = this.state.filter;
- 
-    let _recentReports: any = sortBy(
-      this.props.data,
-      this.state.sortField["field"],
-      this.state.sortField["sorting"]
-    );
-
-    _recentReports =
-      filter && filter.length
-        ? filterObjectArray(this.props.data, filter)
-        : _recentReports;
-
-    if (filter && this.props.search) this.props.search(filter);
-
-    return _recentReports;
+    const { data, search } = this.props;
+    const { filter, sortField } = this.state;
+  
+    let allRequests = sortBy(data, sortField.field, sortField.sorting);
+  
+    if (filter && filter.length) {
+      allRequests = filterObjectArray(data, filter);
+      if (search) search(filter);
+    }
+   
+    return allRequests;
   }
+  
 
   setSortField(field: string) {
     let _already_set = this.state.sortField["field"] === "field" ? true : false;
@@ -333,10 +404,17 @@ class DataTable extends Component<{
    };
 
    statusChange = (status: any) => {
-    this.setState({
-      status_selected:status.value
-    });   
-   }; 
+    if (status && status.value) {
+      this.setState({
+        status_selected: status.value,
+      });
+    } else {
+      this.setState({
+        status_selected: "", // Set to an empty string or any default value you prefer
+      });
+    }
+  };
+  
 
    processKycRespData = async (kyc_type: any,data: []) => {
      let dt: {}[]=[];
@@ -346,17 +424,17 @@ class DataTable extends Component<{
                   id:num[0] ,
                   request_id:num[2] ,
                   search_id:num[0] ,
-                  client_number:num[9] ,
-                  company_name:num[1] ,
+                  client_number:num[50] ,
+                  company_name:num[28] ,
                   email_address:num[5] ,
-                  registration_number:num[8] ,
-                  request_plan:num[3] ,
-                  request_date:num[20] ,
-                  module_code:num[16] ,
-                  package_id:num[21] ,
+                  registration_number:num[49] ,
+                  request_plan:num[1] ,
+                  request_date:num[40] ,
+                  module_code:num[1] ,
+                  package_id:num[52] ,
                   url:num[3] || kyc_type,
-                  request_ref_number:num[0] ,
-                  country:num[4] ,
+                  request_ref_number:num[3] ,
+                  country:num[8] ,
                     
                 }
        })
@@ -384,46 +462,74 @@ class DataTable extends Component<{
       );
     console.log(resp)
    }
-
-   handleClick= async () => {
-    //  let columns=[]; 
-
-     this.setState({
-      loading:true
-      });
-
-    //  location.pathname.startsWith("/requests") &&
-    //  this.q !== getQueryString("q", location)
-   // alert(location.pathname)
-  
-     const resp: unknown = await apiSummary(
-       this.state.filter,
-       this.dateFormater(this.state.FromselectedDate),
-       this.dateFormater(this.state.ToselectedDate),
-       this.state.status_selected
-       );
-     let rows=await this.processKycRespData(this.state.filter,(resp as {data: []; b: string; }).data);
-     this.setState({
-      rows:rows
+   handleClick = async () => {
+    this.setState({
+      loading: true
     });
-        this.setState({
-          columns:custom.table_column_header
-        });
+  
+    const currentDate = new Date(); // Get current date
+    const fromDate = this.dateFormater(this.state.FromselectedDate);
+    const toDate = this.dateFormater(currentDate); // Use current date as the "to_date"
+  
+    try {
+      const resp = await apiSummary(
+        this.state.filter,
+        fromDate,
+        toDate,
+        this.state.status_selected
+      );
+  
+      const rows = await this.processKycRespData(
+        this.state.filter,
+        (resp as { data: [] }).data
+      );
+  
       this.setState({
-        loading:false
+        rows: rows,
+        columns: custom.table_column_header,
+        loading: false
       });
-  }
+    } catch (error) {
+      // Handle error
+      console.error(error);
+      this.setState({
+        loading: false
+      });
+    }
+  };
+  
+  
 
 
 
   render() {
-
+   // value=status.find(option => option.value === this.state.status_selected)
 
     // console.log(this.requestData)
+     const { status_selected } = this.state;
+     const queryParams = new URLSearchParams(window.location.search);
+     const q = queryParams.get('q');
+    
+     // Filter the requests based on the selected status
+   
     let csvdata: RequestData[] = Object.values(this.requestData);
     // const business = report.business;
    // console.log("csv date",csvdata);
 
+   const filteredData = csvdata.filter((row) => {
+    
+    if (status_selected === "complete" && row.status === "11") {
+      return true;
+    } else if (status_selected === "in_progress" && row.status === "33") {
+      return true;
+    } else if (status_selected === "new" && row.status === "00") {
+      return true;
+    }
+    
+    return false;
+  });
+  
+   console.log(filteredData)
    const data= csvdata.map(item => 
       
       ({    
@@ -478,9 +584,137 @@ class DataTable extends Component<{
         );
 
        
-    }
+    } else if (q === 'mine' && status_selected) {
+      return (
+        <div className="bg-white shadow my-4 py-3 px-3 text-muted">
+          <p className="font-weight-bold pt-3">
+            <BarChartIcon />
+            {this.props.title}
+           
+          </p>
+  
+          <div></div>
+    
+          <div className="row">  
+          <div className="col-md-4">
+          <label >Selected Kyc :  {this.state.filter} </label>
+          <Select
+            options={kyc_types}
+            onChange={this.handleToKyc}
+            value={kyc_types.find(option => option.value === this.state.filter)}
+          />
+  
+            </div>
+            <div className='col-md-4'>
+         
+         <MuiPickersUtilsProvider utils={MomentUtils}>
+          <KeyboardDatePicker
+              autoOk
+              variant="inline"
+              inputVariant="outlined"
+              label="From"
+              format="MM-DD-yyyy"
+              value={this.state.FromselectedDate}
+              InputAdornmentProps={{ position: "start" }}
+              onChange={handleFromDateChange}
+             
+           />
+           <br/>
+           <br/>
+          <KeyboardDatePicker
+              autoOk
+              variant="inline"
+              inputVariant="outlined"
+              label="To"
+              format="MM-DD-yyyy"
+              value={this.state.ToselectedDate}
+              InputAdornmentProps={{ position: "start" }}
+              onChange={handleDateChange}
+              
+          />
+        </MuiPickersUtilsProvider>
+      
+            </div>
+            <div className='col-md-4'>
+            
+  
+      
+            </div>
+      
+            </div>
+            <div className="row"> 
+            <div className="col-md-4">
+              <label >Selected Status : {this.state.status_selected} </label>
+                <Select 
+                options={status} 
+                value={status.find(option => option.value === this.state.status_selected)}
+                onChange={this.statusChange}
+                />
+              </div> 
+              <div className='col-md-4'>
+              <br/>
+              <Button onClick={() => this.handleDownload()} variant="contained" color="secondary" >
+                    Download
+              </Button>
+            </div>
+          </div>
+          <div className="d-flex justify-content-end mb-1">
+  
+            {/* View CSV */}
+            <div style={{ paddingRight: "10px" }}>
+              
+              <CSVLink
+                data={data}
+                headers={headers}
+                filename={createCsvFileName()}
+                target="_blank"
+                style={{ textDecoration: 'none', outline: 'none', height: '5vh' }}
+              >
+                {/* <Button variant="contained" color="secondary" style={{ height: '100%' }}>
+                  CSV (Export by Kyc Search type)
+                </Button> */}
+              </CSVLink>
+              {/* <CSVLink {...csvReport}>
+                <Button variant="outlined" color="primary">
+                  Export Csv
+                </Button></CSVLink> */}
+              {/* </CSVLink> */}
+            </div>
+  
+          </div>
+          <div>
+           
+         
+        </div>
+          <div className="bg-white shadow my-4 py-3 px-3 text-muted">
+           <table className={`table table-striped data-table ${this.props.className}`}>
    
-    else {
+             <thead>
+                <tr>
+                  <th>Client Number</th>
+                  <th>Plan</th>
+                  <th>Company Name</th>
+                  <th>Request Date</th>
+                  <th>Country</th>
+                </tr>
+             </thead>
+             <tbody>
+               {filteredData.map((row, index) => (
+                   <tr key={index}>
+                     <td>{row.client_number}</td>
+                     <td>{row.request_plan}</td>
+                     <td>{row.dataset_name}</td>
+                     <td>{row.request_date}</td>
+                     <td>{row.dataset_citizenship}</td>
+                   </tr>
+                 ))}
+             </tbody>
+            </table>
+          </div>
+          </div>
+        );
+
+      } else if (q === 'mine' || q === 'all') {
     return (
       <div className="bg-white shadow my-4 py-3 px-3 text-muted">
         <p className="font-weight-bold pt-3">
@@ -513,6 +747,7 @@ class DataTable extends Component<{
             value={this.state.FromselectedDate}
             InputAdornmentProps={{ position: "start" }}
             onChange={handleFromDateChange}
+           
          />
          <br/>
          <br/>
@@ -525,6 +760,7 @@ class DataTable extends Component<{
             value={this.state.ToselectedDate}
             InputAdornmentProps={{ position: "start" }}
             onChange={handleDateChange}
+            
         />
       </MuiPickersUtilsProvider>
     
@@ -579,17 +815,17 @@ class DataTable extends Component<{
 
         </div>
         <div>
+         
         <DTable rows={this.state.rows} columns={this.state.columns} ></DTable>
         </div>
-        <table className={`table table-striped data-table ${this.props.className}`}
-        >
-        </table>
+       
       </div>
     );
     }
 
   }
 }
+
 
 export class Pagination extends Component<{
   setPage: (e: any) => void;

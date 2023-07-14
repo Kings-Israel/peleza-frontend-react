@@ -23,13 +23,13 @@ import "react-datepicker/dist/react-datepicker.css";
 const kyc_types=[
   {
     label: "COMPANY SEARCH",
-    value: "company",
+    value: "co",
     Package_id: 52,
     module_id: 88
   },
   {
     label: "BUSINESS SEARCH",
-    value: "business",
+    value: "bn",
     Package_id: 52,
     module_id: 93
   },
@@ -65,7 +65,7 @@ const kyc_types=[
   },
   {
     label: "TRUSTS SEARCH",
-    value: "trusts",
+    value: "tr",
     Package_id: 52,
     module_id: 94
   },
@@ -177,11 +177,13 @@ class DataTable extends Component<{
     return this.state.sortField;
   }
   setFilter(filter: string) {
-    this.setState({ ...this.state, filter });
+    this.setState({ ...this.state, filter }, () => {
+      console.log("Filter:", this.state.filter); // Log the updated filter value
+    });
   }
   handleToKyc = (kyc: any) => {
     //this.setState({fromDate:date});
- 
+  
     this.setFilter(kyc.value)
    
    };

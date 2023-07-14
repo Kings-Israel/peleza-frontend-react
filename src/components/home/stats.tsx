@@ -16,7 +16,7 @@ class _DashBoardStats extends Component<Props> {
     history.push(`/requests/?q=mine&status=${status}`);
   }
   render() {
-    const { new: newRequests, in_progress: inProgress, final, invalid } = this.props;
+    const { new: newRequests, in_progress: inProgress, final, invalid, interim } = this.props;
     return (
       <>
         <div className="d-flex justify-content-around flex-wrap">
@@ -84,7 +84,7 @@ class _DashBoardStats extends Component<Props> {
                 <div className="main-card text-white">
                   <div className="card-body text-center">
                     <span style={{ fontSize: "3em" }}>
-                      <span>0</span>
+                      <span>{this.props.interim}</span>
                     </span>
                     <div className="widget-subheading">Interim</div>
                   </div>

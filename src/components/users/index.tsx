@@ -27,7 +27,7 @@ const UserList: React.FC<DashboardProps> = ({ user, onLogout }) => {
     const fetchUsers = async () => {
       try {
         const response = await axios.get(`get-add-users/`);
-        console.log(response.data.data)
+       
         setUsers(response.data.data);
         setLoading(false);
       } catch (error) {
