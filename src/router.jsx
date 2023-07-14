@@ -268,7 +268,7 @@ function Header() {
         </button>
         <div className="col d-flex justify-content-end">
           <button
-            className="btn btn-sm btn-danger mono"
+            className="btn btn-sm btn-primary rounded"
             style={{ borderRadius: "2px" }}
             onClick={handleLogout}
           >

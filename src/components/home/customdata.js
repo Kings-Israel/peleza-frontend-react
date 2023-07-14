@@ -8,7 +8,7 @@ const table_column_header   = [
   {field: 'request_date', headerName: 'Request Date', width: 200,},
   // {field: 'country', headerName: 'Country', width: 130,},
   // {field: 'request_id', headerName: 'Req_id', width: 90,},
-  {field: 'medium', headerName: 'Medium', width: 90,},
+  {field: 'medium', headerName: 'Source', width: 90,},
 ];
 
 module.exports = Object.freeze({

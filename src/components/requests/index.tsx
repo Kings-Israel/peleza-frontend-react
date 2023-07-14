@@ -32,6 +32,7 @@ import {
   MuiPickersUtilsProvider,
 } from "@material-ui/pickers";
 import MomentUtils from "@date-io/moment";
+import { FilterAlt } from "@mui/icons-material";
 
 // Print CSV
 const createCsvFileName = () => `report_${moment().format()}.csv`;
@@ -562,7 +563,8 @@ class DataTable extends Component<{
                     variant="contained"
                     color="primary"
                   >
-                    Search
+                    <FilterAlt />
+                    Filter
                   </Button>
                 </div>
                 <div className="col-md-4">

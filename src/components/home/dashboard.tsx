@@ -19,14 +19,20 @@ import "react-datepicker/dist/react-datepicker.css";
 
 const kyc_types = [
   {
+    label: "ALL",
+    value: "",
+    Package_id: 0,
+    module_id: 0,
+  },
+  {
     label: "COMPANY SEARCH",
-    value: "company",
+    value: "co",
     Package_id: 52,
     module_id: 88,
   },
   {
     label: "BUSINESS SEARCH",
-    value: "business",
+    value: "bn",
     Package_id: 52,
     module_id: 93,
   },
@@ -56,13 +62,13 @@ const kyc_types = [
   },
   {
     label: "SOCIETIES SEARCH",
-    value: "societies",
+    value: "soc",
     Package_id: 52,
     module_id: 90,
   },
   {
     label: "TRUSTS SEARCH",
-    value: "trusts",
+    value: "tr",
     Package_id: 52,
     module_id: 94,
   },

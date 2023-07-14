@@ -71,7 +71,7 @@ export function SideBar() {
         <div className="p-2">
           <nav className="navbar sidebar-nav">
             <ul className="navbar-nav w-100">
-              <li className="nav-item">
+              <li className="nav-item rounded mb-2">
                 <Link className="nav-link" to="/profile">
                 <Person className="mr-2" />
                   My Profile

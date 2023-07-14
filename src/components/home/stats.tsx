@@ -50,7 +50,7 @@ class _DashBoardStats extends Component<Props> {
               this.props.history.push("/requests/?q=mine&status=in_progress")
             }
           >
-            <div className="card border-0" style={{ backgroundColor: "#000066", minWidth: "180px" }}>
+            <div className="card border-0" style={{ backgroundColor: "#00003D", minWidth: "180px" }}>
               <div className="card-body py-3">
                 <div className="main-card text-white">
                   <div className="card-body text-center d-flex flex-column">
@@ -90,7 +90,7 @@ class _DashBoardStats extends Component<Props> {
               onClick={() =>
                 this.props.history.push("/requests/?q=mine&status=interim")
               }>
-            <div className="card border-0" style={{ backgroundColor: "#CC8500", minWidth: "180px" }}>
+            <div className="card border-0" style={{ backgroundColor: "#A36A00", minWidth: "180px" }}>
               <div className="card-body py-3">
                 <div className="main-card text-white">
                   <div className="card-body text-center d-flex flex-column">
@@ -109,7 +109,7 @@ class _DashBoardStats extends Component<Props> {
               onClick={() =>
                 this.props.history.push("/requests/?q=mine&status=invalid")
               }>
-            <div className="card border-0" style={{ backgroundColor: "#CC0000", minWidth: "180px" }}>
+            <div className="card border-0" style={{ backgroundColor: "#520000", minWidth: "180px" }}>
               <div className="card-body py-3">
                 <div className="main-card text-white">
                   <div className="card-body text-center d-flex flex-column">
