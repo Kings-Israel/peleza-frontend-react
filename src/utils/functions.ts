@@ -326,9 +326,13 @@ export const Base64 = {
 };
 
 export function checkPermission(permission: string) {
-  const permissions = JSON.parse(localStorage.getItem('permissions') || "");
-  if (permissions.includes(permission)) {
-    return true;
+  try {
+    const permissions = JSON.parse(localStorage.getItem('permissions') || "");
+    if (permissions.includes(permission)) {
+      return true;
+    }
+    return false;
+  } catch (error) {
+    return false;    
   }
-  return false;
 }
