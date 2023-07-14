@@ -2,6 +2,11 @@ import { StatsInterface } from "models";
 import { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter, RouteComponentProps } from "react-router-dom";
+import AddTaskIcon from '@mui/icons-material/AddTask';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import AirlineStopsIcon from '@mui/icons-material/AirlineStops';
+import BlockIcon from '@mui/icons-material/Block';
+import CheckIcon from '@mui/icons-material/Check';
 
 interface Props extends RouteComponentProps {
   new: number;
@@ -23,12 +28,13 @@ class _DashBoardStats extends Component<Props> {
           >
             <div
               className="card border-0"
-              style={{ backgroundColor: "rgba(51, 0, 118, 0.7)", minWidth: "180px", }}
+              style={{ backgroundColor: "#14002F", minWidth: "180px", }}
             >
               <div className="card-body py-3">
                 <div className="main-card text-white">
-                  <div className="card-body text-center">
-                    <span style={{ fontSize: "3em" }}>
+                  <div className="card-body text-center d-flex flex-column">
+                    <AddTaskIcon style={{ fontSize: "3em" }} className="mx-auto" />
+                    <span style={{ fontSize: "2em" }}>
                       <span>{this.props.new}</span>
                     </span>
                     <div className="widget-subheading">New Requests</div>
@@ -44,11 +50,12 @@ class _DashBoardStats extends Component<Props> {
               this.props.history.push("/requests/?q=mine&status=in_progress")
             }
           >
-            <div className="card border-0" style={{ backgroundColor: "rgba(0, 0, 255, 0.7)", minWidth: "180px" }}>
+            <div className="card border-0" style={{ backgroundColor: "#000066", minWidth: "180px" }}>
               <div className="card-body py-3">
                 <div className="main-card text-white">
-                  <div className="card-body text-center">
-                    <span style={{ fontSize: "3em" }}>
+                  <div className="card-body text-center d-flex flex-column">
+                    <AccessTimeIcon style={{ fontSize: "3em" }} className="mx-auto" />
+                    <span style={{ fontSize: "2em" }}>
                       <span>{this.props.in_progress}</span>
                     </span>
                     <div className="widget-subheading">In Progress</div>
@@ -64,11 +71,12 @@ class _DashBoardStats extends Component<Props> {
               this.props.history.push("/requests/?q=mine&status=completed")
             }
           >
-            <div className="card border-0" style={{ backgroundColor: "rgba(0, 128, 0, 0.7)", minWidth: "180px" }}>
+            <div className="card border-0" style={{ backgroundColor: "#004D00", minWidth: "180px" }}>
               <div className="card-body py-3">
                 <div className="main-card text-white">
-                  <div className="card-body text-center">
-                    <span style={{ fontSize: "3em" }}>
+                  <div className="card-body text-center d-flex flex-column">
+                  <CheckIcon style={{ fontSize: "3em" }} className="mx-auto" />
+                    <span style={{ fontSize: "2em" }}>
                       <span>{this.props.final}</span>
                     </span>
                     <div className="widget-subheading">Completed</div>
@@ -82,11 +90,12 @@ class _DashBoardStats extends Component<Props> {
               onClick={() =>
                 this.props.history.push("/requests/?q=mine&status=interim")
               }>
-            <div className="card border-0" style={{ backgroundColor: "rgba(255, 165, 0, 0.7)", minWidth: "180px" }}>
+            <div className="card border-0" style={{ backgroundColor: "#CC8500", minWidth: "180px" }}>
               <div className="card-body py-3">
                 <div className="main-card text-white">
-                  <div className="card-body text-center">
-                    <span style={{ fontSize: "3em" }}>
+                  <div className="card-body text-center d-flex flex-column">
+                    <AirlineStopsIcon style={{ fontSize: "3em" }} className="mx-auto" />
+                    <span style={{ fontSize: "2em" }}>
                       <span>0</span>
                     </span>
                     <div className="widget-subheading">Interim</div>
@@ -100,11 +109,12 @@ class _DashBoardStats extends Component<Props> {
               onClick={() =>
                 this.props.history.push("/requests/?q=mine&status=invalid")
               }>
-            <div className="card border-0" style={{ backgroundColor: "rgba(255, 0, 0, 0.7)", minWidth: "180px" }}>
+            <div className="card border-0" style={{ backgroundColor: "#CC0000", minWidth: "180px" }}>
               <div className="card-body py-3">
                 <div className="main-card text-white">
-                  <div className="card-body text-center">
-                    <span style={{ fontSize: "3em" }}>
+                  <div className="card-body text-center d-flex flex-column">
+                    <BlockIcon style={{ fontSize: "3em" }} className="mx-auto" />
+                    <span style={{ fontSize: "2em" }}>
                       <span>{this.props.invalid}</span>
                     </span>
                     <div className="widget-subheading">Invalid</div>

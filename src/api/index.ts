@@ -4,11 +4,11 @@ import { setProfile } from "store/actions/auth";
 import { addNotificationAction } from "store/actions/notification";
 import { setRequestsAction, setStatsAction } from "store/actions/requests";
 import { clearToken, setToken } from "utils/auth.token";
-import { requestKey } from "utils/functions";
 import api from "./api";
 import { setCountries } from "store/actions/countries";
 import { setCompanies } from "store/actions/companies";
 import { setIndustries } from "store/actions/industries";
+import { getQueryString, requestKey } from "utils/functions";
 
 export const ApiLogin = (info: any) => {
 
@@ -236,3 +236,44 @@ export const ApiGetIndustries = async (store: any, callback: (data: any) => void
     .catch(err => reject(err))
   })
 }
+
+// export const getHelpItems = async (store: any, callback: (data: any) => void) => {
+//   return new Promise(async function(resolve, reject) {
+//     await api.get("/help-items")
+//       .then(response => {
+//         console.log(response)
+//         callback(response.data)
+//         resolve(response.data)
+//       })
+//       .catch(err => reject(err))
+//   })
+// }
+
+export const ApiGetHelpItems = (
+  store: any,
+  location: any,
+  page?: any,
+  callback: (error: string | null | undefined) => void = () => void null,
+) => {
+  const key = requestKey();
+  store.dispatch(setLoadingAction(key));
+
+  const q = getQueryString("q", location);
+  const status = getQueryString("status", location);
+
+  const url = "/help-items/";
+
+  api
+    .get(url, { params: { page: page <= 0 ? 1 : page, q, status } })
+    .then((data) => {
+      store.dispatch(setRequestsAction(data.data));
+    })
+    .catch((error) => {
+      callback(error.response?.data || "Network Error");
+    })
+    .finally(() => {
+      store.dispatch(setLoadedAction(key));
+      callback(null);
+    });
+  return key;
+};

@@ -3,7 +3,7 @@ import { getQueryString } from "utils/functions";
 import { ApiLogin } from "../../api/index";
 
 import logo from "../../assets/images/banner-logo.png";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
 export function Login(props: any) {
   useEffect(() => {
@@ -221,7 +221,7 @@ export function Login(props: any) {
                         </div>
                       </form>
                     </div>
-                    <div>
+                    {/* <div>
                       <span>Don't Have an Account? </span>
                         <Link to="/register">
                           <button
@@ -231,7 +231,7 @@ export function Login(props: any) {
                             REGISTER
                           </button>
                         </Link>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>

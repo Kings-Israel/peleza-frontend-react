@@ -45,7 +45,7 @@ const UserList: React.FC<DashboardProps> = ({ user, onLogout }) => {
   };
 
   if (loading) {
-    return <p>Loading...</p>;
+    return <h3 className='mx-auto text-muted'>Loading...</h3>;
   }
 
 

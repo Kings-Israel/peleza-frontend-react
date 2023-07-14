@@ -158,7 +158,6 @@ export const InnerReportHeader = ({ report, term }) => {
         <tr>
           <Data className="title">ORGANISATION</Data>
           <Data className="info">{report?.company_name}</Data>
-          {/*  */}
           <Data className="title">Report Status</Data>
           <Data className="info">
             {report.status && (report.status === "11" || report.status === 11)

@@ -10,8 +10,10 @@ interface AddUserFormProps {
   phoneNumber: string | undefined;
   city: string | undefined;
   address: string | undefined;
+  postalCode: string | undefined;
   added_by_id: string | undefined;
   company: string | undefined;
+  title: string | undefined;
 }
 
 const AddUserForm: React.FC<AddUserFormProps> = ({
@@ -21,8 +23,10 @@ const AddUserForm: React.FC<AddUserFormProps> = ({
   phoneNumber,
   city,
   address,
+  postalCode,
   added_by_id,
   company,
+  title,
 }) => {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const [loading, setLoading] = useState(false);
@@ -34,9 +38,10 @@ const [loading, setLoading] = useState(false);
     phoneNumber: "",
     city: "",
     address: "",
+    postalCode: "",
     added_by_id: "",
     company: "",
-    password: "",
+    title: "",
   });
 
   useEffect(() => {
@@ -50,9 +55,10 @@ const [loading, setLoading] = useState(false);
         phoneNumber: "",
         city: "",
         address: "",
+        postalCode: "",
         added_by_id: userProfile?.client_id || "",
         company: userProfile?.client_parent_company || "",
-        password: "",
+        title: "",
       });
       setLoading(false);
     });
@@ -94,9 +100,10 @@ const [loading, setLoading] = useState(false);
     userformDataToSend.append("phoneNumber", userformData.phoneNumber || "");
     userformDataToSend.append("city", userformData.city || "");
     userformDataToSend.append("address", userformData.address || "");
+    userformDataToSend.append("postalCode", userformData.postalCode || "");
     userformDataToSend.append("added_by_id", userformData.added_by_id || "");
     userformDataToSend.append("company", userformData.company || "");
-    userformDataToSend.append("password", userformData.password || "");
+    userformDataToSend.append("title", userformData.title || "");
 
     Object.entries(permissions).forEach(([key, value]) => {
         userformDataToSend.append(key, value ? "1" : "0");
@@ -116,9 +123,10 @@ const [loading, setLoading] = useState(false);
             phoneNumber: "",
             city: "",
             address: "",
+            postalCode: "",
             added_by_id: "",
             company: "",
-            password: "",
+            title: ""
           });
           setPermissions({
             create_request: false,
@@ -226,29 +234,46 @@ const [loading, setLoading] = useState(false);
               </div>
             </div>
             <div className="col-md-6">
-              <div className="form-group">
-                <textarea
-                  className="form-control"
-                  placeholder="Address"
-                  name="address"
-                  value={userformData.address}
-                  onChange={handleChange}
-                  required
-                />
+              <div className="row">
+                <div className="col-md-6">
+                  <div className="form-group">
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="Address"
+                      name="address"
+                      value={userformData.address}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                </div>
+                <div className="col-md-6">
+                  <div className="form-group">
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="Postal Code"
+                      name="postalCode"
+                      value={userformData.postalCode}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
           <div className="row">
-            <div className="col-md-6">
+          <div className="col-md-6">
               <div className="form-group">
                 <input
-                  type="password"
+                  type="text"
                   className="form-control"
-                  placeholder="Enter password"
-                  name="password"
-                  value={userformData.password}
+                  placeholder="Title"
+                  name="title"
+                  value={userformData.title}
                   onChange={handleChange}
-                  required
                 />
               </div>
             </div>
@@ -329,7 +354,7 @@ const [loading, setLoading] = useState(false);
           </div>
 
           <div className="form-group">
-            <button type="submit" className="btn btn-primary">
+            <button type="submit" className="btn btn-primary float-right">
               Add User
             </button>
           </div>

@@ -6,7 +6,7 @@ import HistoryOutlined from "@material-ui/icons/HistoryOutlined";
 import { HelpOutline } from '@mui/icons-material';
 import PeopleIcon from '@mui/icons-material/People';
 import { CloudUploadOutlined, Person } from "@material-ui/icons";
-import SettingsApplications from "@material-ui/icons/TimelineRounded";
+// import SettingsApplications from "@material-ui/icons/TimelineRounded";
 import { checkPermission } from "utils/functions";
 // import { State } from "store";
 //let logo = "https://1.bp.blogspot.com/-ouZiY6UwNOE/XZcQaZIWTJI/AAAAAAAAD-g/cQ0rRga90JYy6ywIGVtce7MaUjPCdM60QCNcBGAsYHQ/s1600/FB_IMG_1570175379664.jpg";
@@ -117,18 +117,16 @@ export function SideBar() {
                 <li className="nav-item rounded mb-2">
                   <Link to="/requests?q=mine" className="nav-link">
                     <HistoryOutlined className="mr-2" />
-                    My Requests
+                    Reports
                   </Link>
                 </li>
               ): ''}
-              {checkPermission('view requests') ? (
-                <li className="nav-item rounded mb-2">
-                  <Link to="/requests?q=all" className="nav-link">
-                    <SettingsApplications className="mr-2" />
-                    All Requests
-                  </Link>
-                </li>
-              ) : ''}
+              {/* <li className="nav-item rounded mb-2">
+                <Link to="/requests?q=all" className="nav-link">
+                  <SettingsApplications className="mr-2" />
+                  All Requests
+                </Link>
+              </li> */}
               <li className="nav-item rounded mb-2">
                 <Link to="/help" className="nav-link">
                   <HelpOutline className="mr-2" />

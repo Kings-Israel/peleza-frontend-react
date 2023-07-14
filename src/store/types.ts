@@ -19,3 +19,5 @@ export const SET_COUNTRIES = "setCountries";
 export const SET_COMPANIES = "setCompanies";
 
 export const SET_INDUSTRIES = "setIndustries";
+
+export const SET_HELP_ITEMS = "setHelperItems";
