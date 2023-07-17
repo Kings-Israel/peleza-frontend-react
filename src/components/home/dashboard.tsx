@@ -65,7 +65,7 @@ const kyc_types=[
   },
   {
     label: "TRUSTS SEARCH",
-    value: "tr",
+    value: "trusts",
     Package_id: 52,
     module_id: 94
   },

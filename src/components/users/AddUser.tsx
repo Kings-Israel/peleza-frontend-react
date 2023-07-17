@@ -10,9 +10,10 @@ interface AddUserFormProps {
   phoneNumber: string | undefined;
   city: string | undefined;
   address: string | undefined;
+  postalCode: string | undefined;
   added_by_id: string | undefined;
   company: string | undefined;
-  userTitle: string | undefined;
+  title: string | undefined;
 }
 
 const AddUserForm: React.FC<AddUserFormProps> = ({
@@ -22,11 +23,13 @@ const AddUserForm: React.FC<AddUserFormProps> = ({
   phoneNumber,
   city,
   address,
+  postalCode,
   added_by_id,
   company,
-  userTitle,
+  title,
 }) => {
-  const [loading, setLoading] = useState(false);
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const [loading, setLoading] = useState(false);
 
   const [userformData, setFormData] = useState({
     firstName: "",
@@ -35,9 +38,10 @@ const AddUserForm: React.FC<AddUserFormProps> = ({
     phoneNumber: "",
     city: "",
     address: "",
+    postalCode: "",
     added_by_id: "",
     company: "",
-    userTitle: "",
+    title: "",
   });
 
   useEffect(() => {
@@ -51,9 +55,10 @@ const AddUserForm: React.FC<AddUserFormProps> = ({
         phoneNumber: "",
         city: "",
         address: "",
+        postalCode: "",
         added_by_id: userProfile?.client_id || "",
-        company: userProfile?.client_parent_company.company_name || "",
-        userTitle: "",
+        company: userProfile?.client_parent_company || "",
+        title: "",
       });
       setLoading(false);
     });
@@ -95,9 +100,10 @@ const AddUserForm: React.FC<AddUserFormProps> = ({
     userformDataToSend.append("phoneNumber", userformData.phoneNumber || "");
     userformDataToSend.append("city", userformData.city || "");
     userformDataToSend.append("address", userformData.address || "");
+    userformDataToSend.append("postalCode", userformData.postalCode || "");
     userformDataToSend.append("added_by_id", userformData.added_by_id || "");
     userformDataToSend.append("company", userformData.company || "");
-    userformDataToSend.append("userTitle", userformData.userTitle || "");
+    userformDataToSend.append("title", userformData.title || "");
 
     Object.entries(permissions).forEach(([key, value]) => {
         userformDataToSend.append(key, value ? "1" : "0");
@@ -117,9 +123,10 @@ const AddUserForm: React.FC<AddUserFormProps> = ({
             phoneNumber: "",
             city: "",
             address: "",
+            postalCode: "",
             added_by_id: "",
             company: "",
-            userTitle: "",
+            title: ""
           });
           setPermissions({
             create_request: false,
@@ -156,161 +163,198 @@ const AddUserForm: React.FC<AddUserFormProps> = ({
         {successMessage && <p id="success-message" style={{ color: "green" }}>{successMessage}</p>}
         <form name="questionForm" onSubmit={handleSubmit} action="add-user/" method="POST">
           {/* Form Fields */}
-          <div className="form-group">
-            <select
-              className="form-control"
-              name="userTitle"
-              value={userformData.userTitle}
-              onChange={handleChange}
-              required
-            >
-              <option value="">Select User Title</option>
-              <option value="Mr">Mr</option>
-              <option value="Miss">Miss</option>
-              <option value="Mrs">Mrs</option>
-            </select>
+          <div className="row">
+            <div className="col-md-2">
+              <div className="form-group">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Title"
+                  name="title"
+                  value={userformData.title}
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
+            <div className="col-md-5">
+              <div className="form-group">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="First Name"
+                  name="firstName"
+                  value={userformData.firstName}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
+            <div className="col-md-5">
+              <div className="form-group">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Last Name"
+                  name="lastName"
+                  value={userformData.lastName}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
           </div>
-          <div className="form-group">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="First Name"
-              name="firstName"
-              value={userformData.firstName}
-              onChange={handleChange}
-              required
-            />
+          <div className="row">
+            <div className="col-md-6">
+              <div className="form-group">
+                <input
+                  type="email"
+                  className="form-control"
+                  placeholder="Email"
+                  name="email"
+                  value={userformData.email}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
+            <div className="col-md-6">
+              <div className="form-group">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Phone Number"
+                  name="phoneNumber"
+                  value={userformData.phoneNumber}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
           </div>
-          <div className="form-group">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Last Name"
-              name="lastName"
-              value={userformData.lastName}
-              onChange={handleChange}
-              required
-            />
+          <div className="row">
+            <div className="col-md-6">
+              <div className="form-group">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="City"
+                  name="city"
+                  value={userformData.city}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
+            <div className="col-md-6">
+              <div className="row">
+                <div className="col-md-6">
+                  <div className="form-group">
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="Address"
+                      name="address"
+                      value={userformData.address}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                </div>
+                <div className="col-md-6">
+                  <div className="form-group">
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="Postal Code"
+                      name="postalCode"
+                      value={userformData.postalCode}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          <div className="form-group">
-            <input
-              type="email"
-              className="form-control"
-              placeholder="Email"
-              name="email"
-              value={userformData.email}
-              onChange={handleChange}
-              required
-            />
+          <div className="row">
+            <div className="col-md-8">
+              {/* Permissions Section */}
+              <div className="form-group">
+                <h5>Permissions:</h5>
+                <ul className="d-flex justify-content-between flex-wrap">
+                  <li className="pr-2">
+                    <label>
+                      <input
+                        type="checkbox"
+                        name="create_request"
+                        checked={permissions.create_request}
+                        onChange={handlePermissionChange}
+                      />
+                      Create Request
+                    </label>
+                  </li>
+                  <li className="pr-2">
+                    <label>
+                      <input
+                        type="checkbox"
+                        name="view_request"
+                        checked={permissions.view_request}
+                        onChange={handlePermissionChange}
+                      />
+                      View Request
+                    </label>
+                  </li>
+                  <li className="pr-2">
+                    <label>
+                      <input
+                        type="checkbox"
+                        name="add_user"
+                        checked={permissions.add_user}
+                        onChange={handlePermissionChange}
+                      />
+                      Add User
+                    </label>
+                  </li>
+                  <li className="pr-2">
+                    <label>
+                      <input
+                        type="checkbox"
+                        name="view_user"
+                        checked={permissions.view_user}
+                        onChange={handlePermissionChange}
+                      />
+                      View User
+                    </label>
+                  </li>
+                  <li className="pr-2">
+                    <label>
+                      <input
+                        type="checkbox"
+                        name="create_batch_request"
+                        checked={permissions.create_batch_request}
+                        onChange={handlePermissionChange}
+                      />
+                      Create Batch Request
+                    </label>
+                  </li>
+                  <li className="pr-2">
+                    <label>
+                      <input
+                        type="checkbox"
+                        name="view_batch_request"
+                        checked={permissions.view_batch_request}
+                        onChange={handlePermissionChange}
+                      />
+                      View Batch Request
+                    </label>
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
-          <div className="form-group">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Phone Number"
-              name="phoneNumber"
-              value={userformData.phoneNumber}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="City"
-              name="city"
-              value={userformData.city}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <textarea
-              className="form-control"
-              placeholder="Address"
-              name="address"
-              value={userformData.address}
-              onChange={handleChange}
-              required
-            />
-          </div>
-             {/* Permissions Section */}
-          {/* Permissions Section */}
-<div className="form-group">
-  <h5>Permissions:</h5>
-  <ul>
-    <li>
-      <label>
-        <input
-          type="checkbox"
-          name="create_request"
-          checked={permissions.create_request}
-          onChange={handlePermissionChange}
-        />
-        Create Request
-      </label>
-    </li>
-    <li>
-      <label>
-        <input
-          type="checkbox"
-          name="view_request"
-          checked={permissions.view_request}
-          onChange={handlePermissionChange}
-        />
-        View Request
-      </label>
-    </li>
-    <li>
-      <label>
-        <input
-          type="checkbox"
-          name="add_user"
-          checked={permissions.add_user}
-          onChange={handlePermissionChange}
-        />
-        Add User
-      </label>
-    </li>
-    <li>
-      <label>
-        <input
-          type="checkbox"
-          name="view_user"
-          checked={permissions.view_user}
-          onChange={handlePermissionChange}
-        />
-        View User
-      </label>
-    </li>
-    <li>
-      <label>
-        <input
-          type="checkbox"
-          name="create_batch_request"
-          checked={permissions.create_batch_request}
-          onChange={handlePermissionChange}
-        />
-        Create Batch Request
-      </label>
-    </li>
-    <li>
-      <label>
-        <input
-          type="checkbox"
-          name="view_batch_request"
-          checked={permissions.view_batch_request}
-          onChange={handlePermissionChange}
-        />
-        View Batch Request
-      </label>
-    </li>
-  </ul>
-</div>
 
           <div className="form-group">
-            <button type="submit" className="btn btn-primary">
+            <button type="submit" className="btn btn-primary float-right">
               Add User
             </button>
           </div>

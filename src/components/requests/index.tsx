@@ -6,20 +6,23 @@ import { withRouter } from "react-router";
 import ChevronLeft from "@material-ui/icons/ChevronLeft";
 import ChevronRight from "@material-ui/icons/ChevronRight";
 import { RouteComponentProps } from "react-router-dom";
-import { apiGetRequests ,
-   apiGetSummary, apiReq,
-  apiSummary ,apiSummaryDownload } from "api/requests";
+import {
+  apiGetRequests,
+  // apiGetSummary,
+  apiSummary,
+  apiSummaryDownload,
+} from "api/requests";
 import { Request, RequestData } from "store/reducers/requests";
 import { throttle } from "lodash";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import { Button } from "@material-ui/core";
 import { CSVLink } from "react-csv";
 import moment from "moment";
-import Select from 'react-select';
-import DTable from '../home/datatable'
+import Select from "react-select";
+import DTable from "../home/datatable";
 // import CircularProgress from '@mui/material/CircularProgress';
 // import Box from '@mui/material/Box';
-import custom from '../home/customdata'
+import custom from "../home/customdata";
 import Loader from "react-loader-spinner";
 import {
   // DatePicker,
@@ -27,98 +30,110 @@ import {
   // DateTimePicker,
   KeyboardDatePicker,
   MuiPickersUtilsProvider,
-} from '@material-ui/pickers';
-import MomentUtils from '@date-io/moment';
+} from "@material-ui/pickers";
+import MomentUtils from "@date-io/moment";
+import { FilterAlt } from "@mui/icons-material";
 
 // Print CSV
 const createCsvFileName = () => `report_${moment().format()}.csv`;
 // const business = report.business;
 
 const headers = [
-    { label: 'Company Name', key: "companyName" },
-    { label: 'Registration Number', key: "registrationNumber" },
-    { label: 'Registration Date', key: "registrationDate" },
-    { label: 'Report Date', key: "reportDate" },
-    { label: 'Nominal Share Capital', key: "shareCapital" },
-    { label: 'Number and Type of Shares', key: "typeofShares" },
-    { label: 'Registered Office', key: "registeredOffice" },
-    { label: 'Postal Address', key: "postalAddress" },
-    { label: 'Encumbrances', key: "encumbrances" },
-    { label: 'Name', key: "name" },
-    // { label: 'Status', key: "status" },
-    { label: 'Address', key: "address" },
-    { label: 'Nationality', key: "nationality" },
-    { label: 'Shares', key: "shares" },
-    { label: 'KRA PIN', key: "kraPin" },
-    { label: 'ID Number', key: "idNumber" },
-    { label: 'Email', key: "email" },
-    { label: 'Mobile Number', key: "mobile" },
-    { label: 'Incorporation Number', key: "incorporationNumber" },
-    { label: 'Request Plan', key: "requestPlan" },
-    { label: 'Parent Name', key: "parentName" },
-    { label: 'Company Email', key: "companyEmail" },
+  { label: "Company Name", key: "companyName" },
+  { label: "Registration Number", key: "registrationNumber" },
+  { label: "Registration Date", key: "registrationDate" },
+  { label: "Report Date", key: "reportDate" },
+  { label: "Nominal Share Capital", key: "shareCapital" },
+  { label: "Number and Type of Shares", key: "typeofShares" },
+  { label: "Registered Office", key: "registeredOffice" },
+  { label: "Postal Address", key: "postalAddress" },
+  { label: "Encumbrances", key: "encumbrances" },
+  { label: "Name", key: "name" },
+  // { label: 'Status', key: "status" },
+  { label: "Address", key: "address" },
+  { label: "Nationality", key: "nationality" },
+  { label: "Shares", key: "shares" },
+  { label: "KRA PIN", key: "kraPin" },
+  { label: "ID Number", key: "idNumber" },
+  { label: "Email", key: "email" },
+  { label: "Mobile Number", key: "mobile" },
+  { label: "Incorporation Number", key: "incorporationNumber" },
+  { label: "Request Plan", key: "requestPlan" },
+  { label: "Parent Name", key: "parentName" },
+  { label: "Company Email", key: "companyEmail" },
 ];
 
-
-  const kyc_types: { label: string; value: string; Package_id: number; module_id: number; }[]  =[ {
-  label: "COMPANY SEARCH",
-  value: "co",
-  Package_id: 52,
-  module_id: 88
-},
-{
-  label: "BUSINESS SEARCH",
-  value: "bn",
-  Package_id: 52,
-  module_id: 93
-},
-{
-  label: "COMMUNITY BASED ORGANISATION",
-  value: "cbo",
-  Package_id: 52,
-  module_id: 92
-},
-{
-  label: "COMPANY LIMITED BY GUARANTEE",
-  value: "clg",
-  Package_id: 52,
-  module_id: 95
-},
-{
-  label: "COOPERATIVE SACCOS",
-  value: "sacco",
-  Package_id: 52,
-  module_id: 89
-},
-{
-  label: "NGO SEARCH",
-  value: "ngo",
-  Package_id: 52,
-  module_id: 97
-},
-{
-  label: "SOCIETIES SEARCH",
-  value: "societies",
-  Package_id: 52,
-  module_id: 90
-},
-{
-  label: "TRUSTS SEARCH",
-  value: "tr",
-  Package_id: 52,
-  module_id: 94
-},
-{
-  label: "LIMITED LIABILITY PARTNERSHIPS",
-  value: "llp",
-  Package_id: 52,
-  module_id: 91
-},
-]
-
-const status=[ 
+const kyc_types: {
+  label: string;
+  value: string;
+  Package_id: number;
+  module_id: number;
+}[] = [
   {
-   label: "New",
+    label: "ALL",
+    value: "all",
+    Package_id: 0,
+    module_id: 0,
+  },
+  {
+    label: "COMPANY SEARCH",
+    value: "co",
+    Package_id: 52,
+    module_id: 88,
+  },
+  {
+    label: "BUSINESS SEARCH",
+    value: "bn",
+    Package_id: 52,
+    module_id: 93,
+  },
+  {
+    label: "COMMUNITY BASED ORGANISATION",
+    value: "cbo",
+    Package_id: 52,
+    module_id: 92,
+  },
+  {
+    label: "COMPANY LIMITED BY GUARANTEE",
+    value: "clg",
+    Package_id: 52,
+    module_id: 95,
+  },
+  {
+    label: "COOPERATIVE SACCOS",
+    value: "sacco",
+    Package_id: 52,
+    module_id: 89,
+  },
+  {
+    label: "NGO SEARCH",
+    value: "ngo",
+    Package_id: 52,
+    module_id: 97,
+  },
+  {
+    label: "SOCIETIES SEARCH",
+    value: "soc",
+    Package_id: 52,
+    module_id: 90,
+  },
+  {
+    label: "TRUSTS SEARCH",
+    value: "tr",
+    Package_id: 52,
+    module_id: 94,
+  },
+  {
+    label: "LIMITED LIABILITY PARTNERSHIPS",
+    value: "llp",
+    Package_id: 52,
+    module_id: 91,
+  },
+];
+
+const status = [
+  {
+    label: "New",
     value: "new",
   },
   {
@@ -133,27 +148,7 @@ const status=[
     label: "Interim",
     value: "interim",
   },
-  {
-    label: "Ivalid",
-    value: "invalid",
-  },
-]
-interface DataItem {
-  id: number;
-  pk: number;
-  request_id: string | null;
-  search_id: number;
-  client_number: string;
-  company_name: string;
-  email_address: string | null;
-  registration_number: string;
-  request_plan: string;
-  request_date: string;
-  module_code: string;
-  package_id: number;
-  request_ref_number: string;
-  country: string;
-}
+];
 
 interface _RequestsState {
   key: string | null;
@@ -201,13 +196,11 @@ class _Requests extends Component<RouteComponentProps, _RequestsState> {
   search = throttle(
     (keyword: string) => {
       if (String(keyword).length < 4) return;
-     // this.getRequestData("search", keyword);
+      // this.getRequestData("search", keyword);
     },
     3000,
     { trailing: true }
   );
-
-  
 
   get requestData(): any {
     //console.log(this.request.data)
@@ -262,7 +255,7 @@ class _Requests extends Component<RouteComponentProps, _RequestsState> {
         location.pathname.startsWith("/requests") &&
         this.q !== getQueryString("q", location)
       ) {
-       // this.getRequestData();
+        // this.getRequestData();
       }
     });
     const queryParams = new URLSearchParams(window.location.search);
@@ -332,8 +325,20 @@ class DataTable extends Component<{
   search?: (resultlength: string) => any;
   className?: string;
 }> {
-  state = {  loading:false,sortField: { field: "", sorting: "" }, filter: "", tempData:[] , selected_type:"",FromselectedDate:new Date(),ToselectedDate:new Date(),kyc_selected:null,rows:[],columns:[],status_selected:null, showTable: true,};
- 
+  state = {
+    loading: false,
+    sortField: { field: "", sorting: "" },
+    filter: "",
+    tempData: [],
+    selected_type: "",
+    FromselectedDate: new Date(),
+    ToselectedDate: new Date(),
+    kyc_selected: null,
+    rows: [],
+    columns: [],
+    status_selected: null,
+  };
+
   constructor(props: any) {
     super(props);
     this.setFilter = this.setFilter.bind(this);
@@ -383,8 +388,8 @@ class DataTable extends Component<{
       _already_set && this.state.sortField["sorting"] === "asc"
         ? "desc"
         : this.state.sortField["sorting"] === "asc"
-          ? "desc"
-          : "asc";
+        ? "desc"
+        : "asc";
     this.setState({ sortField: { field, sorting } });
   }
   get sortWith(): object {
@@ -396,115 +401,96 @@ class DataTable extends Component<{
 
   handleToKyc = (kyc: any) => {
     this.setState({
-      kyc_selected:kyc.value
+      kyc_selected: kyc.value,
     });
- 
-    this.setFilter(kyc.value)
-   
-   };
 
-   statusChange = (status: any) => {
-    if (status && status.value) {
-      this.setState({
-        status_selected: status.value,
-      });
-    } else {
-      this.setState({
-        status_selected: "", // Set to an empty string or any default value you prefer
-      });
-    }
+    this.setFilter(kyc.value);
   };
-  
 
-   processKycRespData = async (kyc_type: any,data: []) => {
-     let dt: {}[]=[];
-      dt= data.map(function(num) {
- 
-                return {
-                  id:num[0] ,
-                  request_id:num[2] ,
-                  search_id:num[0] ,
-                  client_number:num[50] ,
-                  company_name:num[28] ,
-                  email_address:num[5] ,
-                  registration_number:num[49] ,
-                  request_plan:num[1] ,
-                  request_date:num[40] ,
-                  module_code:num[1] ,
-                  package_id:num[52] ,
-                  url:num[3] || kyc_type,
-                  request_ref_number:num[3] ,
-                  country:num[8] ,
-                    
-                }
-       })
-     
-    
-     return dt;
-   }
+  statusChange = (status: any) => {
+    this.setState({
+      status_selected: status.value,
+    });
+  };
 
-   dateFormater= (d:any) => {
+  processKycRespData = async (kyc_type: any, data: []) => {
+    let dt: {}[] = [];
+    dt = data.map(function (num) {
+      return {
+        id: num[0],
+        request_id: num[2],
+        search_id: num[0],
+        client_number: num[9],
+        company_name: num[1],
+        email_address: num[5],
+        registration_number: num[8],
+        request_plan: num[3],
+        request_date: num[20],
+        module_code: num[16],
+        package_id: num[21],
+        url: num[3] || kyc_type,
+        request_ref_number: num[0],
+        country: num[4],
+        medium: num[25],
+      };
+    });
+
+    return dt;
+  };
+
+  dateFormater = (d: any) => {
     //let d = new Date(2010, 7, 5);
-    let ye = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(d);
-    let mo = new Intl.DateTimeFormat('en', { month: '2-digit' }).format(d);
-    let da = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(d);
-    let fd=`${ye}-${mo}-${da}`
+    let ye = new Intl.DateTimeFormat("en", { year: "numeric" }).format(d);
+    let mo = new Intl.DateTimeFormat("en", { month: "2-digit" }).format(d);
+    let da = new Intl.DateTimeFormat("en", { day: "2-digit" }).format(d);
+    let fd = `${ye}-${mo}-${da}`;
     //console.log(fd);
     return fd;
-   }
+  };
 
-   handleDownload= async () => {
+  handleDownload = async () => {
     const resp: unknown = await apiSummaryDownload(
       this.state.filter,
       this.dateFormater(this.state.FromselectedDate),
       this.dateFormater(this.state.ToselectedDate),
       this.state.status_selected
-      );
-    console.log(resp)
-   }
-   handleClick = async () => {
-    this.setState({
-      loading: true
-    });
-  
-    const currentDate = new Date(); // Get current date
-    const fromDate = this.dateFormater(this.state.FromselectedDate);
-    const toDate = this.dateFormater(currentDate); // Use current date as the "to_date"
-  
-    try {
-      const resp = await apiSummary(
-        this.state.filter,
-        fromDate,
-        toDate,
-        this.state.status_selected
-      );
-  
-      const rows = await this.processKycRespData(
-        this.state.filter,
-        (resp as { data: [] }).data
-      );
-  
-      this.setState({
-        rows: rows,
-        columns: custom.table_column_header,
-        loading: false
-      });
-    } catch (error) {
-      // Handle error
-      console.error(error);
-      this.setState({
-        loading: false
-      });
-    }
+    );
+    console.log(resp);
   };
-  
-  
 
+  handleClick = async () => {
+    //  let columns=[];
 
+    this.setState({
+      loading: true,
+    });
+
+    //  location.pathname.startsWith("/requests") &&
+    //  this.q !== getQueryString("q", location)
+    // alert(location.pathname)
+
+    const resp: unknown = await apiSummary(
+      this.state.filter,
+      this.dateFormater(this.state.FromselectedDate),
+      this.dateFormater(this.state.ToselectedDate),
+      this.state.status_selected
+    );
+    let rows = await this.processKycRespData(
+      this.state.filter,
+      (resp as { data: []; b: string }).data
+    );
+    this.setState({
+      rows: rows,
+    });
+    this.setState({
+      columns: custom.table_column_header,
+    });
+    this.setState({
+      loading: false,
+    });
+  };
 
   render() {
-   // value=status.find(option => option.value === this.state.status_selected)
-
     // console.log(this.requestData)
      const { status_selected } = this.state;
      const queryParams = new URLSearchParams(window.location.search);
@@ -514,7 +500,7 @@ class DataTable extends Component<{
    
     let csvdata: RequestData[] = Object.values(this.requestData);
     // const business = report.business;
-   // console.log("csv date",csvdata);
+    // console.log("csv date",csvdata);
 
    const filteredData = csvdata.filter((row) => {
     
@@ -559,20 +545,19 @@ class DataTable extends Component<{
 
       
     }));
-  
+
     //const [selectedDate, handleDateChange] = useState(new Date());
-     
-    const handleDateChange =(dt:any) =>{
+
+    const handleDateChange = (dt: any) => {
       this.setState({
-        ToselectedDate: dt.toDate()
+        ToselectedDate: dt.toDate(),
       });
     };
-    const handleFromDateChange =(dt:any) =>{
+    const handleFromDateChange = (dt: any) => {
       this.setState({
-        FromselectedDate: dt.toDate()
+        FromselectedDate: dt.toDate(),
       });
     };
-    
 
     if(this.state.loading){
       return ( 
@@ -710,7 +695,7 @@ class DataTable extends Component<{
           </div>
         );
 
-      } else if (q === 'mine' || q === 'all') {
+    } else if (q === 'mine' || q === 'all') {
     return (
       <div className="bg-white shadow my-4 py-3 px-3 text-muted">
         <p className="font-weight-bold pt-3">
@@ -786,30 +771,134 @@ class DataTable extends Component<{
             </Button>
           </div>
         </div>
-        <div className="d-flex justify-content-end mb-1">
+      </div>
+      );
+    } else {
+      return (
+      <div className="bg-white shadow my-4 py-3 text-muted container-fluid">
+          <p className="font-weight-bold pt-3">
+            <BarChartIcon />
+            {this.props.title}
+          </p>
 
-          {/* View CSV */}
-          <div style={{ paddingRight: "10px" }}>
-            
-            <CSVLink
-              data={data}
-              headers={headers}
-              filename={createCsvFileName()}
-              target="_blank"
-              style={{ textDecoration: 'none', outline: 'none', height: '5vh' }}
-            >
-              {/* <Button variant="contained" color="secondary" style={{ height: '100%' }}>
+          <div className="row">
+            <div className="col-md-8">
+              <div className="row">
+                <div className="col-md-6">
+                  <label>Selected KYC : {this.state.filter} </label>
+                  <Select
+                    options={kyc_types}
+                    onChange={this.handleToKyc}
+                    value={kyc_types.find(
+                      (option) => option.value === this.state.filter
+                    )}
+                  />
+                </div>
+                <div className="col-md-6">
+                  <label>Selected Status : {this.state.status_selected} </label>
+                  <Select
+                    options={status}
+                    value={status.find(
+                      (option) => option.value === this.state.status_selected
+                    )}
+                    onChange={this.statusChange}
+                  />
+                </div>
+              </div>
+              <br />
+              <div className="row">
+                <div className="col-md-6">
+                  <MuiPickersUtilsProvider utils={MomentUtils}>
+                    <KeyboardDatePicker
+                      autoOk
+                      variant="inline"
+                      inputVariant="outlined"
+                      label="From"
+                      format="MM-DD-yyyy"
+                      value={this.state.FromselectedDate}
+                      InputAdornmentProps={{ position: "start" }}
+                      onChange={handleFromDateChange}
+                      className="w-100"
+                    />
+                  </MuiPickersUtilsProvider>
+                </div>
+                <div className="col-md-6">
+                  <MuiPickersUtilsProvider utils={MomentUtils}>
+                    <KeyboardDatePicker
+                      autoOk
+                      variant="inline"
+                      inputVariant="outlined"
+                      label="To"
+                      format="MM-DD-yyyy"
+                      value={this.state.ToselectedDate}
+                      InputAdornmentProps={{ position: "start" }}
+                      onChange={handleDateChange}
+                      className="w-100"
+                    />
+                  </MuiPickersUtilsProvider>
+                </div>
+              </div>
+            </div>
+            <div className="col-md-4 my-auto">
+              <div className="row">
+                <div className="col-md-4">
+                  <Button
+                    onClick={() => this.handleClick()}
+                    variant="contained"
+                    color="primary"
+                  >
+                    <FilterAlt />
+                    Filter
+                  </Button>
+                </div>
+                <div className="col-md-4">
+                  <Button
+                    onClick={() => this.handleDownload()}
+                    variant="contained"
+                    color="secondary"
+                  >
+                    Download
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <br />
+          <div className="d-flex justify-content-end mb-1">
+            {/* View CSV */}
+            <div style={{ paddingRight: "10px" }}>
+              <CSVLink
+                data={data}
+                headers={headers}
+                filename={createCsvFileName()}
+                target="_blank"
+                style={{
+                  textDecoration: "none",
+                  outline: "none",
+                  height: "5vh",
+                }}
+              >
+                {/* <Button variant="contained" color="secondary" style={{ height: '100%' }}>
                 CSV (Export by Kyc Search type)
               </Button> */}
-            </CSVLink>
-            {/* <CSVLink {...csvReport}>
+              </CSVLink>
+              {/* <CSVLink {...csvReport}>
               <Button variant="outlined" color="primary">
                 Export Csv
               </Button></CSVLink> */}
-            {/* </CSVLink> */}
+              {/* </CSVLink> */}
+            </div>
           </div>
-
-        </div>
+          <div>
+            <DTable
+              rows={this.state.rows}
+              columns={this.state.columns}
+            ></DTable>
+          </div>
+          <table
+            className={`table table-striped data-table ${this.props.className}`}
+          ></table>
+        
         <div>
          
         <DTable rows={this.state.rows} columns={this.state.columns} ></DTable>
@@ -818,7 +907,6 @@ class DataTable extends Component<{
       </div>
     );
     }
-
   }
 }
 
@@ -837,7 +925,6 @@ export class Pagination extends Component<{
         display: "flex",
         alignItems: "center",
         fontWeight: 300,
-        // letterSpacing: "-.8px",
       },
     };
   }

@@ -27,8 +27,8 @@ div[data-size="A4"] {
 }
 
 .inner-page {
-  padding-left: 8mm;
-  padding-right: 8mm;
+  padding-left: 4mm;
+  padding-right: 4mm;
   display: block;
 }
 .page {
@@ -166,6 +166,12 @@ table table tr td {
   height: max-content;
   margin: 2px;
   border-width: pt !important;
+}
+.inner-report tbody tr .title {
+  width: 15% !important;
+}
+.inner-report tbody tr .info {
+  word-wrap: break-word;
 }
 .dark-table td,
 .inner-report td {

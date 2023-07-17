@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
+import { checkPermission } from 'utils/functions';
 
 interface User {
   client_first_name: string;
@@ -20,6 +21,7 @@ interface DashboardProps {
 const UserList: React.FC<DashboardProps> = ({ user, onLogout }) => {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [error, setError] = useState('');
   const history = useHistory();
 
@@ -27,7 +29,6 @@ const UserList: React.FC<DashboardProps> = ({ user, onLogout }) => {
     const fetchUsers = async () => {
       try {
         const response = await axios.get(`get-add-users/`);
-       
         setUsers(response.data.data);
         setLoading(false);
       } catch (error) {
@@ -44,17 +45,21 @@ const UserList: React.FC<DashboardProps> = ({ user, onLogout }) => {
   };
 
   if (loading) {
-    return <p>Loading...</p>;
+    return <h3 className='mx-auto text-muted'>Loading...</h3>;
   }
 
 
 
   return (
-    <div>
-      <h2>Users</h2>
-      <button onClick={handleAddUser} style={{ backgroundColor: 'red', color: 'white' }}>
-        Add User
-      </button>
+    <div className='container my-2'>
+      <div className="d-flex justify-content-between mb-2">
+        <h2>Users</h2>
+        {checkPermission('create users') ? (
+          <button className="btn btn-sm btn-primary" onClick={handleAddUser}>
+            Add User
+          </button>
+        ): ''}
+      </div>
       {users.length > 0 ? (
         <table className="user-table">
           <thead>

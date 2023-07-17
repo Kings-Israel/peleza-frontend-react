@@ -5,8 +5,6 @@ import { connect } from "react-redux";
 import { State, store } from "store";
 import { Base64 } from "utils/functions";
 
-
-
 class _Profile extends Component<{ profile: UserProfile }> {
   state = {
     loading: true,
@@ -57,7 +55,7 @@ class _Profile extends Component<{ profile: UserProfile }> {
   }
   render() {
     const disable = this.disabled;
-    const { profile } = this.props;
+    // const { profile } = this.props;
     return (
       <>
     

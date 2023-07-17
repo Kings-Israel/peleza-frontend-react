@@ -3,32 +3,31 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router";
 
 function _Row(props: any) {
- let reportURL: any={};
+  let reportURL: any={};
   reportURL= Object.values(props.modules).find(
     (i: any) => props.obj.package_id === i.package_id
   );
   // just a fix for ncba will rework it later
- // console.log(" ==== props.index === ",props.index)
- // console.log(" ==== reportURL from _Row === ",reportURL)
+  // console.log(" ==== props.index === ",props.index)
+  // console.log(" ==== reportURL from _Row === ",reportURL)
   //console.log(" ==== props.obj === ",props.obj)
   if(reportURL === undefined) {
     reportURL={};
     reportURL.url=props.obj.request_plan
+  } else if(reportURL.url==='ncba') {
+    reportURL.url=props.obj.request_plan
   }
- else if(reportURL.url==='ncba') {
-  reportURL.url=props.obj.request_plan
- }
   
   return (
     <tr
       className="cursor-pointer"
       onClick={() => {
-      //  console.log(" === reportURL === ",reportURL)
-      //  console.log(" === props.obj === ",props.obj)
-      // fix this stuff later
-      if(reportURL.url !== props.obj.request_plan) {
-        reportURL.url=props.obj.request_plan
-      }
+         console.log(" === reportURL === ",reportURL)
+         console.log(" === props.obj === ",props.obj)
+        // fix this stuff later
+        if(reportURL.url !== props.obj.request_plan) {
+          reportURL.url = props.obj.request_plan
+        }
         const url = `/reports/${reportURL.url}/?request_ref=${props.obj.request_ref_number}&package_id=${props.obj.package_id}&dataset_name=${props.obj.dataset_name}`;
         props.history.push(url);
       }}
