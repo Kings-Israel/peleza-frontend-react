@@ -203,7 +203,6 @@ class DataTable extends Component<{
 
     // Slice the recentReports array based on the current page
     const paginatedReports = this.recentReports.slice(startIndex, endIndex);
-    console.log(paginatedReports)
     return (
       <div
         className={`bg-white shadow my-4 py-3 px-3 text-muted ${this.props.className}`}
