@@ -86,8 +86,6 @@ export const apiGetReport = (store: any) =>
     catch (err){
       callback(err,null)
     }
-      
-    
   }
 
   export const apiSummary =(kyc_type:any,from_date:any,to_date:any,status:any) => {

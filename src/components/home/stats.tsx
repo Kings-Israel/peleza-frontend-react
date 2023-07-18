@@ -23,7 +23,7 @@ class _DashBoardStats extends Component<Props> {
           <div
             className="cursor-pointer"
             onClick={() =>
-              this.props.history.push("/requests/?q=mine&status=new")
+              this.props.history.push("/requests/?status=new")
             }
           >
             <div
@@ -47,7 +47,7 @@ class _DashBoardStats extends Component<Props> {
           <div
             className="cursor-pointer"
             onClick={() =>
-              this.props.history.push("/requests/?q=mine&status=in_progress")
+              this.props.history.push("/requests/?status=in_progress")
             }
           >
             <div className="card border-0" style={{ backgroundColor: "#00003D", minWidth: "180px" }}>
@@ -68,7 +68,7 @@ class _DashBoardStats extends Component<Props> {
           <div
             className="cursor-pointer"
             onClick={() =>
-              this.props.history.push("/requests/?q=mine&status=completed")
+              this.props.history.push("/requests/?status=complete")
             }
           >
             <div className="card border-0" style={{ backgroundColor: "#004D00", minWidth: "180px" }}>
@@ -88,7 +88,7 @@ class _DashBoardStats extends Component<Props> {
 
           <div className="cursor-pointer"
               onClick={() =>
-                this.props.history.push("/requests/?q=mine&status=interim")
+                this.props.history.push("/requests/?status=interim")
               }>
             <div className="card border-0" style={{ backgroundColor: "#A36A00", minWidth: "180px" }}>
               <div className="card-body py-3">
@@ -107,7 +107,7 @@ class _DashBoardStats extends Component<Props> {
 
           <div className="cursor-pointer"
               onClick={() =>
-                this.props.history.push("/requests/?q=mine&status=invalid")
+                this.props.history.push("/requests/?status=invalid")
               }>
             <div className="card border-0" style={{ backgroundColor: "#520000", minWidth: "180px" }}>
               <div className="card-body py-3">

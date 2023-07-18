@@ -164,18 +164,6 @@ const [loading, setLoading] = useState(false);
         <form name="questionForm" onSubmit={handleSubmit} action="add-user/" method="POST">
           {/* Form Fields */}
           <div className="row">
-            <div className="col-md-2">
-              <div className="form-group">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Title"
-                  name="title"
-                  value={userformData.title}
-                  onChange={handleChange}
-                />
-              </div>
-            </div>
             <div className="col-md-5">
               <div className="form-group">
                 <input
@@ -199,6 +187,18 @@ const [loading, setLoading] = useState(false);
                   value={userformData.lastName}
                   onChange={handleChange}
                   required
+                />
+              </div>
+            </div>
+            <div className="col-md-2">
+              <div className="form-group">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Title (Company Position)"
+                  name="title"
+                  value={userformData.title}
+                  onChange={handleChange}
                 />
               </div>
             </div>

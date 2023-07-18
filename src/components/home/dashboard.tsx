@@ -94,9 +94,6 @@ class _Dashboard extends Component<{
     loading: true,
   };
 
-  handleSelect(rangesByKey: any) {
-    // console.log("**********",rangesByKey); // native Date object
-  }
   componentDidMount() {
     this.setState({ loading: true }, () =>
       apiGetStats(this.props.dispatch, () => {
@@ -104,7 +101,7 @@ class _Dashboard extends Component<{
       })
     );
   }
-
+  
   render() {
     return (
       <>
@@ -182,7 +179,6 @@ class DataTable extends Component<{
     this.setState({ ...this.state, filter });
   }
   handleToKyc = (kyc: any) => {
-    //this.setState({fromDate:date});
     this.setFilter(kyc.value);
   };
   handleFromDateChange = (date: any) => {
@@ -207,6 +203,7 @@ class DataTable extends Component<{
 
     // Slice the recentReports array based on the current page
     const paginatedReports = this.recentReports.slice(startIndex, endIndex);
+    console.log(paginatedReports)
     return (
       <div
         className={`bg-white shadow my-4 py-3 px-3 text-muted ${this.props.className}`}
@@ -214,41 +211,7 @@ class DataTable extends Component<{
         <p className="font-weight-bold pt-3">
           <BarChartIcon />
           {this.props.title}
-          {/* {this.state.filter} */}
         </p>
-        {/* <div className="row py-4">
-          <div className="col-md-8 ">
-            <MuiPickersUtilsProvider utils={MomentUtils}>
-              <div className="d-flex justify-content-around">
-                <KeyboardDatePicker
-                  disableToolbar
-                  variant="inline"
-                  format="MM/dd/yyyy hh:mm A"
-                  margin="none"
-                  id="date-picker-inline"
-                  label="From:"
-                  value={this.state.fromDate}
-                  onChange={this.handleFromDateChange}
-                  KeyboardButtonProps={{
-                    'aria-label': 'change date',
-                  }}
-                />
-                <KeyboardDatePicker
-                  margin="none"
-                  id="date-picker-dialog"
-                  label="To:"
-                  format="MM/dd/yyyy hh:mm A"
-                  value={this.state.toDate}
-                  onChange={this.handleToDateChange}
-                  KeyboardButtonProps={{
-                    'aria-label': 'change date',
-                  }}
-                />
-              </div>
-            </MuiPickersUtilsProvider>
-          </div>
-        </div>  
-        */}
         <div>
           <div className="row mb-1">
             <div className="col-4">
@@ -259,7 +222,7 @@ class DataTable extends Component<{
                 onChange={(e) => this.setFilter(e.target.value)}
               />
             </div>
-            <div className="col-4">
+            <div className="col-4" style={{ zIndex: 99 }}>
               <Select
                 options={kyc_types}
                 onChange={this.handleToKyc}

@@ -38,6 +38,10 @@ import { FilterAlt } from "@mui/icons-material";
 const createCsvFileName = () => `report_${moment().format()}.csv`;
 // const business = report.business;
 
+const zIndex = {
+  zIndex: 99
+}
+
 const headers = [
   { label: "Company Name", key: "companyName" },
   { label: "Registration Number", key: "registrationNumber" },
@@ -214,13 +218,13 @@ class _Requests extends Component<RouteComponentProps> {
   componentDidMount() {
     this.unlisten = this.props.history.listen((location, action) => {
       if (
-        location.pathname.startsWith("/requests") &&
-        this.q !== getQueryString("q", location)
+        location.pathname.startsWith("/requests")
+        // this.q !== getQueryString("q", location)
       ) {
         // this.getRequestData();
       }
     });
-    this.getRequestData();
+    // this.getRequestData();
   }
   componentWillUnmount() {
     this.unlisten();
@@ -246,7 +250,7 @@ class _Requests extends Component<RouteComponentProps> {
         <DataTable
           className="small"
           data={data}
-          title={`${this.q === "all" ? "ALL" : "MY"} REPORTS`}
+          title="ALL REPORTS"
           page={this.page}
           setPage={this.setPage}
           next={this.request.next}
@@ -287,10 +291,10 @@ class DataTable extends Component<{
     this.setSortField = this.setSortField.bind(this);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const queryParams = new URLSearchParams(window.location.search);
     const status = queryParams.get("status");
-    console.log(" === Mounted data table =======", status);
+    // console.log(" === Mounted data table =======", status);
     if (status) {
       this.setState({
         status_selected: status,
@@ -300,6 +304,27 @@ class DataTable extends Component<{
         status_selected: "new",
       });
     }
+    
+    const resp: unknown = await apiSummary(
+      this.state.filter,
+      this.dateFormater(this.state.FromselectedDate),
+      this.dateFormater(this.state.ToselectedDate),
+      status
+    );
+    
+    let rows = await this.processKycRespData(
+      this.state.filter,
+      (resp as { data: []; b: string }).data
+    );
+    this.setState({
+      rows: rows,
+    });
+    this.setState({
+      columns: custom.table_column_header,
+    });
+    this.setState({
+      loading: false,
+    });
   }
   componentWillUnmount() {}
 
@@ -400,15 +425,9 @@ class DataTable extends Component<{
   };
 
   handleClick = async () => {
-    //  let columns=[];
-
     this.setState({
       loading: true,
     });
-
-    //  location.pathname.startsWith("/requests") &&
-    //  this.q !== getQueryString("q", location)
-    // alert(location.pathname)
 
     const resp: unknown = await apiSummary(
       this.state.filter,
@@ -416,6 +435,7 @@ class DataTable extends Component<{
       this.dateFormater(this.state.ToselectedDate),
       this.state.status_selected
     );
+
     let rows = await this.processKycRespData(
       this.state.filter,
       (resp as { data: []; b: string }).data
@@ -432,10 +452,7 @@ class DataTable extends Component<{
   };
 
   render() {
-    // console.log(this.requestData)
     let csvdata: RequestData[] = Object.values(this.requestData);
-    // const business = report.business;
-    // console.log("csv date",csvdata);
 
     const data = csvdata.map((item) => ({
       companyName: item.dataset_name,
@@ -462,8 +479,6 @@ class DataTable extends Component<{
       parentName: item.parent_name,
       companyEmail: item.dataset_ibg_dataset_email_no,
     }));
-
-    //const [selectedDate, handleDateChange] = useState(new Date());
 
     const handleDateChange = (dt: any) => {
       this.setState({
@@ -500,7 +515,7 @@ class DataTable extends Component<{
           <div className="row">
             <div className="col-md-8">
               <div className="row">
-                <div className="col-md-6">
+                <div className="col-md-6" style={zIndex}>
                   <label>Selected KYC : {this.state.filter} </label>
                   <Select
                     options={kyc_types}
@@ -510,7 +525,7 @@ class DataTable extends Component<{
                     )}
                   />
                 </div>
-                <div className="col-md-6">
+                <div className="col-md-6" style={zIndex}>
                   <label>Selected Status : {this.state.status_selected} </label>
                   <Select
                     options={status}
