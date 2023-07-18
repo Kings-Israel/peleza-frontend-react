@@ -142,76 +142,81 @@ const QuestionForm: React.FC<QuestionFormProps> = ({
         <div className="box_form">
           <div className="form_title" style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
             <h1>
-              <strong>Help Page</strong>
+              <strong>Need More Help?</strong>
             </h1>
           </div>
           {error && <p className="error-message" style={{ color: "red" }}>{error}</p>}
           {successMessage && <p id="success-message" style={{ color: "green" }}>{successMessage}</p>}
-          <form name="questionForm" onSubmit={handleSubmit} action="/submit-help" method="POST">
-            <div className="form-group">
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Subject"
-                name="subject"
-                value={formData.subject}
-                onChange={handleChange}
-                required
-              />
+          <div className="row">
+            <div className="col-md-6">
+              <h3 className="mx-auto">My Enquiries</h3>
+              {helpItems.length > 0 ? (
+                <table className="user-table">
+                  <thead>
+                    <tr>
+                      <th>Subject</th>
+                      <th>Message</th>
+                      <th>Response</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {helpItems.map((helpItem, index) => (
+                      <tr key={index}>
+                        <td>{helpItem.subject}</td>
+                        <td>{helpItem.message}</td>
+                        <td>{helpItem.response}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <p>No help items found</p>
+              )}
             </div>
-            <div className="form-group">
-                <label htmlFor="image">Image</label>
-                <input
-                  type="file"
-                  className="form-control-file"
-                  id="image"
-                  name="image"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                />
+            <div className="col-md-6">
+              <h3 className="mx-auto">Submit Enquiry</h3>
+              <form name="questionForm" onSubmit={handleSubmit} action="/submit-help" method="POST">
+                <div className="form-group">
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Subject"
+                    name="subject"
+                    value={formData.subject}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="image">Image</label>
+                    <input
+                      type="file"
+                      className="form-control-file"
+                      id="image"
+                      name="image"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                    />
+                </div>
+                <div className="form-group">
+                  <textarea
+                    className="form-control"
+                    placeholder="Message"
+                    name="message"
+                    value={formData.message}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <button type="submit" className="btn btn-primary">
+                    Submit
+                  </button>
+                </div>
+              </form>
             </div>
-            <div className="form-group">
-              <textarea
-                className="form-control"
-                placeholder="Message"
-                name="message"
-                value={formData.message}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <button type="submit" className="btn btn-primary">
-                Submit
-              </button>
-            </div>
-          </form>
+          </div>
         </div>
-      </div>
-      <div className="container my-2 mb-5">
-        <h3 className="mx-auto">My Enquiries</h3>
-        {helpItems.length > 0 ? (
-          <table className="user-table">
-            <thead>
-              <tr>
-                <th>Subject</th>
-                <th>Message</th>
-                <th>Response</th>
-              </tr>
-            </thead>
-            <tbody>
-              {helpItems.map((helpItem, index) => (
-                <tr key={index}>
-                  <td>{helpItem.subject}</td>
-                  <td>{helpItem.message}</td>
-                  <td>{helpItem.response}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        ) : (
-          <p>No help items found</p>
-        )}
       </div> 
     </>
   );
