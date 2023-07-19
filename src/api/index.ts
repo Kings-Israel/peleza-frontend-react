@@ -39,22 +39,27 @@ export const ApiHelp = (formData: FormData, store: any) => {
       return response.data;
     })
     .catch((error: AxiosError) => {
+      const body = "An error occurred while sending the message.";
+      store.dispatch(addNotificationAction(body, "danger"));
       console.log(error);
       // Handle error response
       throw error;
     });
 };
 
-export const ApiAddUser = (userformData: FormData) => {
+export const ApiAddUser = (userformData: FormData, store: any) => {
   return api
     .post("add-user/", userformData)
     .then((response) => {
-      
-      console.log(response.data);
+      const body = "User was added successfully.";
+      store.dispatch(addNotificationAction(body, "success"));
+
       // Handle successful response
       return response.data;
     })
     .catch((error: AxiosError) => {
+      const body = "An error occurred while adding the user.";
+      store.dispatch(addNotificationAction(body, "danger"));
       console.log(error);
       // Handle error response
       throw error;

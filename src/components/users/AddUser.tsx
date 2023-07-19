@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { ApiAddUser } from "../../api/index";
 import { store } from "store";
 import { apiGetProfile } from "api";
+import { useHistory } from "react-router-dom";
 
 interface AddUserFormProps {
   firstName: string | undefined;
@@ -65,7 +66,6 @@ const [loading, setLoading] = useState(false);
   }, []);
 
   const [error, setError] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
 
   const [permissions, setPermissions] = useState({
     create_request: false,
@@ -75,6 +75,8 @@ const [loading, setLoading] = useState(false);
     create_batch_request: false,
     view_batch_request: false,
   });
+
+  let history = useHistory();
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     const { name, value } = e.target;
@@ -90,7 +92,6 @@ const [loading, setLoading] = useState(false);
     e.preventDefault();
     setLoading(true);
     setError("");
-    setSuccessMessage("");
 
     // Create a FormData object to send the form data including the image file
     const userformDataToSend = new FormData();
@@ -109,38 +110,33 @@ const [loading, setLoading] = useState(false);
         userformDataToSend.append(key, value ? "1" : "0");
       });
     // Call the API function to submit the form data
-    ApiAddUser(userformDataToSend)
+    ApiAddUser(userformDataToSend, store)
       .then((response) => {
         // Handle the response
         setLoading(false);
-        console.log(response);
 
         // Clear the form fields
         setFormData({
-            firstName: "",
-            lastName: "",
-            email: "",
-            phoneNumber: "",
-            city: "",
-            address: "",
-            postalCode: "",
-            added_by_id: "",
-            company: "",
-            title: ""
-          });
-          setPermissions({
-            create_request: false,
-            view_request: false,
-            add_user: false,
-            view_user: false,
-            create_batch_request: false,
-            view_batch_request: false,
-          });
-        // Set a success message (replace "successMessage" with your desired state variable)
-        setSuccessMessage("User added successfully");
-        setTimeout(() => {
-          setSuccessMessage("");
-        }, 5000); // 5000 milliseconds = 5 seconds
+          firstName: "",
+          lastName: "",
+          email: "",
+          phoneNumber: "",
+          city: "",
+          address: "",
+          postalCode: "",
+          added_by_id: "",
+          company: "",
+          title: ""
+        });
+        setPermissions({
+          create_request: false,
+          view_request: false,
+          add_user: false,
+          view_user: false,
+          create_batch_request: false,
+          view_batch_request: false,
+        });
+        history.push('/users')
       })
       .catch((error) => {
         // Handle the error
@@ -160,7 +156,6 @@ const [loading, setLoading] = useState(false);
           </h2>
         </div>
         {error && <p className="error-message" style={{ color: "red" }}>{error}</p>}
-        {successMessage && <p id="success-message" style={{ color: "green" }}>{successMessage}</p>}
         <form name="questionForm" onSubmit={handleSubmit} action="add-user/" method="POST">
           {/* Form Fields */}
           <div className="row">
@@ -354,7 +349,18 @@ const [loading, setLoading] = useState(false);
           </div>
 
           <div className="form-group">
-            <button type="submit" className="btn btn-primary float-right">
+            <button
+              type="submit"
+              className="btn btn-primary float-right"
+              disabled={
+                loading 
+                  ? true
+                  : false
+              }
+            >
+              {loading && (
+                <div className="spinner-border spinner-sm mr-2"></div>
+              )}
               Add User
             </button>
           </div>

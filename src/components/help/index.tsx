@@ -114,9 +114,7 @@ const QuestionForm: React.FC<QuestionFormProps> = ({
     fetchHelpItems();
   }, []);
   // const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [successMessage, setSuccessMessage] = useState(""); 
-
+  const [error, setError] = useState("")
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     const { name, value } = e.target;
@@ -135,12 +133,10 @@ const QuestionForm: React.FC<QuestionFormProps> = ({
     }
   };
   
-
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
     setError("");
-    setSuccessMessage("");
   
     // Create a FormData object to send the form data including the image file
     const formDataToSend = new FormData();
@@ -188,7 +184,6 @@ const QuestionForm: React.FC<QuestionFormProps> = ({
             </h1>
           </div>
           {error && <p className="error-message" style={{ color: "red" }}>{error}</p>}
-          {successMessage && <p id="success-message" style={{ color: "green" }}>{successMessage}</p>}
           <div className="row">
             <div className="col-md-6">
               <h3 className="mx-auto">My Enquiries</h3>
