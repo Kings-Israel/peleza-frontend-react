@@ -6,6 +6,7 @@ import { withRouter } from "react-router";
 import ChevronLeft from "@material-ui/icons/ChevronLeft";
 import ChevronRight from "@material-ui/icons/ChevronRight";
 import { RouteComponentProps } from "react-router-dom";
+
 import {
   apiGetRequests,
   // apiGetSummary,
@@ -37,6 +38,8 @@ import { FilterAlt } from "@mui/icons-material";
 // Print CSV
 const createCsvFileName = () => `report_${moment().format()}.csv`;
 // const business = report.business;
+
+
 
 const headers = [
   { label: "Company Name", key: "companyName" },
@@ -160,13 +163,15 @@ interface _RequestsState {
   rows: any[];
   showAllRequests: boolean; // Add showAllRequests property to state interface
   loading: boolean;
+  prevFilter: string; // Add this property
+  prevStatusSelected: string; 
   
 }
 
 class _Requests extends Component<RouteComponentProps, _RequestsState> {
   state: _RequestsState = {
     key: "",
-    filter: "", // Set filter to an empty string
+    filter: "", 
     status_selected: "",
     FromselectedDate: new Date(),
     ToselectedDate: new Date(),
@@ -174,7 +179,8 @@ class _Requests extends Component<RouteComponentProps, _RequestsState> {
     rows: [],
     loading: true,
     showAllRequests: false, // Add this line
-  
+    prevFilter: "", // Add this property
+    prevStatusSelected: "",
   };
   constructor(props: any) {
     super(props);
@@ -214,21 +220,51 @@ class _Requests extends Component<RouteComponentProps, _RequestsState> {
 
   getRequestData(page?: string | number, keyword?: string, status?: string) {
     if (this.state.key) return;
+  
     const updateRequest = (data: any) => {
-      this.setState({ ...this.state, key: null});
+      this.setState({ ...this.state, key: null });
     };
   
     // Fetch requests based on showAllRequests flag
     const key = this.state.showAllRequests
-      ? apiGetRequests(store, this.props.location, 1, status, updateRequest)
+      ? apiGetRequests(
+          store,
+          this.props.location,
+          1,
+          status,
+          updateRequest,
+          Boolean(this.state.filter) // Convert filter to a boolean value
+        )
       : page === "next" && this.request.next
-      ? apiGetRequests(store, this.props.location, this.page + 1, status, updateRequest)
+      ? apiGetRequests(
+          store,
+          this.props.location,
+          this.page + 1,
+          status,
+          updateRequest,
+          Boolean(this.state.filter) // Convert filter to a boolean value
+        )
       : page === "prev" && this.request.prev
-      ? apiGetRequests(store, this.props.location, this.page - 1, status, updateRequest)
-      : apiGetRequests(store, this.props.location, 1, status, updateRequest);
+      ? apiGetRequests(
+          store,
+          this.props.location,
+          this.page - 1,
+          status,
+          updateRequest,
+          Boolean(this.state.filter) // Convert filter to a boolean value
+        )
+      : apiGetRequests(
+          store,
+          this.props.location,
+          1,
+          status,
+          updateRequest,
+          Boolean(this.state.filter) // Convert filter to a boolean value
+        );
   
     if (key) this.setState({ ...this.state, key });
   }
+  
   
   toggleShowAllRequests = () => {
     this.setState((prevState) => ({
@@ -259,7 +295,9 @@ class _Requests extends Component<RouteComponentProps, _RequestsState> {
       }
     });
     const queryParams = new URLSearchParams(window.location.search);
-    const status = queryParams.get("status");
+
+    const status = localStorage.getItem('status') || '';
+
 
     if (status) {
       this.setState({
@@ -275,12 +313,26 @@ class _Requests extends Component<RouteComponentProps, _RequestsState> {
     this.getRequestData();
     
   }
-  componentWillUnmount() {
-    this.unlisten();
-  }
-
   
-
+  componentDidUpdate() {
+    // Check if the filter or status_selected values have changed
+    if (
+      this.state.filter !== this.state.prevFilter ||
+      this.state.status_selected !== this.state.prevStatusSelected
+    ) {
+      // Update filter values in local storage
+      localStorage.setItem('filter', this.state.filter);
+      localStorage.setItem('status_selected', this.state.status_selected);
+  
+      // Update the previous filter and status_selected values
+      this.setState({
+        prevFilter: this.state.filter,
+        prevStatusSelected: this.state.status_selected,
+      });
+    }
+  }
+  
+  
 
   get loading() {
     return this.state.key ? true : false;
@@ -308,7 +360,8 @@ class _Requests extends Component<RouteComponentProps, _RequestsState> {
          next={this.request.next}
          search={this.search}
          className="small"
-         
+         prevFilter= "new"
+         prevStatusSelected= "new"
          />  
       </div>
     );
@@ -324,6 +377,8 @@ class DataTable extends Component<{
   setPage: (e: any) => void;
   search?: (resultlength: string) => any;
   className?: string;
+  prevFilter: string;
+  prevStatusSelected: string;
 }> {
   state = {
     loading: false,
@@ -336,7 +391,9 @@ class DataTable extends Component<{
     kyc_selected: null,
     rows: [],
     columns: [],
-    status_selected: null,
+    status_selected: "",
+    prevFilter: "", // Add this property
+    prevStatusSelected: "",
   };
 
   constructor(props: any) {
@@ -347,9 +404,18 @@ class DataTable extends Component<{
   _isMounted = false;
   componentDidMount() {
     this._isMounted = true;
-    const queryParams = new URLSearchParams(window.location.search);
-    const status = queryParams.get("status");
     
+    const filter = localStorage.getItem('filter') || '';
+    const status = localStorage.getItem('status') || '';
+    const fromSelectedDate = localStorage.getItem('fromSelectedDate') || '';
+    const toSelectedDate = localStorage.getItem('toSelectedDate') || '';
+    const reloadCount = parseInt(localStorage.getItem('reloadCount') || '0');
+
+    if (filter) {
+      this.setState({
+        filter: filter,
+      });
+    }
     if (status) {
       this.setState({
         status_selected: status
@@ -359,10 +425,54 @@ class DataTable extends Component<{
         status_selected: ""
       });
     }
+    if (fromSelectedDate) {
+      this.setState({ FromselectedDate: new Date(fromSelectedDate) });
+    }
+    if (toSelectedDate) {
+      this.setState({ ToselectedDate: new Date(toSelectedDate) });
+    }
+    localStorage.setItem('reloadCount', (reloadCount + 1).toString());
   }
   
-  componentWillUnmount() {
-    this._isMounted = false; 
+   componentDidUpdate(prevProps: any, prevState: any) {
+    const reloadCount = parseInt(localStorage.getItem('reloadCount') || '0');
+
+    if (reloadCount === 2) {
+      localStorage.removeItem('filter');
+      localStorage.removeItem('status');
+      localStorage.removeItem('fromSelectedDate');
+      localStorage.removeItem('toSelectedDate');
+      localStorage.setItem('reloadCount', '0');
+  
+      this.setState({
+        filter: "",
+        status_selected: "",
+        FromselectedDate: new Date(),
+        ToselectedDate: new Date(),
+      });
+      
+    }
+
+    if (
+      this.state.filter !== this.state.prevFilter ||
+      this.state.status_selected !== this.state.prevStatusSelected ||
+      this.state.FromselectedDate !== prevState.FromselectedDate ||
+      this.state.ToselectedDate !== prevState.ToselectedDate
+    ) {
+      // Update filter values in local storage
+      localStorage.setItem('filter', this.state.filter);
+      localStorage.setItem('status', this.state.status_selected);
+      localStorage.setItem('fromSelectedDate', this.state.FromselectedDate.toISOString());
+      localStorage.setItem('toSelectedDate', this.state.ToselectedDate.toISOString());
+  
+      // Update the previous filter and status values
+      this.setState({
+        prevFilter: this.state.filter,
+        prevStatusSelected: this.state.status_selected,
+        FromselectedDate: this.state.FromselectedDate,
+        ToselectedDate: this.state.ToselectedDate,
+      });
+    }
   }
   
 
@@ -380,7 +490,6 @@ class DataTable extends Component<{
     return allRequests;
   }
   
-
   setSortField(field: string) {
     let _already_set = this.state.sortField["field"] === "field" ? true : false;
 
@@ -418,23 +527,23 @@ class DataTable extends Component<{
     dt = data.map(function (num) {
       return {
         id: num[0],
-        request_id: num[2],
+        request_id: num[0],
         search_id: num[0],
-        client_number: num[9],
-        company_name: num[1],
+        client_number: num[1],
+        company_name: num[31],
         email_address: num[5],
-        registration_number: num[8],
-        request_plan: num[3],
-        request_date: num[20],
+        registration_number: num[3],
+        request_plan: num[6],
+        request_date: num[12],
         module_code: num[16],
-        package_id: num[21],
-        url: num[3] || kyc_type,
-        request_ref_number: num[0],
+        package_id: num[52],
+        url: num[6] || kyc_type,
+        request_ref_number: num[8],
         country: num[4],
-        medium: num[25],
+        medium: num[53],
       };
     });
-
+   
     return dt;
   };
 
@@ -463,7 +572,11 @@ class DataTable extends Component<{
 
     this.setState({
       loading: true,
+      
     });
+    
+
+   
 
     //  location.pathname.startsWith("/requests") &&
     //  this.q !== getQueryString("q", location)
@@ -488,6 +601,14 @@ class DataTable extends Component<{
     this.setState({
       loading: false,
     });
+
+    
+    
+   /* this.setState({ filter: newValue }, () => {
+      const searchParams = new URLSearchParams(location.search);
+      searchParams.set("filter", newValue);
+      history.replace({ search: searchParams.toString });
+    }); */
   };
 
   render() {
@@ -515,7 +636,7 @@ class DataTable extends Component<{
     return false;
   });
   
-   console.log(filteredData)
+  
    const data= csvdata.map(item => 
       
       ({    
@@ -567,9 +688,8 @@ class DataTable extends Component<{
               </div> 
         </div>
         );
-
-       
-    } else if (status_selected) {
+ 
+    } else if (q === 'mine' && status_selected) {
       return (
         <div className="bg-white shadow my-4 py-3 px-3 text-muted">
           <p className="font-weight-bold pt-3">
@@ -695,85 +815,7 @@ class DataTable extends Component<{
           </div>
         );
 
-    } else if (q === 'mine' || q === 'all') {
-    return (
-      <div className="bg-white shadow my-4 py-3 px-3 text-muted">
-        <p className="font-weight-bold pt-3">
-          <BarChartIcon />
-          {this.props.title}
-         
-        </p>
-
-        <div></div>
-  
-        <div className="row">  
-        <div className="col-md-4">
-        <label >Selected Kyc :  {this.state.filter} </label>
-        <Select
-          options={kyc_types}
-          onChange={this.handleToKyc}
-          value={kyc_types.find(option => option.value === this.state.filter)}
-        />
-
-          </div>
-          <div className='col-md-4'>
-       
-       <MuiPickersUtilsProvider utils={MomentUtils}>
-        <KeyboardDatePicker
-            autoOk
-            variant="inline"
-            inputVariant="outlined"
-            label="From"
-            format="MM-DD-yyyy"
-            value={this.state.FromselectedDate}
-            InputAdornmentProps={{ position: "start" }}
-            onChange={handleFromDateChange}
-           
-         />
-         <br/>
-         <br/>
-        <KeyboardDatePicker
-            autoOk
-            variant="inline"
-            inputVariant="outlined"
-            label="To"
-            format="MM-DD-yyyy"
-            value={this.state.ToselectedDate}
-            InputAdornmentProps={{ position: "start" }}
-            onChange={handleDateChange}
-            
-        />
-      </MuiPickersUtilsProvider>
-    
-          </div>
-          <div className='col-md-4'>
-          <Button onClick={() => this.handleClick()} variant="contained" color="primary" >
-                Search
-          </Button>
-
-    
-          </div>
-    
-          </div>
-          <div className="row"> 
-          <div className="col-md-4">
-            <label >Selected Status : {this.state.status_selected} </label>
-              <Select 
-              options={status} 
-              value={status.find(option => option.value === this.state.status_selected)}
-              onChange={this.statusChange}
-              />
-            </div> 
-            <div className='col-md-4'>
-            <br/>
-            <Button onClick={() => this.handleDownload()} variant="contained" color="secondary" >
-                  Download
-            </Button>
-          </div>
-        </div>
-      </div>
-      );
-    } else {
+    }  else {
       return (
       <div className="bg-white shadow my-4 py-3 text-muted container-fluid">
           <p className="font-weight-bold pt-3">
@@ -898,12 +940,6 @@ class DataTable extends Component<{
           <table
             className={`table table-striped data-table ${this.props.className}`}
           ></table>
-        
-        <div>
-         
-        <DTable rows={this.state.rows} columns={this.state.columns} ></DTable>
-        </div>
-       
       </div>
     );
     }

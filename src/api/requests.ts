@@ -72,10 +72,10 @@ export const apiGetReport = (store: any) =>
     )
     .then((data) => {
       store.dispatch(setReportAction(data.data));
-      console.log(data.data)
-  });
+      //console.log(data.data)
+});
 
-  export const apiGetSummary= async (
+export const apiGetSummary= async (
     kyc_type:any,
     from_date:any,
     to_date:any,
@@ -92,9 +92,9 @@ export const apiGetReport = (store: any) =>
     }
       
     
-  }
+}
 
-  export const apiSummary =(kyc_type:any,from_date:any,to_date:any,status:any) => {
+export const apiSummary =(kyc_type:any,from_date:any,to_date:any,status:any) => {
     return new Promise(async function(resolve, reject) {
       try {
         let resp = await api.get("/list/?module_code="+kyc_type + "&date_from="+from_date+"&date_to="+to_date+"&status="+status);
@@ -105,9 +105,9 @@ export const apiGetReport = (store: any) =>
            return reject(err)
       }
     })  
-  }
+}
 
-  export const apiReq = (status: any) => {
+export const apiReq = (status: any) => {
     return new Promise(async function(resolve, reject) {
       try {
         let resp = await api.get("req/");
@@ -118,9 +118,9 @@ export const apiGetReport = (store: any) =>
         return reject(err);
       }
     });
-  };
+};
   
-  function transformData(data: any[]) {
+function transformData(data: any[]) {
     return data.map((item, index) => ({
       id: index,
       request_id: item[2],
@@ -136,10 +136,10 @@ export const apiGetReport = (store: any) =>
       request_ref_number: item[3],
       country: item[8],
     }));
-  }
+}
   
 
-  export const apiSummaryDownload =(kyc_type:any,from_date:any,to_date:any,status:any) => {
+export const apiSummaryDownload =(kyc_type:any,from_date:any,to_date:any,status:any) => {
     return new Promise(async function(resolve, reject) {
       try {
         fetch(baseURL+"test_download/?module_code="+kyc_type + "&date_from="+from_date+"&date_to="+to_date+"&status="+status, {
@@ -177,7 +177,7 @@ export const apiGetReport = (store: any) =>
            return reject(err)
       }
     })  
-  }
+}
 
 
 

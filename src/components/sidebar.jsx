@@ -83,7 +83,7 @@ export function SideBar() {
                   Dashboard
                 </Link>
               </li>
-              {checkPermission('view users') ? (
+              {checkPermission('view user') ? (
                 <li className="nav-item rounded mb-2">
                   <Link to="/users" className="nav-link">
                     <PeopleIcon className="mr-2" />
@@ -91,7 +91,7 @@ export function SideBar() {
                   </Link>
                 </li>
               ) : ''}
-              {checkPermission('create requests') ? (
+              {checkPermission('create request') ? (
                 <li className="nav-item rounded mb-2">
                   <Link to="/request" className="nav-link">
                     <PostAddRounded className="mr-2" />
@@ -105,7 +105,7 @@ export function SideBar() {
                   Batch Requests Upload
                 </Link>
               </li> */}
-              {checkPermission('view batch requests') ? (
+              {checkPermission('view batch request') ? (
                 <li className="nav-item rounded mb-2">
                   <Link to="/batch" className="nav-link">
                     <CloudUploadOutlined className="mr-2" />
@@ -113,9 +113,9 @@ export function SideBar() {
                   </Link>
                 </li>
               ): ''}
-              {checkPermission('view requests') ? (
+              {checkPermission('view request') ? (
                 <li className="nav-item rounded mb-2">
-                  <Link to="/requests?q=mine" className="nav-link">
+                  <Link to="/requests?q=all" className="nav-link">
                     <HistoryOutlined className="mr-2" />
                     Reports
                   </Link>

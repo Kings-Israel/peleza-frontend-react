@@ -21,7 +21,7 @@ class _DashBoardStats extends Component<Props> {
     history.push(`/requests/?q=mine&status=${status}`);
   }
   render() {
-    const { new: newRequests, in_progress: inProgress, final, invalid, interim } = this.props;
+    //const { new: newRequests, in_progress: inProgress, final, invalid, interim } = this.props;
     return (
       <>
         <div className="d-flex justify-content-around flex-wrap">

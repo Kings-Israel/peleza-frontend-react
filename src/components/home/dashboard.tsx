@@ -4,7 +4,6 @@ import { Component } from "react";
 import { apiGetStats } from "api/requests";
 import { connect } from "react-redux";
 import ReactPaginate  from 'react-paginate';
-import { useHistory } from 'react-router-dom';
 import { RouteComponentProps } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
 import { State } from "store";
@@ -65,7 +64,7 @@ const kyc_types=[
   },
   {
     label: "TRUSTS SEARCH",
-    value: "trusts",
+    value: "tr",
     Package_id: 52,
     module_id: 94
   },
@@ -100,7 +99,7 @@ class _Dashboard extends Component<RouteComponentProps & {
 
   handleCreateInquiry = () => {
     const { history } = this.props;
-    history.push('/help'); // Replace "/submit-help" with the actual route path for the submit-help page
+    history.push('/help'); 
   };
 
   render() {
@@ -197,10 +196,6 @@ class DataTable extends Component<{
    handlePageChange = (selectedPage: { selected: number }) => {
     this.setState({ currentPage: selectedPage.selected + 1 });
   };
-  
-
-  
-
   
 
 
