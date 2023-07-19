@@ -9,7 +9,6 @@ import { State } from "store";
 import { Row, HeadFooterRow } from "./abstract";
 import Select from "react-select";
 import "react-datepicker/dist/react-datepicker.css";
-import { HelpOutlineRounded } from "@mui/icons-material";
 // import DateFnsUtils from '@date-io/date-fns';
 // import {
 //   MuiPickersUtilsProvider,
@@ -213,28 +212,25 @@ class DataTable extends Component<{
           {this.props.title}
         </p>
         <div>
-          <div className="d-flex justify-content-between">
-            <div className="row mb-1 w-75">
-              <div className="col-4">
-                <input
-                  type="text"
-                  className="form-control form-control-sm"
-                  placeholder="Search"
-                  onChange={(e) => this.setFilter(e.target.value)}
-                />
-              </div>
-              <div className="col-4" style={{ zIndex: 99 }}>
-                <Select
-                  options={kyc_types}
-                  onChange={this.handleToKyc}
-                  value={kyc_types.find(
-                    (option) => option.value === this.state.filter
-                  )}
-                  placeholder="Select Type..."
-                />
-              </div>
+          <div className="row mb-1">
+            <div className="col-4">
+              <input
+                type="text"
+                className="form-control form-control-sm"
+                placeholder="Search"
+                onChange={(e) => this.setFilter(e.target.value)}
+              />
             </div>
-            {/* <HelpOutlineRounded style={{ fontSize: '32px', cursor: 'pointer' }} onClick={this.props.onCreateInquiry} /> */}
+            <div className="col-4" style={{ zIndex: 99 }}>
+              <Select
+                options={kyc_types}
+                onChange={this.handleToKyc}
+                value={kyc_types.find(
+                  (option) => option.value === this.state.filter
+                )}
+                placeholder="Select Type..."
+              />
+            </div>
           </div>
           <div className="table-responsive table-body">
             <table className="table table-striped data-table">
