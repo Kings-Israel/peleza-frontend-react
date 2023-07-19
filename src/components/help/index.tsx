@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { ApiHelp } from "../../api/index";
 import { UserProfile } from "models";
 import {  store } from "store";
@@ -18,6 +18,7 @@ interface HelpItem {
   subject: string;
   messages: string;
   responses: string | undefined;
+  unread_responses: string | undefined;
 }
 
 interface FetchedHelpItem {
@@ -31,6 +32,7 @@ interface Message {
   id: string | undefined;
   message: string | undefined;
   response: string | undefined;
+  created_at: string | undefined;
 }
 
 const QuestionForm: React.FC<QuestionFormProps> = ({
@@ -42,6 +44,8 @@ const QuestionForm: React.FC<QuestionFormProps> = ({
   const [helpItems, setHelpItems] = useState<HelpItem[]>([])
   const [fetchedHelpItem, setFetchedHelpItem] = useState<Partial<FetchedHelpItem>>({})
   const [messages, setMessages] = useState<Message[]>([])
+
+  const messagesBox = useRef<null | HTMLDivElement>(null)
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [loading, setLoading] = useState(true);
@@ -62,20 +66,24 @@ const QuestionForm: React.FC<QuestionFormProps> = ({
     try {
       const response = await axios.get('/help')
       setHelpItems(response.data.data)
+      console.log(response.data.data)
     } catch (error) {
       console.log(error)
     }
   }
+
+  const scrollToLastMessage = () => {
+    const lastChildElement = messagesBox.current?.lastElementChild
+    lastChildElement?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   const fetchHelpItem = async (id: string) => {
     try {
       const response = await axios.get(`/help/${id}`)
       setFetchedHelpItem(response.data)
       formData.helpId = id
-      // setMessages([...response.data.messages, ...response.data.responses].sort(function(a,b){
-      //   return new Date(a.created_at) - new Date(b.created_at)
-      // }))
-      setMessages([...response.data.messages, ...response.data.responses])
+      setMessages([...response.data.messages, ...response.data.responses].sort((a,b) => Date.parse(a.created_at) - Date.parse(b.created_at)))
+      scrollToLastMessage()
     } catch (error) {
       console.log(error)
     }
@@ -147,7 +155,7 @@ const QuestionForm: React.FC<QuestionFormProps> = ({
     formDataToSend.append("help_id", formData.helpId || "");
   
     // Call the API function to submit the form data
-    ApiHelp(formDataToSend)
+    ApiHelp(formDataToSend, store)
       .then((response) => {
         if (formData.helpId !== "") {
           fetchHelpItem(formData.helpId)
@@ -160,12 +168,6 @@ const QuestionForm: React.FC<QuestionFormProps> = ({
         formData.image = ""
         formData.message = ""
         formData.helpId = ""
-
-        // Set a success message (replace "successMessage" with your desired state variable)
-        setSuccessMessage("Form submitted successfully");
-        setTimeout(() => {
-          setSuccessMessage("");
-        }, 5000); // 5000 milliseconds = 5 seconds
       })
       .catch((error) => {
         // Handle the error
@@ -191,24 +193,47 @@ const QuestionForm: React.FC<QuestionFormProps> = ({
             <div className="col-md-6">
               <h3 className="mx-auto">My Enquiries</h3>
               {helpItems.length > 0 ? (
-                <table className="user-table">
-                  <thead>
-                    <tr>
-                      <th>Subject</th>
-                      {/* <th>Message</th> */}
-                      <th>Response Count</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {helpItems.map((helpItem, index) => (
-                      <tr key={index} onClick={() => fetchHelpItem(helpItem.id)} style={{ cursor: 'pointer' }} className={fetchedHelpItem && fetchedHelpItem.id === helpItem.id ? 'fetch-active' : ''}>
-                        <td>{helpItem.subject}</td>
-                        {/* <td>{helpItem.message}</td> */}
-                        <td>{helpItem.responses?.length}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                <>
+                  <div className="row">
+                    <div className="col-md-10">
+                      <h4>Subject</h4>
+                    </div>
+                    <div className="col-md-2">
+                      <h4>Unread</h4>
+                    </div>
+                  </div>
+                  <>
+                  {helpItems.map((helpItem, index) => (
+                    <div key={index} onClick={() => fetchHelpItem(helpItem.id)} style={{ cursor: 'pointer' }} className={fetchedHelpItem && fetchedHelpItem.id === helpItem.id ? 'row fetch-active help-item' : 'row help-item'}>
+                      <div className="col-md-10 my-auto">
+                        <h6 className="">{helpItem.subject}</h6>
+                      </div>
+                      <div className="col-md-2 my-auto">
+                        <p className="pt-2">{helpItem.unread_responses}</p>
+                      </div>
+                      {/* <td>{helpItem.message}</td> */}
+                    </div>
+                  ))}
+                  </>
+                </>
+                // <table className="user-table">
+                //   <thead>
+                //     <tr>
+                //       <th>Subject</th>
+                //       {/* <th>Message</th> */}
+                //       <th>Response Count</th>
+                //     </tr>
+                //   </thead>
+                //   <tbody>
+                //     {helpItems.map((helpItem, index) => (
+                //       <tr key={index} onClick={() => fetchHelpItem(helpItem.id)} style={{ cursor: 'pointer' }} className={fetchedHelpItem && fetchedHelpItem.id === helpItem.id ? 'fetch-active' : ''}>
+                //         <td>{helpItem.subject}</td>
+                //         {/* <td>{helpItem.message}</td> */}
+                //         <td>{helpItem.responses?.length}</td>
+                //       </tr>
+                //     ))}
+                //   </tbody>
+                // </table>
               ) : (
                 <p>No help items found</p>
               )}
@@ -227,9 +252,11 @@ const QuestionForm: React.FC<QuestionFormProps> = ({
                         value={formData.subject}
                         onChange={handleChange}
                         required
+                        autoFocus
+                        autoComplete="off"
                       />
                     </div>
-                    <div className="form-group">
+                    <div className="form-group d-none">
                         <label htmlFor="image">Image</label>
                         <input
                           type="file"
@@ -248,6 +275,7 @@ const QuestionForm: React.FC<QuestionFormProps> = ({
                         value={formData.message}
                         onChange={handleChange}
                         required
+                        rows={10}
                       />
                     </div>
                     <div className="form-group">
@@ -263,18 +291,20 @@ const QuestionForm: React.FC<QuestionFormProps> = ({
                     <h3 className="">{fetchedHelpItem.subject}</h3>
                     <button className="btn btn-sm btn-danger mb-2" onClick={() => closeHelpItem()}>Close</button>
                   </div>
-                  <div className="messages-box">
+                  <div className="messages-box" ref={messagesBox}>
                     {messages.length > 0 ? messages.map(message => (
                         message.message ? (
-                          <div key={message.message}>
-                            <div className="message-box sent">
+                          <div key={message.created_at}>
+                            <div className="message-box sent d-flex justify-content-between">
                               <span>{message.message}</span>
+                              <span>{message.created_at}</span>
                             </div>
                           </div>
                         ) : (
-                          <div key={message.response}>
-                            <div className="message-box received">
+                          <div key={message.created_at}>
+                            <div className="message-box received d-flex justify-content-between">
                               <span>{message.response}</span>
+                              <span>{message.created_at}</span>
                             </div>
                           </div>
                         )
@@ -301,6 +331,8 @@ const QuestionForm: React.FC<QuestionFormProps> = ({
                         value={formData.message}
                         onChange={handleChange}
                         required
+                        autoComplete="off"
+                        autoFocus
                       />
                     </div>
                     <div className="form-group">

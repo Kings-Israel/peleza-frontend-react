@@ -24,9 +24,9 @@ code {
 
 .message-box {
   background-color: gray;
-  max-width: 550px;
-  min-width: 550px;
-  margin: 4px;
+  max-width: 540px;
+  min-width: 540px;
+  margin: 10px;
   color: white;
   padding: 15px;
 }
@@ -48,4 +48,8 @@ code {
   color: white;
   font-size: 16px;
   font-weight: 700;
+}
+
+.help-item:hover {
+  background-color: #bebfc0;
 }

@@ -27,13 +27,15 @@ export const ApiLogin = (info: any) => {
   return request;
 };
 
-export const ApiHelp = (formData: FormData) => {
+export const ApiHelp = (formData: FormData, store: any) => {
   return api
     .post("submit-help/", formData)
     .then((response) => {
       
-      console.log(response.data);
+      // console.log(response.data);
       // Handle successful response
+      const body = "Your message was sent successfully.";
+      store.dispatch(addNotificationAction(body, "success"));
       return response.data;
     })
     .catch((error: AxiosError) => {
