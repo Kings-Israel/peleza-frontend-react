@@ -28,11 +28,11 @@ class _DashBoardStats extends Component<Props> {
           >
             <div
               className="card border-0"
-              style={{ backgroundColor: "#14002F", minWidth: "180px", }}
+              style={{ backgroundColor: "#01EAFF", minWidth: "180px", }}
             >
               <div className="card-body py-3">
                 <div className="main-card text-white">
-                  <div className="card-body text-center d-flex flex-column">
+                  <div className="card-body text-center d-flex flex-column" style={{ color: '#153F56' }}>
                     <AddTaskIcon style={{ fontSize: "3em" }} className="mx-auto" />
                     <span style={{ fontSize: "2em" }}>
                       <span>{this.props.new}</span>
@@ -50,10 +50,10 @@ class _DashBoardStats extends Component<Props> {
               this.props.history.push("/requests/?status=in-progress")
             }
           >
-            <div className="card border-0" style={{ backgroundColor: "#00003D", minWidth: "180px" }}>
+            <div className="card border-0" style={{ backgroundColor: "#E2D7F4", minWidth: "180px" }}>
               <div className="card-body py-3">
                 <div className="main-card text-white">
-                  <div className="card-body text-center d-flex flex-column">
+                  <div className="card-body text-center d-flex flex-column" style={{ color: '#153F56' }}>
                     <AccessTimeIcon style={{ fontSize: "3em" }} className="mx-auto" />
                     <span style={{ fontSize: "2em" }}>
                       <span>{this.props.in_progress}</span>
@@ -71,10 +71,10 @@ class _DashBoardStats extends Component<Props> {
               this.props.history.push("/requests/?status=complete")
             }
           >
-            <div className="card border-0" style={{ backgroundColor: "#004D00", minWidth: "180px" }}>
+            <div className="card border-0" style={{ backgroundColor: "#CFF0CC", minWidth: "180px" }}>
               <div className="card-body py-3">
                 <div className="main-card text-white">
-                  <div className="card-body text-center d-flex flex-column">
+                  <div className="card-body text-center d-flex flex-column" style={{ color: '#153F56' }}>
                   <CheckIcon style={{ fontSize: "3em" }} className="mx-auto" />
                     <span style={{ fontSize: "2em" }}>
                       <span>{this.props.final}</span>
@@ -90,10 +90,10 @@ class _DashBoardStats extends Component<Props> {
               onClick={() =>
                 this.props.history.push("/requests/?status=interim")
               }>
-            <div className="card border-0" style={{ backgroundColor: "#A36A00", minWidth: "180px" }}>
+            <div className="card border-0" style={{ backgroundColor: "#FEBA4F", minWidth: "180px" }}>
               <div className="card-body py-3">
                 <div className="main-card text-white">
-                  <div className="card-body text-center d-flex flex-column">
+                  <div className="card-body text-center d-flex flex-column" style={{ color: '#153F56' }}>
                     <AirlineStopsIcon style={{ fontSize: "3em" }} className="mx-auto" />
                     <span style={{ fontSize: "2em" }}>
                       <span>0</span>
@@ -109,10 +109,10 @@ class _DashBoardStats extends Component<Props> {
               onClick={() =>
                 this.props.history.push("/requests/?status=invalid")
               }>
-            <div className="card border-0" style={{ backgroundColor: "#520000", minWidth: "180px" }}>
+            <div className="card border-0" style={{ backgroundColor: "#FF9E91", minWidth: "180px" }}>
               <div className="card-body py-3">
                 <div className="main-card text-white">
-                  <div className="card-body text-center d-flex flex-column">
+                  <div className="card-body text-center d-flex flex-column" style={{ color: '#153F56' }}>
                     <BlockIcon style={{ fontSize: "3em" }} className="mx-auto" />
                     <span style={{ fontSize: "2em" }}>
                       <span>{this.props.invalid}</span>

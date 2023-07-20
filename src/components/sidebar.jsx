@@ -6,7 +6,7 @@ import HistoryOutlined from "@material-ui/icons/HistoryOutlined";
 import { HelpOutline } from '@mui/icons-material';
 import PeopleIcon from '@mui/icons-material/People';
 import { CloudUploadOutlined, Person } from "@material-ui/icons";
-// import SettingsApplications from "@material-ui/icons/TimelineRounded";
+import SettingsApplications from "@material-ui/icons/TimelineRounded";
 import { checkPermission } from "utils/functions";
 // import { State } from "store";
 //let logo = "https://1.bp.blogspot.com/-ouZiY6UwNOE/XZcQaZIWTJI/AAAAAAAAD-g/cQ0rRga90JYy6ywIGVtce7MaUjPCdM60QCNcBGAsYHQ/s1600/FB_IMG_1570175379664.jpg";
@@ -72,25 +72,11 @@ export function SideBar() {
           <nav className="navbar sidebar-nav">
             <ul className="navbar-nav w-100">
               <li className="nav-item rounded mb-2">
-                <Link className="nav-link" to="/profile">
-                <Person className="mr-2" />
-                  My Profile
-                </Link>
-              </li>
-              <li className="nav-item rounded mb-2">
                 <Link to="/" className="nav-link">
                   <DashboardOutlined className="mr-2" />
                   Dashboard
                 </Link>
               </li>
-              {checkPermission('view users') ? (
-                <li className="nav-item rounded mb-2">
-                  <Link to="/users" className="nav-link">
-                    <PeopleIcon className="mr-2" />
-                    Users
-                  </Link>
-                </li>
-              ) : ''}
               {checkPermission('create requests') ? (
                 <li className="nav-item rounded mb-2">
                   <Link to="/request" className="nav-link">
@@ -99,12 +85,6 @@ export function SideBar() {
                   </Link>
                 </li>
               ) : ''}
-              {/* <li className="nav-item rounded mb-2">
-                <Link to="/batch" className="nav-link">
-                  <CloudUploadOutlined />
-                  Batch Requests Upload
-                </Link>
-              </li> */}
               {checkPermission('view batch requests') ? (
                 <li className="nav-item rounded mb-2">
                   <Link to="/batch" className="nav-link">
@@ -113,7 +93,7 @@ export function SideBar() {
                   </Link>
                 </li>
               ): ''}
-              {checkPermission('view requests') ? (
+              {checkPermission('create requests') ? (
                 <li className="nav-item rounded mb-2">
                   <Link to="/requests?q=mine" className="nav-link">
                     <HistoryOutlined className="mr-2" />
@@ -121,10 +101,32 @@ export function SideBar() {
                   </Link>
                 </li>
               ): ''}
+              {checkPermission('view requests') ? (
+                <li className="nav-item rounded mb-2">
+                  <Link to="/requests?q=all" className="nav-link">
+                    <SettingsApplications className="mr-2" />
+                    All Requests
+                  </Link>
+                </li>
+              ): ''}
+              {checkPermission('view users') ? (
+                <li className="nav-item rounded mb-2">
+                  <Link to="/users" className="nav-link">
+                    <PeopleIcon className="mr-2" />
+                    Users
+                  </Link>
+                </li>
+              ) : ''}
+              <li className="nav-item rounded mb-2">
+                <Link className="nav-link" to="/profile">
+                <Person className="mr-2" />
+                  My Profile
+                </Link>
+              </li>
               {/* <li className="nav-item rounded mb-2">
-                <Link to="/requests?q=all" className="nav-link">
-                  <SettingsApplications className="mr-2" />
-                  All Requests
+                <Link to="/batch" className="nav-link">
+                  <CloudUploadOutlined />
+                  Batch Requests Upload
                 </Link>
               </li> */}
               <li className="nav-item rounded mb-2">
