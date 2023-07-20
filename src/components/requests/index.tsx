@@ -39,8 +39,8 @@ const createCsvFileName = () => `report_${moment().format()}.csv`;
 // const business = report.business;
 
 const zIndex = {
-  zIndex: 99
-}
+  zIndex: 99,
+};
 
 const headers = [
   { label: "Company Name", key: "companyName" },
@@ -136,6 +136,10 @@ const kyc_types: {
 ];
 
 const status = [
+  {
+    label: "All",
+    value: "all",
+  },
   {
     label: "New",
     value: "new",
@@ -294,26 +298,41 @@ class DataTable extends Component<{
   async componentDidMount() {
     const queryParams = new URLSearchParams(window.location.search);
     const status = queryParams.get("status");
-    // console.log(" === Mounted data table =======", status);
+
+    var selected_from_date = (localStorage.getItem('date_from') && JSON.parse(localStorage.getItem('date_from') || '') !== '') 
+                                ? moment(JSON.parse(localStorage.getItem('date_from') || '')).toDate()
+                                : new Date()
+
+    var selected_to_date = (localStorage.getItem('date_to') && JSON.parse(localStorage.getItem('date_to') || '') !== '')
+                                ? moment(JSON.parse(localStorage.getItem('date_to') || '')).toDate()
+                                : new Date()
+
+    var selected_filter = (localStorage.getItem('filter') && JSON.parse(localStorage.getItem('filter') || '') !== '') ? JSON.parse(localStorage.getItem('filter') || '') : ''
+
+    var selected_status = (localStorage.getItem('status_selected') && JSON.parse(localStorage.getItem('status_selected') || '') !== '') ? JSON.parse(localStorage.getItem('status_selected') || '') : 'all'
+
     if (status) {
-      this.setState({
-        status_selected: status,
-      });
-    } else {
-      this.setState({
-        status_selected: "new",
-      });
+      selected_status = status
+      // // Reset other filters
+      // selected_from_date = new Date()
+      // selected_to_date = new Date()
+      // selected_filter = ''
     }
-    
+
+    this.state.status_selected = selected_status
+    this.state.FromselectedDate = selected_from_date
+    this.state.ToselectedDate = selected_to_date
+    this.state.filter = selected_filter
+
     const resp: unknown = await apiSummary(
-      this.state.filter,
-      this.dateFormater(this.state.FromselectedDate),
-      this.dateFormater(this.state.ToselectedDate),
-      status
+      selected_filter,
+      this.dateFormater(selected_from_date),
+      this.dateFormater(selected_to_date),
+      selected_status
     );
-    
+
     let rows = await this.processKycRespData(
-      this.state.filter,
+      selected_filter,
       (resp as { data: []; b: string }).data
     );
     this.setState({
@@ -358,9 +377,11 @@ class DataTable extends Component<{
         : "asc";
     this.setState({ sortField: { field, sorting } });
   }
+
   get sortWith(): object {
     return this.state.sortField;
   }
+
   setFilter(filter: string) {
     this.setState({ ...this.state, filter });
   }
@@ -429,6 +450,11 @@ class DataTable extends Component<{
       loading: true,
     });
 
+    localStorage.setItem('filter', JSON.stringify(this.state.filter));
+    localStorage.setItem('date_from', JSON.stringify(this.state.FromselectedDate));
+    localStorage.setItem('date_to', JSON.stringify(this.state.ToselectedDate));
+    localStorage.setItem('status_selected', JSON.stringify(this.state.status_selected));
+    
     const resp: unknown = await apiSummary(
       this.state.filter,
       this.dateFormater(this.state.FromselectedDate),
@@ -490,6 +516,10 @@ class DataTable extends Component<{
         FromselectedDate: dt.toDate(),
       });
     };
+
+    const handleViewReport = (data: any) => {
+      console.log('View report', data)
+    }
 
     if (this.state.loading) {
       return (
@@ -624,6 +654,7 @@ class DataTable extends Component<{
             <DTable
               rows={this.state.rows}
               columns={this.state.columns}
+              viewReport={handleViewReport}
             ></DTable>
           </div>
           <table

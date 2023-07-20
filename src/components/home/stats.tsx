@@ -47,7 +47,7 @@ class _DashBoardStats extends Component<Props> {
           <div
             className="cursor-pointer"
             onClick={() =>
-              this.props.history.push("/requests/?status=in_progress")
+              this.props.history.push("/requests/?status=in-progress")
             }
           >
             <div className="card border-0" style={{ backgroundColor: "#00003D", minWidth: "180px" }}>

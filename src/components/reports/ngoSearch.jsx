@@ -8,8 +8,8 @@ import Page, { Data, HData, InnerReportHeader } from "./page.abstract";
 
 
 export const _NGOSearchReport = ({ report, location }) => {
-  console.log(" Ngo report",report)
- // 
+  // console.log(" Ngo report",report)
+
   const business = report.business;
   const pathname = String(location.pathname).toLowerCase();
 
@@ -19,15 +19,15 @@ export const _NGOSearchReport = ({ report, location }) => {
   let pts=[ <div> No Partner Data</div>]
   if(business && business.partners) {
     pts =business.partners.map((pt) =>
-    <div>
+      <div key={pt.id}>
         <Data className="shade">First Name</Data>
         <Data>{pt?.first_name|| "-"}</Data>
         <Data className="shade">ID Number</Data>
         <Data>{pt?.id_number || "-"}</Data>
         <Data className="shade">Number of Shares</Data>
         <Data>{pt?.number_of_shares || "-"}</Data>
-        </div>   
-  )
+      </div>   
+    )
   }
  
 
@@ -222,7 +222,7 @@ export const _NGOSearchReport = ({ report, location }) => {
 
 export const NGOSearchReport = withRouter(
   connect( function (state) {
-    console.log(" == I am in NGO search report ===",state.global)
+    // console.log(" == I am in NGO search report ===",state.global)
     return {
       report: state.global.report,
     };
