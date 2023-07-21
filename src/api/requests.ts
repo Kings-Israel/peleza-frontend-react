@@ -88,10 +88,10 @@ export const apiGetReport = (store: any) =>
     }
   }
 
-  export const apiSummary =(kyc_type:any,from_date:any,to_date:any,status:any) => {
+  export const apiSummary =(q:any,kyc_type:any,from_date:any,to_date:any,status:any) => {
     return new Promise(async function(resolve, reject) {
       try {
-        let resp = await api.get("/list/?module_code="+kyc_type + "&date_from="+from_date+"&date_to="+to_date+"&status="+status);
+        let resp = await api.get("/list/?q="+q+"&module_code="+kyc_type + "&date_from="+from_date+"&date_to="+to_date+"&status="+status);
         return resolve(resp);
       }
       catch (err) {

@@ -358,8 +358,10 @@ class DataTable extends Component<{
    }
 
    handleClick= async () => {
+    const queryParams = new URLSearchParams(window.location.search);
+    const q = queryParams.get("q");
      let columns=[]; 
-     const resp: unknown = await apiSummary(this.state.filter,this.state.FromselectedDate,this.state.ToselectedDate,"");
+     const resp: unknown = await apiSummary(q, this.state.filter,this.state.FromselectedDate,this.state.ToselectedDate,"");
      let rows=await this.processKycRespData(this.state.filter,(resp as {data: []; b: string; }).data);
   
 

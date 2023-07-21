@@ -298,6 +298,7 @@ class DataTable extends Component<{
   async componentDidMount() {
     const queryParams = new URLSearchParams(window.location.search);
     const status = queryParams.get("status");
+    const q = queryParams.get("q") ? queryParams.get("q") : '';
 
     var selected_from_date = (localStorage.getItem('date_from') && JSON.parse(localStorage.getItem('date_from') || '') !== '') 
                                 ? moment(JSON.parse(localStorage.getItem('date_from') || '')).toDate()
@@ -325,6 +326,7 @@ class DataTable extends Component<{
     this.state.filter = selected_filter
 
     const resp: unknown = await apiSummary(
+      q,
       selected_filter,
       this.dateFormater(selected_from_date),
       this.dateFormater(selected_to_date),
@@ -446,6 +448,8 @@ class DataTable extends Component<{
   };
 
   handleClick = async () => {
+    const queryParams = new URLSearchParams(window.location.search);
+    const q = queryParams.get("q") != null ? queryParams.get("q") : '';
     this.setState({
       loading: true,
     });
@@ -456,6 +460,7 @@ class DataTable extends Component<{
     localStorage.setItem('status_selected', JSON.stringify(this.state.status_selected));
     
     const resp: unknown = await apiSummary(
+      q,
       this.state.filter,
       this.dateFormater(this.state.FromselectedDate),
       this.dateFormater(this.state.ToselectedDate),
