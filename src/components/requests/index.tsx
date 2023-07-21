@@ -320,6 +320,7 @@ class DataTable extends Component<{
       // selected_filter = ''
     }
 
+    // TODO: Change to use setState
     this.state.status_selected = selected_status
     this.state.FromselectedDate = selected_from_date
     this.state.ToselectedDate = selected_to_date

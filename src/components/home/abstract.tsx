@@ -22,8 +22,6 @@ function _Row(props: any) {
     <tr
       className="cursor-pointer"
       onClick={() => {
-         console.log(" === reportURL === ",reportURL)
-         console.log(" === props.obj === ",props.obj)
         // fix this stuff later
         if(reportURL.url !== props.obj.request_plan) {
           reportURL.url = props.obj.request_plan

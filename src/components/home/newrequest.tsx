@@ -122,7 +122,7 @@ export function NewRequest() {
     if (loading) {
       return;
     }
-    console.log(" === Setting module == ",module)
+    
     setFormData({
       ...formData,
       module_id: module[0],

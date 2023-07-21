@@ -156,6 +156,7 @@ export default function global(
         action.payload.recent || [],
         "request_ref_number"
       );
+      
       const recent: any = { ...incoming_recent, ...state?.stats?.recent };
 
       return {
