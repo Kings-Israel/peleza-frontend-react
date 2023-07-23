@@ -38,11 +38,13 @@ class _Page extends Component {
   }
   componentDidMount() {
     this.setState({ loading: true }, () => this.getReport());
+    localStorage.setItem('preserve-filters', 'true');
   }
   goBack(e) {
     e.stopPropagation();
     this.props.history.go(-1);
   }
+
   render() {
     return (
       <div

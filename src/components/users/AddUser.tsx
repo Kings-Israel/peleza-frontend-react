@@ -61,6 +61,7 @@ const [loading, setLoading] = useState(false);
         company: userProfile?.client_parent_company || "",
         title: "",
       });
+      localStorage.setItem('preserve-filters', 'false');
       setLoading(false);
     });
   }, []);

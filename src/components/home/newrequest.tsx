@@ -15,6 +15,7 @@ export function NewRequest() {
   const loading = key !== null ? true : false;
 
   useEffect(() => {
+    localStorage.setItem('preserve-filters', 'false');
     toggleModal();
     return () => {
       toggleModal();

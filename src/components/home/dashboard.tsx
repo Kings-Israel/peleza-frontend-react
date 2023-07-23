@@ -101,6 +101,7 @@ class _Dashboard extends Component<{
     this.setState({ loading: true }, () =>
       apiGetStats(this.props.dispatch, () => {
         this.setState({ loading: false });
+        localStorage.setItem('preserve-filters', 'false');
       })
     );
   }

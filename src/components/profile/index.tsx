@@ -19,6 +19,8 @@ class _Profile extends Component<{ profile: UserProfile }> {
   }
 
   componentDidMount() {
+    // Set preserve filters for requests report to false
+    localStorage.setItem('preserve-filters', 'false');
     apiGetProfile(store, (data: any) =>
       this.setState({ ...this.state, loading: false })
     );

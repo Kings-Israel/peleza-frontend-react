@@ -314,13 +314,19 @@ class DataTable extends Component<{
 
     if (status) {
       selected_status = status
-      // // Reset other filters
-      // selected_from_date = new Date()
-      // selected_to_date = new Date()
-      // selected_filter = ''
     }
 
-    // TODO: Change to use setState
+    const preserveFilters = localStorage.getItem('preserve-filters')
+
+    if (preserveFilters && preserveFilters === 'false') {
+      // Reset other filters
+      selected_status = 'all'
+      selected_from_date = new Date()
+      selected_to_date = new Date()
+      selected_filter = 'all'
+    }
+
+    // FIX: Change to use setState
     this.state.status_selected = selected_status
     this.state.FromselectedDate = selected_from_date
     this.state.ToselectedDate = selected_to_date

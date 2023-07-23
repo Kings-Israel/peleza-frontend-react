@@ -26,6 +26,7 @@ const UserList: React.FC<DashboardProps> = ({ user, onLogout }) => {
   const history = useHistory();
 
   useEffect(() => {
+    localStorage.setItem('preserve-filters', 'false');
     const fetchUsers = async () => {
       try {
         const response = await axios.get(`get-add-users/`);

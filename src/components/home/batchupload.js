@@ -85,6 +85,8 @@ export const BatchUpload = () => {
     return kycG
   }
 
+  localStorage.setItem('preserve-filters', 'false');
+
   let fileName = "Sample-Batch-request"
   let fileNameKyc = "KYC-Guide-2021"
 
