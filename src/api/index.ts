@@ -82,6 +82,22 @@ export const ApiRegister = (info: any) => {
   return request;
 };
 
+export const ApiForgotPassword = (info: any, store: any) => {
+  return new Promise((resolve, reject) => {
+    api.post('auth/password/forgot/', info)
+      .then(response => {
+        const body = "Password Reset Email Sent Successfully.";
+        store.dispatch(addNotificationAction(body, "success"));
+        resolve(response)
+      })
+      .catch(err => {
+        const body = "An error occurred. Please check details";
+        store.dispatch(addNotificationAction(body, "danger"));
+        reject(err)
+      })
+  })
+}
+
 export const ApiNewRequest = (
   data: any,
   store: any,

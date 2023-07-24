@@ -27,6 +27,7 @@ import LLPSearchReport from "components/reports/llpSearch";
 import { removeNotificationAction } from "store/actions/notification";
 import BatchRequest from "components/home/BatchRequest";
 import { Register } from "components/register";
+import { ResetPassword } from "components/login/reset-password";
 
 const Base = connect(function (state) {
   return {
@@ -175,6 +176,9 @@ export default class AppRouter extends Component {
           </Route>
           <Route path="/register">
             <Register />
+          </Route>
+          <Route path="/forgot-password">
+            <ResetPassword />
           </Route>
           <Route path="/">
             <Notifications />
