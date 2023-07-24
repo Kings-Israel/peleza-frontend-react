@@ -4,7 +4,7 @@ import {  store } from "store";
 import { useHistory } from "react-router-dom";
 
 import logo from "../../assets/images/banner-logo.png";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export function ResetPassword(props: any) {
   useEffect(() => {
@@ -213,17 +213,16 @@ export function ResetPassword(props: any) {
                         </div>
                       </form>
                     </div>
-                    {/* <div>
-                      <span>Don't Have an Account? </span>
-                        <Link to="/register">
+                    <div>
+                        <Link to="/login">
                           <button
                             disabled={loading}
                             className="btn bg-secondary py-1 small mono text-light"
                           >
-                            REGISTER
+                            LOGIN
                           </button>
                         </Link>
-                    </div> */}
+                    </div>
                   </div>
                 </div>
               </div>
