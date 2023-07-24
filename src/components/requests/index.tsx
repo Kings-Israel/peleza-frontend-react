@@ -312,10 +312,6 @@ class DataTable extends Component<{
 
     var selected_status = (localStorage.getItem('status_selected') && JSON.parse(localStorage.getItem('status_selected') || '') !== '') ? JSON.parse(localStorage.getItem('status_selected') || '') : 'all'
 
-    if (status) {
-      selected_status = status
-    }
-
     const preserveFilters = localStorage.getItem('preserve-filters')
 
     if (preserveFilters && preserveFilters === 'false') {
@@ -324,6 +320,10 @@ class DataTable extends Component<{
       selected_from_date = new Date()
       selected_to_date = new Date()
       selected_filter = 'all'
+    }
+
+    if (status) {
+      selected_status = status
     }
 
     // FIX: Change to use setState
@@ -421,7 +421,7 @@ class DataTable extends Component<{
         email_address: num[5],
         registration_number: num[8],
         request_plan: num[3],
-        request_date: num[20],
+        request_date: moment(num[20]).format('DD MMM YYYY HH:mm'),
         module_code: num[16],
         package_id: num[21],
         url: num[3] || kyc_type,
@@ -528,10 +528,6 @@ class DataTable extends Component<{
         FromselectedDate: dt.toDate(),
       });
     };
-
-    const handleViewReport = (data: any) => {
-      console.log('View report', data)
-    }
 
     if (this.state.loading) {
       return (
@@ -666,7 +662,6 @@ class DataTable extends Component<{
             <DTable
               rows={this.state.rows}
               columns={this.state.columns}
-              viewReport={handleViewReport}
             ></DTable>
           </div>
           <table
