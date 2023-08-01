@@ -201,6 +201,7 @@ export function NewRequest() {
                       name="registration_number"
                       onChange={handleChange}
                       disabled={loading}
+                      required
                     />
                     {error?.registration_number && (
                       <small className="text-danger floating-error">

@@ -11,7 +11,6 @@ import { setIndustries } from "store/actions/industries";
 import { getQueryString, requestKey } from "utils/functions";
 
 export const ApiLogin = (info: any) => {
-
   const request = api.post("auth/login/", info);
   request.then((data) => {
     if (data.status === 200) {
