@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { checkPermission } from 'utils/functions';
 
 interface User {
+  client_id: string;
   client_first_name: string;
   client_last_name: string;
   client_login_username: string;
   client_mobile_number: string;
-  client_postal_address: string;
-  client_city: string;
   added_by:string;
 }
 
@@ -69,8 +68,7 @@ const UserList: React.FC<DashboardProps> = ({ user, onLogout }) => {
               <th>Last Name</th>
               <th>Email</th>
               <th>Phone Number</th>
-              <th>City</th>
-              <th>Address</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
@@ -80,8 +78,9 @@ const UserList: React.FC<DashboardProps> = ({ user, onLogout }) => {
                 <td>{user.client_last_name}</td>
                 <td>{user.client_login_username}</td>
                 <td>{user.client_mobile_number}</td>
-                <td>{user.client_city}</td>
-                <td>{user.client_postal_address}</td>
+                <td className='d-flex justify-content-center'>
+                  <Link to={'/edit-user/'+user.client_id} className="btn btn-sm btn-danger rounded">Edit User</Link>
+                </td>
               </tr>
             ))}
           </tbody>

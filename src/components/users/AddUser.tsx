@@ -9,8 +9,6 @@ interface AddUserFormProps {
   lastName: string | undefined;
   email: string | undefined;
   phoneNumber: string | undefined;
-  city: string | undefined;
-  address: string | undefined;
   postalCode: string | undefined;
   added_by_id: string | undefined;
   company: string | undefined;
@@ -22,8 +20,6 @@ const AddUserForm: React.FC<AddUserFormProps> = ({
   lastName,
   email,
   phoneNumber,
-  city,
-  address,
   postalCode,
   added_by_id,
   company,
@@ -37,8 +33,6 @@ const [loading, setLoading] = useState(false);
     lastName: "",
     email: "",
     phoneNumber: "",
-    city: "",
-    address: "",
     postalCode: "",
     added_by_id: "",
     company: "",
@@ -54,8 +48,6 @@ const [loading, setLoading] = useState(false);
         lastName: "",
         email: "",
         phoneNumber: "",
-        city: "",
-        address: "",
         postalCode: "",
         added_by_id: userProfile?.client_id || "",
         company: userProfile?.client_parent_company || "",
@@ -100,8 +92,6 @@ const [loading, setLoading] = useState(false);
     userformDataToSend.append("lastName", userformData.lastName || "");
     userformDataToSend.append("email", userformData.email || "");
     userformDataToSend.append("phoneNumber", userformData.phoneNumber || "");
-    userformDataToSend.append("city", userformData.city || "");
-    userformDataToSend.append("address", userformData.address || "");
     userformDataToSend.append("postalCode", userformData.postalCode || "");
     userformDataToSend.append("added_by_id", userformData.added_by_id || "");
     userformDataToSend.append("company", userformData.company || "");
@@ -122,8 +112,6 @@ const [loading, setLoading] = useState(false);
           lastName: "",
           email: "",
           phoneNumber: "",
-          city: "",
-          address: "",
           postalCode: "",
           added_by_id: "",
           company: "",
@@ -229,33 +217,7 @@ const [loading, setLoading] = useState(false);
           </div>
           <div className="row">
             <div className="col-md-6">
-              <div className="form-group">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="City"
-                  name="city"
-                  value={userformData.city}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-            </div>
-            <div className="col-md-6">
               <div className="row">
-                <div className="col-md-6">
-                  <div className="form-group">
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="Address"
-                      name="address"
-                      value={userformData.address}
-                      onChange={handleChange}
-                      required
-                    />
-                  </div>
-                </div>
                 <div className="col-md-6">
                   <div className="form-group">
                     <input
@@ -273,75 +235,93 @@ const [loading, setLoading] = useState(false);
             </div>
           </div>
           <div className="row">
-            <div className="col-md-8">
+            <div className="col-md-12">
               {/* Permissions Section */}
               <div className="form-group">
                 <h5>Permissions:</h5>
                 <ul className="d-flex justify-content-between flex-wrap">
-                  <li className="pr-2">
-                    <label>
+                  <li className="pr-3">
+                    <label className="permission-label">
                       <input
+                        className="permission-checkbox"
                         type="checkbox"
                         name="create_request"
                         checked={permissions.create_request}
                         onChange={handlePermissionChange}
                       />
-                      Create Request
+                      <span className="permission-text">
+                        Create Request
+                      </span>
                     </label>
                   </li>
-                  <li className="pr-2">
-                    <label>
+                  <li className="pr-3">
+                    <label className="permission-label">
                       <input
+                        className="permission-checkbox"
                         type="checkbox"
                         name="view_request"
                         checked={permissions.view_request}
                         onChange={handlePermissionChange}
                       />
-                      View Request
+                      <span className="permission-text">
+                        View Request
+                      </span>
                     </label>
                   </li>
-                  <li className="pr-2">
-                    <label>
+                  <li className="pr-3">
+                    <label className="permission-label">
                       <input
+                        className="permission-checkbox"
                         type="checkbox"
                         name="add_user"
                         checked={permissions.add_user}
                         onChange={handlePermissionChange}
                       />
-                      Add User
+                      <span className="permission-text">
+                        Add User
+                      </span>
                     </label>
                   </li>
-                  <li className="pr-2">
-                    <label>
+                  <li className="pr-3">
+                    <label className="permission-label">
                       <input
+                        className="permission-checkbox"
                         type="checkbox"
                         name="view_user"
                         checked={permissions.view_user}
                         onChange={handlePermissionChange}
                       />
-                      View User
+                      <span className="permission-text">
+                        View User
+                      </span>
                     </label>
                   </li>
-                  <li className="pr-2">
-                    <label>
+                  <li className="pr-3">
+                    <label className="permission-label">
                       <input
+                        className="permission-checkbox"
                         type="checkbox"
                         name="create_batch_request"
                         checked={permissions.create_batch_request}
                         onChange={handlePermissionChange}
                       />
-                      Create Batch Request
+                      <span className="permission-text">
+                        Create Batch Request
+                      </span>
                     </label>
                   </li>
-                  <li className="pr-2">
-                    <label>
+                  <li className="pr-3">
+                    <label className="permission-label">
                       <input
+                        className="permission-checkbox"
                         type="checkbox"
                         name="view_batch_request"
                         checked={permissions.view_batch_request}
                         onChange={handlePermissionChange}
                       />
-                      View Batch Request
+                      <span className="permission-text">
+                        View Batch Request
+                      </span>
                     </label>
                   </li>
                 </ul>

@@ -28,6 +28,7 @@ import { removeNotificationAction } from "store/actions/notification";
 import BatchRequest from "components/home/BatchRequest";
 import { Register } from "components/register";
 import { ResetPassword } from "components/login/reset-password";
+import EditUserForm from "components/users/Edituser";
 
 const Base = connect(function (state) {
   return {
@@ -87,6 +88,9 @@ const Base = connect(function (state) {
               </Route>
               <Route exact path="/add-user">
                 <AddUserForm   />
+              </Route>
+              <Route exact path='/edit-user/:id'>
+                <EditUserForm />
               </Route>
 
               <Route path="/reports/clg">

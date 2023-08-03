@@ -213,3 +213,17 @@ table table tr td {
 .user-table button:hover {
   background-color: #45a049;
 }
+
+.permission-label {
+  display: flex;
+}
+
+.permission-checkbox {
+  margin-top: auto;
+  margin-right: 5px;
+}
+
+.permission-text {
+  margin-top: 5px;
+  font-size: 16px;
+}
