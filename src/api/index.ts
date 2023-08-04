@@ -15,6 +15,7 @@ export const ApiLogin = (info: any) => {
   request.then((data) => {
     if (data.status === 200) {
       setToken(data.data);
+      localStorage.setItem("first_request_date", data.data.first_request_date)
       localStorage.setItem('company_logo', data.data.company_logo);
       localStorage.setItem('permissions', JSON.stringify(data.data.permissions));
     } else {

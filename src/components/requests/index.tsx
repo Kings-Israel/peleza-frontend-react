@@ -317,7 +317,12 @@ class DataTable extends Component<{
     if (preserveFilters && preserveFilters === 'false') {
       // Reset other filters
       selected_status = 'all'
-      selected_from_date = new Date()
+      // Get First Request Date
+      var first_request_date = (localStorage.getItem('first_request_date') && localStorage.getItem('first_request_date') !== '')
+                                ? moment(localStorage.getItem('first_request_date')).toDate()
+                                : new Date()
+
+      selected_from_date = first_request_date
       selected_to_date = new Date()
       selected_filter = 'all'
     }
@@ -327,9 +332,13 @@ class DataTable extends Component<{
     }
 
     // FIX: Change to use setState
+    // eslint-disable-next-line react/no-direct-mutation-state
     this.state.status_selected = selected_status
+    // eslint-disable-next-line react/no-direct-mutation-state
     this.state.FromselectedDate = selected_from_date
+    // eslint-disable-next-line react/no-direct-mutation-state
     this.state.ToselectedDate = selected_to_date
+    // eslint-disable-next-line react/no-direct-mutation-state
     this.state.filter = selected_filter
 
     const resp: unknown = await apiSummary(

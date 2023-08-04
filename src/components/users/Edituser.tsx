@@ -51,8 +51,7 @@ const [loading, setLoading] = useState(false);
   useEffect(() => {
     localStorage.setItem('preserve-filters', 'false');
     getUser(params.id)
-    // console.log(params.id)
-  }, []);
+  }, [params.id]);
 
   const getUser = async (id: any) => {
     try {
@@ -72,7 +71,6 @@ const [loading, setLoading] = useState(false);
       permission_response.data.forEach((permission: { permission: any }) => {
         user_permissions.push(permission.permission.permission)
       })
-      console.log(user_permissions)
       setPermissions({
         create_request: user_permissions.includes('create requests') ? true : false,
         view_request: user_permissions.includes('view requests') ? true : false,
