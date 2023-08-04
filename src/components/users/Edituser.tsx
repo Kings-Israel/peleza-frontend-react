@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { ApiAddUser } from "../../api/index";
+import { updateUser } from "../../api/index";
 import { store } from "store";
-import { apiGetProfile } from "api";
-import { useHistory } from "react-router-dom";
+// import { apiGetProfile } from "api";
+import { useHistory, useParams } from "react-router-dom";
+import axios from "axios";
 
 interface EditUserFormProps {
   id: string;
@@ -11,8 +12,6 @@ interface EditUserFormProps {
   email: string | undefined;
   phoneNumber: string | undefined;
   postalCode: string | undefined;
-  added_by_id: string | undefined;
-  company: string | undefined;
   title: string | undefined;
 }
 
@@ -23,8 +22,6 @@ const EditUserForm: React.FC<EditUserFormProps> = ({
   email,
   phoneNumber,
   postalCode,
-  added_by_id,
-  company,
   title,
 }) => {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -37,33 +34,8 @@ const [loading, setLoading] = useState(false);
     email: "",
     phoneNumber: "",
     postalCode: "",
-    added_by_id: "",
-    company: "",
     title: "",
   });
-
-  useEffect(() => {
-    apiGetProfile(store, (data: any) => {
-      const userProfile = data?.data;
-
-      setFormData({
-        id: "",
-        firstName: "",
-        lastName: "",
-        email: "",
-        phoneNumber: "",
-        postalCode: "",
-        added_by_id: userProfile?.client_id || "",
-        company: userProfile?.client_parent_company || "",
-        title: "",
-      });
-      localStorage.setItem('preserve-filters', 'false');
-      setLoading(false);
-    });
-
-  }, []);
-
-  const [error, setError] = useState("");
 
   const [permissions, setPermissions] = useState({
     create_request: false,
@@ -73,6 +45,48 @@ const [loading, setLoading] = useState(false);
     create_batch_request: false,
     view_batch_request: false,
   });
+
+  let params: any = useParams()
+
+  useEffect(() => {
+    localStorage.setItem('preserve-filters', 'false');
+    getUser(params.id)
+    // console.log(params.id)
+  }, []);
+
+  const getUser = async (id: any) => {
+    try {
+      const response: any = await axios.get(`/get-user/${id}`)
+      const permission_response: any = await axios.get(`/get-user-permissions/${id}`)
+      // console.log(permission_response.data)
+      setFormData({
+        id: response.data.client_id,
+        firstName: response.data.client_first_name,
+        lastName: response.data.client_last_name,
+        email: response.data.client_login_username,
+        phoneNumber: response.data.client_mobile_number,
+        postalCode: response.data.client_postal_code,
+        title: response.data.title,
+      })
+      const user_permissions: any[] = []
+      permission_response.data.forEach((permission: { permission: any }) => {
+        user_permissions.push(permission.permission.permission)
+      })
+      console.log(user_permissions)
+      setPermissions({
+        create_request: user_permissions.includes('create requests') ? true : false,
+        view_request: user_permissions.includes('view requests') ? true : false,
+        add_user: user_permissions.includes('create users') ? true : false,
+        view_user: user_permissions.includes('view users') ? true : false,
+        create_batch_request: user_permissions.includes('create batch requests') ? true : false,
+        view_batch_request: user_permissions.includes('view batch requests') ? true : false,
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const [error, setError] = useState("");
 
   let history = useHistory();
 
@@ -99,15 +113,13 @@ const [loading, setLoading] = useState(false);
     userformDataToSend.append("email", userformData.email || "");
     userformDataToSend.append("phoneNumber", userformData.phoneNumber || "");
     userformDataToSend.append("postalCode", userformData.postalCode || "");
-    userformDataToSend.append("added_by_id", userformData.added_by_id || "");
-    userformDataToSend.append("company", userformData.company || "");
     userformDataToSend.append("title", userformData.title || "");
 
     Object.entries(permissions).forEach(([key, value]) => {
-        userformDataToSend.append(key, value ? "1" : "0");
-      });
+      userformDataToSend.append(key, value ? "1" : "0");
+    });
     // Call the API function to submit the form data
-    ApiAddUser(userformDataToSend, store)
+    updateUser(userformDataToSend, store)
       .then((response) => {
         // Handle the response
         setLoading(false);
@@ -120,8 +132,6 @@ const [loading, setLoading] = useState(false);
           email: "",
           phoneNumber: "",
           postalCode: "",
-          added_by_id: "",
-          company: "",
           title: ""
         });
         setPermissions({
@@ -148,7 +158,7 @@ const [loading, setLoading] = useState(false);
       <div className="box_form">
         <div className="form_title" style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
           <h2>
-            <strong>Add User</strong>
+            <strong>Edit User</strong>
           </h2>
         </div>
         {error && <p className="error-message" style={{ color: "red" }}>{error}</p>}
@@ -349,7 +359,7 @@ const [loading, setLoading] = useState(false);
               {loading && (
                 <div className="spinner-border spinner-sm mr-2"></div>
               )}
-              Add User
+              Update User
             </button>
           </div>
         </form>

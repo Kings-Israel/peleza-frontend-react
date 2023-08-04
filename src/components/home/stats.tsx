@@ -88,7 +88,7 @@ class _DashBoardStats extends Component<Props> {
 
           <div className="cursor-pointer"
               onClick={() =>
-                this.props.history.push("/requests/?status=interim")
+                this.props.history.push("/requests/?status=manual")
               }>
             <div className="card border-0" style={{ backgroundColor: "#FEBA4F", minWidth: "180px" }}>
               <div className="card-body py-3">
@@ -98,7 +98,7 @@ class _DashBoardStats extends Component<Props> {
                     <span style={{ fontSize: "2em" }}>
                       <span>0</span>
                     </span>
-                    <div className="widget-subheading">Interim</div>
+                    <div className="widget-subheading">Manual</div>
                   </div>
                 </div>
               </div>

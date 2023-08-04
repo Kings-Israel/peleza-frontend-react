@@ -266,6 +266,37 @@ export const ApiGetIndustries = async (store: any, callback: (data: any) => void
   })
 }
 
+export const getUserDetails = async (user: string) => {
+  return new Promise(async function(resolve, reject) {
+    api.get(`get-user/${user}`)
+      .then(response => {
+        resolve(response.data)
+      })
+      .catch(err => reject(err))
+  })
+}
+
+export const updateUser = async (userData: FormData, store: any) => {
+  return new Promise<any>((resolve, reject) => {
+    api.post("/user/update/", userData)
+      .then((response) => {
+        const body = "User was updated successfully.";
+        store.dispatch(addNotificationAction(body, "success"));
+        resolve(response)
+        // Handle successful response
+        return response.data;
+      })
+      .catch((error: AxiosError) => {
+        const body = "An error occurred while adding the user.";
+        store.dispatch(addNotificationAction(body, "danger"));
+        console.log(error);
+        reject(error)
+        // Handle error response
+        throw error;
+      });
+  })
+}
+
 // export const getHelpItems = async (store: any, callback: (data: any) => void) => {
 //   return new Promise(async function(resolve, reject) {
 //     await api.get("/help-items")
