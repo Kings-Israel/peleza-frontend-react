@@ -153,8 +153,12 @@ const status = [
     value: "complete",
   },
   {
-    label: "Interim",
-    value: "interim",
+    label: "Manual",
+    value: "manual",
+  },
+  {
+    label: "Invalid",
+    value: "invalid",
   },
 ];
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import axios from 'axios';
-import { checkPermission } from 'utils/functions';
+import { checkPermission, filterObjectArray } from 'utils/functions';
 import ReactPaginate from 'react-paginate';
 
 interface User {
@@ -20,6 +20,7 @@ interface DashboardProps {
 
 const UserList: React.FC<DashboardProps> = ({ user, onLogout }) => {
   const [users, setUsers] = useState<User[]>([]);
+  const [allUsers, setAllUsers] = useState<User[]>([])
   const [loading, setLoading] = useState(true);
   const [paginationState, setPaginationState] = useState({
     currentPage: 1
@@ -34,6 +35,7 @@ const UserList: React.FC<DashboardProps> = ({ user, onLogout }) => {
       try {
         const response = await axios.get(`get-add-users/`);
         setUsers(response.data);
+        setAllUsers(response.data);
         setLoading(false);
       } catch (error) {
         setError('Error fetching users');
@@ -54,6 +56,12 @@ const UserList: React.FC<DashboardProps> = ({ user, onLogout }) => {
     })
   };
 
+  const setFilter = (filter: string) => {
+    let _all_users: any = allUsers
+    let _filtered_users = filter && filter.length ? filterObjectArray(_all_users, filter) : _all_users
+    setUsers(_filtered_users)
+  }
+
   if (loading) {
     return <h3 className='mx-auto text-muted'>Loading...</h3>;
   }
@@ -71,7 +79,17 @@ const UserList: React.FC<DashboardProps> = ({ user, onLogout }) => {
   return (
     <div className='container my-2'>
       <div className="d-flex justify-content-between mb-2">
-        <h2>Users</h2>
+        <div className='d-flex'>
+          <h2>Users</h2>
+          <div className='ml-2'>
+            <input
+              type="text"
+              className='form-control form-control-sm'
+              placeholder='Search...'
+              onChange={(e) => setFilter(e.target.value)}
+            />
+          </div>
+        </div>
         {checkPermission('create users') ? (
           <button className="btn btn-sm btn-primary" onClick={handleAddUser}>
             Add User
