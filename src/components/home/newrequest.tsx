@@ -286,6 +286,9 @@ export function NewRequest() {
                   <hr className="d-none d-md-block" />
                   <div className="row">
                     <div className="col-4">
+                      {!loading && disableSubmission && (
+                        <div className="text-danger">*Please fill all fields to submit.</div>
+                      )}
                       {loading && (
                         <div className="spinner-border text-info spinner-sm"></div>
                       )}
