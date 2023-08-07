@@ -60,7 +60,6 @@ export const ApiAddUser = (userformData: FormData, store: any) => {
     .catch((error: AxiosError) => {
       const body = "An error occurred while adding the user.";
       store.dispatch(addNotificationAction(body, "danger"));
-      console.log(error);
       // Handle error response
       throw error;
     });
@@ -290,7 +289,6 @@ export const updateUser = async (userData: FormData, store: any) => {
       .catch((error: AxiosError) => {
         const body = "An error occurred while adding the user.";
         store.dispatch(addNotificationAction(body, "danger"));
-        console.log(error);
         reject(error)
         // Handle error response
         throw error;

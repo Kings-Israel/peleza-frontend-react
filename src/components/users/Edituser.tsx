@@ -145,8 +145,7 @@ const [loading, setLoading] = useState(false);
       .catch((error) => {
         // Handle the error
         setLoading(false);
-        setError("An error occurred while submitting the form.");
-        console.log(error);
+        setError(error.response?.data?.message);
       });
   }
 
