@@ -96,6 +96,9 @@ const Base = connect(function (state) {
               <Route path="/reports/clg">
                 <CompanySearchReport />
               </Route>
+              <Route path="/reports/abc">
+                <CompanySearchReport />
+              </Route>
               <Route path="/reports/co">
                 <CompanySearchReport />
               </Route>

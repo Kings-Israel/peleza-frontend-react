@@ -15,8 +15,8 @@ function CustomToolbar() {
 function DTable(props) {
   let history = useHistory();
   const handleRowSelection = (e) => {
-    console.log(e)
     let url = `/reports/${e.row.url}/?request_ref=${e.row.request_ref_number}&package_id=${e.row.package_id}&dataset_name=${e.row.company_name}`;
+    console.log(url)
     history.push(url);
   }
 
