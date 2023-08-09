@@ -27,7 +27,7 @@ function _Row(props: any) {
           reportURL.url = props.obj.request_plan
         }
         const url = `/reports/${reportURL.url}/?request_ref=${props.obj.request_ref_number}&package_id=${props.obj.package_id}&dataset_name=${props.obj.dataset_name}`;
-        console.log(reportURL.url, props.obj)
+        // console.log(reportURL.url, props.obj)
         props.history.push(url);
       }}
     >
