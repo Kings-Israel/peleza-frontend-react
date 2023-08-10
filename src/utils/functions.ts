@@ -29,6 +29,26 @@ export function filterObjectArray(array = [], string: any = "", fields = []) {
   return _data;
 }
 
+export function filterObjectArrayField(array = [], string: any = "") {
+  const _string = string.toLowerCase();
+  if (!string || !string.length) {
+    return array;
+  }
+
+  const _data = array.filter(function (obj: any) {
+    const values: string[] = Object.values(obj).map((item: any) =>
+      String(item).toLowerCase()
+    );
+    for (const index in values) {
+      if (values[index].startsWith(_string)) {
+        return true;
+      }
+    }
+    return false;
+  });
+  return _data;
+}
+
 export function getBodyHeight(callback: (height: any) => void) {
   let body = document.body,
     html = document.documentElement;

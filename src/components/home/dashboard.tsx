@@ -1,4 +1,4 @@
-import { filterObjectArray, sortBy } from "utils/functions";
+import { filterObjectArray, filterObjectArrayField, sortBy } from "utils/functions";
 import BarChartIcon from "@material-ui/icons/BarChart";
 import { Component } from "react";
 import { apiGetStats } from "api/requests";
@@ -88,7 +88,6 @@ const kyc_types = [
   },
 ];
 
-
 class _Dashboard extends Component<{
   stats: any;
   dispatch: any;
@@ -159,7 +158,7 @@ class DataTable extends Component<{
 
     _recentReports =
       filter && filter.length
-        ? filterObjectArray(this.props.data, filter)
+        ? filterObjectArrayField(this.props.data, filter)
         : _recentReports;
 
     return _recentReports;
@@ -176,21 +175,27 @@ class DataTable extends Component<{
         : "asc";
     this.setState({ sortField: { field, sorting } });
   }
+
   get sortWith(): object {
     return this.state.sortField;
   }
+
   setFilter(filter: string) {
     this.setState({ ...this.state, filter });
   }
+
   handleToKyc = (kyc: any) => {
     this.setFilter(kyc.value);
   };
+
   handleFromDateChange = (date: any) => {
     this.setState({ fromDate: date });
   };
+
   handleToDateChange = (date: any) => {
     this.setState({ fromDate: date });
   };
+
   handlePageChange = (selectedPage: { selected: number }) => {
     this.setState({ currentPage: selectedPage.selected + 1 });
   };
