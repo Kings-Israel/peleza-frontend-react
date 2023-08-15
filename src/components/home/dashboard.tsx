@@ -1,4 +1,4 @@
-import { filterObjectArray, filterObjectArrayField, sortBy } from "utils/functions";
+import { filterObjectArrayField, sortBy } from "utils/functions";
 import BarChartIcon from "@material-ui/icons/BarChart";
 import { Component } from "react";
 import { apiGetStats } from "api/requests";

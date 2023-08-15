@@ -155,41 +155,53 @@ export class HData extends Component {
 
 export const InnerReportHeader = ({ report, term }) => {
   return (
-    <table className="peleza-table inner-report text-uppercase">
-      <tbody>
-        <tr>
-          <Data className="title">ORGANISATION</Data>
-          <Data className="info">{report?.company_name}</Data>
-          <Data className="title">Report Status</Data>
-          <Data className="info">
-            {report.status && (report.status === "11" || report.status === 11)
-              ? "FINAL"
-              : "IN PROGRESS"}
-          </Data>
-        </tr>
-        <tr>
-          <Data className="title">{`${term} NAME`}</Data>
-          <Data className="info">{report.business?.business_name}</Data>
-          <Data className="title">Report&nbsp;Dated</Data>
-          <Data className="info">
-            {report?.verified_date
-              ? String(report?.verified_date).slice(0, -6)
-              : getDate()}
-          </Data>
-        </tr>
-        <tr>
-          <Data className="title">Screening&nbsp;Package</Data>
-          <Data className="info">{report.request_plan}</Data>
-          <Data className="title">Reference NO.</Data>
-          <Data className="info">{report.request_ref_number}</Data>
-        </tr>
-        <tr>
-          <Data className="title">Requested&nbsp;By</Data>
-          <Data className="info">{report?.client_name}</Data>
-          <Data className="title">Email</Data>
-          <Data className="info">{report?.user_name}</Data>
-        </tr>
-      </tbody>
-    </table>
+    <>
+      <table className="peleza-table inner-report text-uppercase">
+        <tbody>
+          <tr>
+            <Data className="title">ORGANISATION</Data>
+            <Data className="info">{report?.company_name}</Data>
+            <Data className="title">Report Status</Data>
+            <Data className="info">
+              {report.status && (report.status === "11" || report.status === 11)
+                ? "FINAL"
+                : "IN PROGRESS"}
+            </Data>
+          </tr>
+          <tr>
+            <Data className="title">{`${term} NAME`}</Data>
+            <Data className="info">{report.business?.business_name}</Data>
+            <Data className="title">Report&nbsp;Dated</Data>
+            <Data className="info">
+              {report?.verified_date
+                ? String(report?.verified_date).slice(0, -6)
+                : getDate()}
+            </Data>
+          </tr>
+          <tr>
+            <Data className="title">Screening&nbsp;Package</Data>
+            <Data className="info">{report.request_plan}</Data>
+            <Data className="title">Reference NO.</Data>
+            <Data className="info">{report.request_ref_number}</Data>
+          </tr>
+          <tr>
+            <Data className="title">Requested&nbsp;By</Data>
+            <Data className="info">{report?.client_name}</Data>
+            <Data className="title">Email</Data>
+            <Data className="info">{report?.user_name}</Data>
+          </tr>
+        </tbody>
+      </table>
+      {report?.comments && (
+        <table className="peleza-table inner-report text-uppercase mt-2">
+          <tbody>
+            <tr>
+              <Data className="title">Comments</Data>
+              <Data className="info">{report?.comments}</Data>
+            </tr>
+          </tbody>
+        </table>
+      )}
+    </>
   );
 };
