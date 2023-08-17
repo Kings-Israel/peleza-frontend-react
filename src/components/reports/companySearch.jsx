@@ -243,7 +243,6 @@ const _CompanySearchReport = ({ report, location }) => {
 };
 
 export const CompanySearchReport = connect(function (state) {
-  console.log(state.global.report)
   return {
     report: state.global.report,
   };
