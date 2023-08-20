@@ -20,7 +20,6 @@ const AddUserForm: React.FC<AddUserFormProps> = ({
   lastName,
   email,
   phoneNumber,
-  postalCode,
   added_by_id,
   company,
   title,
@@ -33,7 +32,6 @@ const [loading, setLoading] = useState(false);
     lastName: "",
     email: "",
     phoneNumber: "",
-    postalCode: "",
     added_by_id: "",
     company: "",
     title: "",
@@ -48,7 +46,6 @@ const [loading, setLoading] = useState(false);
         lastName: "",
         email: "",
         phoneNumber: "",
-        postalCode: "",
         added_by_id: userProfile?.client_id || "",
         company: userProfile?.client_parent_company || "",
         title: "",
@@ -92,7 +89,6 @@ const [loading, setLoading] = useState(false);
     userformDataToSend.append("lastName", userformData.lastName || "");
     userformDataToSend.append("email", userformData.email || "");
     userformDataToSend.append("phoneNumber", userformData.phoneNumber || "");
-    userformDataToSend.append("postalCode", userformData.postalCode || "");
     userformDataToSend.append("added_by_id", userformData.added_by_id || "");
     userformDataToSend.append("company", userformData.company || "");
     userformDataToSend.append("title", userformData.title || "");
@@ -112,7 +108,6 @@ const [loading, setLoading] = useState(false);
           lastName: "",
           email: "",
           phoneNumber: "",
-          postalCode: "",
           added_by_id: "",
           company: "",
           title: ""
@@ -147,7 +142,7 @@ const [loading, setLoading] = useState(false);
         <form name="questionForm" onSubmit={handleSubmit} action="add-user/" method="POST">
           {/* Form Fields */}
           <div className="row">
-            <div className="col-md-5">
+            <div className="col-md-6">
               <div className="form-group">
                 <input
                   type="text"
@@ -160,7 +155,7 @@ const [loading, setLoading] = useState(false);
                 />
               </div>
             </div>
-            <div className="col-md-5">
+            <div className="col-md-6">
               <div className="form-group">
                 <input
                   type="text"
@@ -170,18 +165,6 @@ const [loading, setLoading] = useState(false);
                   value={userformData.lastName}
                   onChange={handleChange}
                   required
-                />
-              </div>
-            </div>
-            <div className="col-md-2">
-              <div className="form-group">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Title (Company Position)"
-                  name="title"
-                  value={userformData.title}
-                  onChange={handleChange}
                 />
               </div>
             </div>
@@ -216,20 +199,15 @@ const [loading, setLoading] = useState(false);
           </div>
           <div className="row">
             <div className="col-md-6">
-              <div className="row">
-                <div className="col-md-6">
-                  <div className="form-group">
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="Postal Code"
-                      name="postalCode"
-                      value={userformData.postalCode}
-                      onChange={handleChange}
-                      required
-                    />
-                  </div>
-                </div>
+              <div className="form-group">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Title (Company Position)"
+                  name="title"
+                  value={userformData.title}
+                  onChange={handleChange}
+                />
               </div>
             </div>
           </div>
