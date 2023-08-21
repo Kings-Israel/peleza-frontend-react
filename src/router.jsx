@@ -29,6 +29,7 @@ import BatchRequest from "components/home/BatchRequest";
 import { Register } from "components/register";
 import { ResetPassword } from "components/login/reset-password";
 import EditUserForm from "components/users/Edituser";
+import InvalidReport from "components/reports/invalid";
 
 const Base = connect(function (state) {
   return {
@@ -152,6 +153,9 @@ const Base = connect(function (state) {
               </Route>
               <Route path="/reports/SACCO">
                 <BusinessSearchReport />
+              </Route>
+              <Route path="/reports/invalid">
+                <InvalidReport />
               </Route>
               <Route path="">
                 <Home />

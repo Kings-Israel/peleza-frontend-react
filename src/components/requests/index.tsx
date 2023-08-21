@@ -441,6 +441,7 @@ class DataTable extends Component<{
         request_ref_number: num[0],
         country: num[4],
         medium: num[25],
+        status: num[27],
       };
     });
 

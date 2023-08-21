@@ -22,12 +22,16 @@ function _Row(props: any) {
     <tr
       className="cursor-pointer"
       onClick={() => {
-        // fix this stuff later
         if(reportURL.url !== props.obj.request_plan) {
           reportURL.url = props.obj.request_plan
         }
-        const url = `/reports/${reportURL.url}/?request_ref=${props.obj.request_ref_number}&package_id=${props.obj.package_id}&dataset_name=${props.obj.dataset_name}`;
-        // console.log(reportURL.url, props.obj)
+        // console.log(props.obj)
+        let url = ''
+        if (props.obj.status !== "55") {
+          url = `/reports/${reportURL.url}/?request_ref=${props.obj.request_ref_number}&package_id=${props.obj.package_id}&dataset_name=${props.obj.dataset_name}`;
+        } else {
+          url = `reports/invalid/?request_ref=${props.obj.request_ref_number}&package_id=${props.obj.package_id}`
+        }
         props.history.push(url);
       }}
     >
