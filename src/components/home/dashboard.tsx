@@ -11,6 +11,8 @@ import Select from "react-select";
 import "react-datepicker/dist/react-datepicker.css";
 import { HelpOutlineRounded } from "@mui/icons-material";
 import { Link } from "react-router-dom";
+import { store } from "store";
+import { setRequestsDateFilter } from "store/actions/requests";
 // import DateFnsUtils from '@date-io/date-fns';
 // import {
 //   MuiPickersUtilsProvider,
@@ -88,6 +90,45 @@ const kyc_types = [
   },
 ];
 
+const durations = [
+  {
+    label: "All",
+    value: "all"
+  },
+  {
+    label: "Today",
+    value: "today",
+  },
+  {
+    label: "This Month",
+    value: "current_month",
+  },
+  {
+    label: "Last Month",
+    value: "prev_month",
+  },
+  {
+    label: "Last 2 Months",
+    value: "prev_2_months"
+  },
+  {
+    label: "Last 4 Months",
+    value: "prev_4_months"
+  },
+  {
+    label: "Last 6 Months",
+    value: "prev_6_months"
+  },
+  {
+    label: "Last 8 Months",
+    value: "prev_8_months"
+  },
+  {
+    label: "Last 12 Months",
+    value: "prev_12_months"
+  }
+]
+
 class _Dashboard extends Component<{
   stats: any;
   dispatch: any;
@@ -98,11 +139,19 @@ class _Dashboard extends Component<{
 
   componentDidMount() {
     this.setState({ loading: true }, () =>
-      apiGetStats(this.props.dispatch, () => {
+      apiGetStats(store, this.props.dispatch, () => {
         this.setState({ loading: false });
         localStorage.setItem('preserve-filters', 'false');
       })
     );
+  }
+
+  durationChange(e: any) {
+    this.setState({ loading: true });
+    store.dispatch(setRequestsDateFilter(e.value))
+    apiGetStats(store, this.props.dispatch, () => {
+      this.setState({ loading: false });
+    })
   }
   
   render() {
@@ -118,6 +167,7 @@ class _Dashboard extends Component<{
               className="small"
               data={Object.values(this.props?.stats?.recent)}
               title={`RECENT REPORTS`}
+              onDurationChange={this.durationChange.bind(this)}
             />
           )}
         </div>
@@ -133,10 +183,12 @@ class DataTable extends Component<{
   data: any;
   title: string;
   className?: string;
+  onDurationChange: any;
 }> {
   state = {
     sortField: { field: "request_date", sorting: "" },
     filter: "",
+    duration: "",
     fromDate: new Date(),
     toDate: new Date(),
     currentPage: 1,
@@ -188,6 +240,10 @@ class DataTable extends Component<{
     this.setFilter(kyc.value);
   };
 
+  handleDurationChange = (duration: any) => {
+    this.props.onDurationChange(duration)
+  }
+
   handleFromDateChange = (date: any) => {
     this.setState({ fromDate: date });
   };
@@ -224,6 +280,7 @@ class DataTable extends Component<{
           <div className="d-flex justify-content-between">
             <div className="row mb-1 w-75">
               <div className="col-4">
+              <label htmlFor="Search Type">Search</label>
                 <input
                   type="text"
                   className="form-control form-control-sm"
@@ -232,6 +289,7 @@ class DataTable extends Component<{
                 />
               </div>
               <div className="col-4" style={{ zIndex: 99 }}>
+                <label htmlFor="Search Type">Search Type</label>
                 <Select
                   options={kyc_types}
                   onChange={this.handleToKyc}
@@ -239,6 +297,17 @@ class DataTable extends Component<{
                     (option) => option.value === this.state.filter
                   )}
                   placeholder="Select Type..."
+                />
+              </div>
+              <div className="col-4" style={{ zIndex: 99 }}>
+              <label htmlFor="Search Type">Search In Duration</label>
+                <Select
+                  options={durations}
+                  onChange={this.handleDurationChange}
+                  value={durations.find(
+                    (option) => option.value === this.state.duration
+                  )}
+                  placeholder="Select Duration..."
                 />
               </div>
             </div>

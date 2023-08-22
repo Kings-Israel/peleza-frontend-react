@@ -42,14 +42,14 @@ export const apiGetRequests = (
   return key;
 };
 
-export const apiGetStats = (dispatch: any, final: () => void) => {
+export const apiGetStats = (store:any, dispatch: any, final: () => void) => {
   const key = requestKey();
   dispatch(setLoadingAction(key));
+  const duration_filter = store.getState().global.requests_duration_filter
 
   api
-    .get("/stats/")
+    .get("/stats/?duration=" + duration_filter)
     .then((response) => {
-      //console.log(" === Response Data for stats  == ",response.data)
       dispatch(setStatsAction(response.data));
     })
     .finally(() => {

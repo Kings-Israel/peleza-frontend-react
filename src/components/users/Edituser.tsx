@@ -11,7 +11,6 @@ interface EditUserFormProps {
   lastName: string | undefined;
   email: string | undefined;
   phoneNumber: string | undefined;
-  postalCode: string | undefined;
   title: string | undefined;
 }
 
@@ -21,7 +20,6 @@ const EditUserForm: React.FC<EditUserFormProps> = ({
   lastName,
   email,
   phoneNumber,
-  postalCode,
   title,
 }) => {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -33,7 +31,6 @@ const [loading, setLoading] = useState(false);
     lastName: "",
     email: "",
     phoneNumber: "",
-    postalCode: "",
     title: "",
   });
 
@@ -64,7 +61,6 @@ const [loading, setLoading] = useState(false);
         lastName: response.data.client_last_name,
         email: response.data.client_login_username,
         phoneNumber: response.data.client_mobile_number,
-        postalCode: response.data.client_postal_code,
         title: response.data.title,
       })
       const user_permissions: any[] = []
@@ -110,7 +106,6 @@ const [loading, setLoading] = useState(false);
     userformDataToSend.append("lastName", userformData.lastName || "");
     userformDataToSend.append("email", userformData.email || "");
     userformDataToSend.append("phoneNumber", userformData.phoneNumber || "");
-    userformDataToSend.append("postalCode", userformData.postalCode || "");
     userformDataToSend.append("title", userformData.title || "");
 
     Object.entries(permissions).forEach(([key, value]) => {
@@ -129,7 +124,6 @@ const [loading, setLoading] = useState(false);
           lastName: "",
           email: "",
           phoneNumber: "",
-          postalCode: "",
           title: ""
         });
         setPermissions({
@@ -188,18 +182,6 @@ const [loading, setLoading] = useState(false);
                 />
               </div>
             </div>
-            <div className="col-md-2">
-              <div className="form-group">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Title (Company Position)"
-                  name="title"
-                  value={userformData.title}
-                  onChange={handleChange}
-                />
-              </div>
-            </div>
           </div>
           <div className="row">
             <div className="col-md-6">
@@ -231,20 +213,15 @@ const [loading, setLoading] = useState(false);
           </div>
           <div className="row">
             <div className="col-md-6">
-              <div className="row">
-                <div className="col-md-6">
-                  <div className="form-group">
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="Postal Code"
-                      name="postalCode"
-                      value={userformData.postalCode}
-                      onChange={handleChange}
-                      required
-                    />
-                  </div>
-                </div>
+            <div className="form-group">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Title (Company Position)"
+                  name="title"
+                  value={userformData.title}
+                  onChange={handleChange}
+                />
               </div>
             </div>
           </div>

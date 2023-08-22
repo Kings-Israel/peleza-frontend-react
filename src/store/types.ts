@@ -27,3 +27,5 @@ export const SET_INDUSTRIES = "setIndustries";
 export const SET_HELP_ITEMS = "setHelperItems";
 
 export const SET_EDIT_USER = "setEditUser";
+
+export const SET_REQUESTS_DATE_FILTER = "setRequestsDateFilter";

@@ -23,7 +23,7 @@ code {
 }
 
 .message-box {
-  background-color: gray;
+  background-color: rgb(86, 86, 86);
   max-width: 540px;
   min-width: 540px;
   margin: 10px;
@@ -32,7 +32,7 @@ code {
 }
 
 .sent {
-  border-left: 6px solid #153F56;
+  border-left: 6px solid #0e7bb7;
 }
 
 .received {

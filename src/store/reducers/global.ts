@@ -25,6 +25,7 @@ let defaultState: any = {
     55: "red",
     0o0: "rgb(51, 0, 118)",
   },
+  requests_duration_filter: "all",
   stats: {
     credits: 0,
     new: 0,
@@ -157,7 +158,8 @@ export default function global(
         "request_ref_number"
       );
       
-      const recent: any = { ...incoming_recent, ...state?.stats?.recent };
+      // const recent: any = { ...incoming_recent, ...state?.stats?.recent };
+      const recent: any = incoming_recent;
 
       return {
         ...state,
@@ -178,6 +180,8 @@ export default function global(
 
     case types.SET_REPORT:
       return { ...state, report: action.payload };
+    case types.SET_REQUESTS_DATE_FILTER:
+      return { ...state, requests_duration_filter: action.payload };
     case types.SET_COUNTRIES:
       return { ...state, countries: action.payload };
     case types.SET_COMPANIES:

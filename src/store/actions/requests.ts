@@ -1,4 +1,4 @@
-import { SET_CREDITS, SET_REPORT, SET_REQUESTS, SET_STATS } from "store/types";
+import { SET_CREDITS, SET_REPORT, SET_REQUESTS, SET_STATS, SET_REQUESTS_DATE_FILTER } from "store/types";
 
 export const setRequestsAction = (payload: any) => ({
   type: SET_REQUESTS,
@@ -21,3 +21,8 @@ export const setReportAction = (payload: any) => ({
   type: SET_REPORT,
   payload,
 });
+
+export const setRequestsDateFilter = (payload: any) => ({
+  type: SET_REQUESTS_DATE_FILTER,
+  payload
+})
