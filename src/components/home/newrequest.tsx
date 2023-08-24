@@ -62,14 +62,14 @@ export function NewRequest() {
         setError(data);
       } else {
         setFormData({
-          module_id: null,
+          module_id: modules[0][0],
           dataset_citizenship: null,
           client_number: null,
-          package_id: null,
+          package_id: modules[0][1].package_id,
           dataset_name: null,
           registration_number: null,
           terms_and_conditions: false,
-          req_plan: null,
+          req_plan: modules[0][1].url,
         });
         document.getElementsByTagName("form")[0].reset();
       }
@@ -88,14 +88,14 @@ export function NewRequest() {
         setError(data);
       } else {
         setFormData({
-          module_id: null,
+          module_id: modules[0][0],
           dataset_citizenship: null,
           client_number: null,
-          package_id: null,
+          package_id: modules[0][1].package_id,
           dataset_name: null,
           registration_number: null,
           terms_and_conditions: false,
-          req_plan: null,
+          req_plan: modules[0][1].url,
         });
         document.getElementsByTagName("form")[0].reset();
         goBack(null);
