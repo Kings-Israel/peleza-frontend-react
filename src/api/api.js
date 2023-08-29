@@ -5,7 +5,7 @@ import { clearToken, getToken } from 'utils/auth.token';
 
 // api.defaults.baseURL = 'https://dev.portal.pidva.africa/peleza-backend-server/api/' 
 // api.defaults.baseURL = process.env.NODE_ENV === 'development' ? `http://${window.location.hostname}:8000/peleza-backend-server/api/` : 'https://dev.portal.pidva.africa/peleza-backend-server/api/' 
-api.defaults.baseURL = process.env.NODE_ENV === 'development' ? `http://${window.location.hostname}:8000/peleza-backend-server/api/` : '/api/' 
+api.defaults.baseURL = process.env.NODE_ENV === 'development' ? `http://${window.location.hostname}:8000/peleza-backend-server/api/` : '/https://kyc.pidva.africa/peleza-backend-server/api/' 
 api.defaults.headers.common['Authorization'] = 'Bearer ' + getToken();
 
 api.interceptors.response.use(function (a) {
