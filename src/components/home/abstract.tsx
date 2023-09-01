@@ -1,6 +1,7 @@
 import Status from "components/home/status";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
+import { addHours } from "utils/functions";
 
 function _Row(props: any) {
   let reportURL: any={};
@@ -40,8 +41,8 @@ function _Row(props: any) {
       <td>{props.obj.request_plan || "-"}</td>
       <td>{props.obj.dataset_name || "-"}</td>
       <td>{props.obj.registration_number || "-"}</td>
-      <td>{props.obj.request_date || "-"}</td>
-      <td>{props.obj.status_date || "-"}</td>
+      <td>{addHours(props.obj.request_date, 2) || "-"}</td>
+      <td>{props.obj.status_date ? addHours(props.obj.status_date, 2) : "-"}</td>
       <td>
         <Status percentage={props.obj.percentage} status={props.obj.status} />
       </td>

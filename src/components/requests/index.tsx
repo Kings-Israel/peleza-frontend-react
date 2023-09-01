@@ -1,4 +1,4 @@
-import { filterObjectArray, getQueryString, sortBy } from "utils/functions";
+import { filterObjectArray, getQueryString, sortBy, addHours } from "utils/functions";
 import BarChartIcon from "@material-ui/icons/BarChart";
 import { Component } from "react";
 import { store } from "store";
@@ -434,7 +434,7 @@ class DataTable extends Component<{
         email_address: num[5],
         registration_number: num[8],
         request_plan: num[3],
-        request_date: moment(num[20]).format('DD MMM YYYY HH:mm'),
+        request_date: addHours(num[20], 2),
         module_code: num[16],
         package_id: num[21],
         url: num[3] || kyc_type,
