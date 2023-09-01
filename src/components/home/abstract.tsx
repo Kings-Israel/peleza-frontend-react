@@ -1,7 +1,7 @@
-import Status from "components/home/status";
+// import Status from "components/home/status";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
-import { addHours } from "utils/functions";
+// import { addHours } from "utils/functions";
 
 function _Row(props: any) {
   let reportURL: any={};
@@ -11,12 +11,58 @@ function _Row(props: any) {
   // just a fix for ncba will rework it later
   // console.log(" ==== props.index === ",props.index)
   // console.log(" ==== reportURL from _Row === ",reportURL)
-  //console.log(" ==== props.obj === ",props.obj)
+  // console.log(" ==== props === ",props.colors)
   if(reportURL === undefined) {
     reportURL={};
     reportURL.url=props.obj.request_plan
   } else if(reportURL.url==='ncba') {
     reportURL.url=props.obj.request_plan
+  }
+
+  let color = props.colors[String(props.obj.status).toString()];
+  let button;
+  if (String(props.obj.status).toString() === "00") {
+    button = <span
+                className="p-1 rounded"
+                style={{ borderRadius: "2px", background: color ? color : "pink", }}
+              >
+                PENDING
+              </span>
+  } else if (String(props.obj.status).toString() === "11") {
+    button = <span
+                className="p-1 rounded"
+                style={{ borderRadius: "2px", background: color ? color : "pink", }}
+              >
+                COMPLETED
+              </span>
+  } else if (String(props.obj.status).toString() === "22") {
+    button = <span
+                className="p-1 rounded"
+                style={{ borderRadius: "2px", background: color ? color : "pink", }}
+              >
+                UNREVIEWED
+              </span>
+  } else if (String(props.obj.status).toString() === "44") {
+    button = <span
+                className="p-1 rounded"
+                style={{ borderRadius: "2px", background: color ? color : "pink", }}
+              >
+                IN PROGRESS
+              </span>
+  } else if (String(props.obj.status).toString() === "55") {
+    button = <span
+                className="p-1 rounded"
+                style={{ borderRadius: "2px", background: color ? color : "pink", }}
+              >
+                INVALID
+              </span>
+  } else {
+    button = <span
+                className="p-1 rounded"
+                style={{ borderRadius: "2px", background: "white", }}
+              >
+                PENDING
+              </span>
   }
   
   return (
@@ -41,10 +87,11 @@ function _Row(props: any) {
       <td>{props.obj.request_plan || "-"}</td>
       <td>{props.obj.dataset_name || "-"}</td>
       <td>{props.obj.registration_number || "-"}</td>
-      <td>{addHours(props.obj.request_date, 2) || "-"}</td>
-      <td>{props.obj.status_date ? addHours(props.obj.status_date, 2) : "-"}</td>
+      <td>{props.obj.request_date || "-"}</td>
+      <td>{props.obj.verified_date || "-"}</td>
       <td>
-        <Status percentage={props.obj.percentage} status={props.obj.status} />
+        {/* <Status percentage={props.obj.percentage} status={props.obj.status} /> */}
+        {button}
       </td>
     </tr>
   );
@@ -53,6 +100,7 @@ function _Row(props: any) {
 export const Row = connect(function (state: any) {
   return {
     modules: state.global.modules || {},
+    colors: state.global.colors
   };
 })(withRouter(_Row));
 

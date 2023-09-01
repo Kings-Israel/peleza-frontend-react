@@ -19,11 +19,12 @@ let defaultState: any = {
     client_last_name: null,
   },
   colors: {
-    11: "green",
-    33: "blue",
-    44: "blue",
-    55: "red",
-    0o0: "rgb(51, 0, 118)",
+    11: "#CFF0CC",
+    22: "#E2D7F4",
+    33: "#FEBA4F",
+    44: "#E2D7F4",
+    55: "#FF9E91",
+    "00": "lightgreen",
   },
   requests_duration_filter: "all",
   stats: {

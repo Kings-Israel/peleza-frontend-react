@@ -186,7 +186,7 @@ class DataTable extends Component<{
   onDurationChange: any;
 }> {
   state = {
-    sortField: { field: "request_date", sorting: "" },
+    sortField: { field: "request_id", sorting: "asc" },
     filter: "",
     duration: "",
     fromDate: new Date(),
