@@ -26,7 +26,7 @@ function _Row(props: any) {
                 className="p-1 rounded"
                 style={{ borderRadius: "2px", background: color ? color : "pink", }}
               >
-                PENDING
+                NEW
               </span>
   } else if (String(props.obj.status).toString() === "11") {
     button = <span

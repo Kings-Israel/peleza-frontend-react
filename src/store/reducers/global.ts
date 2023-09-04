@@ -24,7 +24,7 @@ let defaultState: any = {
     33: "#FEBA4F",
     44: "#E2D7F4",
     55: "#FF9E91",
-    "00": "lightgreen",
+    "00": "#01EAFF",
   },
   requests_duration_filter: "all",
   stats: {
