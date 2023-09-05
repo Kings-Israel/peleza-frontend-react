@@ -263,7 +263,7 @@ class DataTable extends Component<{
   };
 
   handleDownload = () => {
-    const baseURL = process.env.NODE_ENV === 'development' ? `http://${window.location.hostname}:8000/peleza-backend-server/api/` : '/api/'
+    const baseURL = process.env.NODE_ENV === 'development' ? `http://${window.location.hostname}:8000/peleza-backend-server/api/` : '/peleza-backend-server/api/'
     fetch(baseURL+"download-stats?duration="+this.state.duration.value, {
       method: 'GET',
       headers: {
