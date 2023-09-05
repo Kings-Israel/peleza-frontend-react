@@ -13,6 +13,7 @@ import { HelpOutlineRounded } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { store } from "store";
 import { setRequestsDateFilter } from "store/actions/requests";
+import { getToken } from 'utils/auth.token';
 // import DateFnsUtils from '@date-io/date-fns';
 // import {
 //   MuiPickersUtilsProvider,
@@ -98,6 +99,10 @@ const durations = [
   {
     label: "Today",
     value: "today",
+  },
+  {
+    label: "This Week",
+    value: "current_week",
   },
   {
     label: "This Month",
@@ -188,7 +193,7 @@ class DataTable extends Component<{
   state = {
     sortField: { field: "request_id", sorting: "asc" },
     filter: "",
-    duration: "",
+    duration: {label: "", value : ""},
     fromDate: new Date(),
     toDate: new Date(),
     currentPage: 1,
@@ -242,6 +247,7 @@ class DataTable extends Component<{
 
   handleDurationChange = (duration: any) => {
     this.props.onDurationChange(duration)
+    this.setState({ duration: duration})
   }
 
   handleFromDateChange = (date: any) => {
@@ -255,6 +261,39 @@ class DataTable extends Component<{
   handlePageChange = (selectedPage: { selected: number }) => {
     this.setState({ currentPage: selectedPage.selected + 1 });
   };
+
+  handleDownload = () => {
+    const baseURL = process.env.NODE_ENV === 'development' ? `http://${window.location.hostname}:8000/peleza-backend-server/api/` : '/api/'
+    fetch(baseURL+"download-stats?duration="+this.state.duration.value, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/xlsx',
+        'Authorization':'Bearer ' + getToken(),
+      },
+    })
+    .then((response) => response.blob())
+    .then((blob) => {
+      // Create blob link to download
+      const url = window.URL.createObjectURL(
+        new Blob([blob]),
+      );
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute(
+        'download',
+        `stats.xlsx`,
+      );
+  
+      // Append to html link element page
+      document.body.appendChild(link);
+  
+      // Start download
+      link.click();
+  
+      // Clean up and remove the link
+      //link.parentNode.removeChild(link);
+    });
+  }
   
   render() {
     const { currentPage } = this.state;
@@ -278,8 +317,8 @@ class DataTable extends Component<{
         </p>
         <div>
           <div className="d-flex justify-content-between">
-            <div className="row mb-1 w-75">
-              <div className="col-4">
+            <div className="row mb-1 w-100">
+              <div className="col-3">
               <label htmlFor="Search Type">Search</label>
                 <input
                   type="text"
@@ -288,7 +327,7 @@ class DataTable extends Component<{
                   onChange={(e) => this.setFilter(e.target.value)}
                 />
               </div>
-              <div className="col-4" style={{ zIndex: 99 }}>
+              <div className="col-3" style={{ zIndex: 99 }}>
                 <label htmlFor="Search Type">Search Type</label>
                 <Select
                   options={kyc_types}
@@ -299,16 +338,19 @@ class DataTable extends Component<{
                   placeholder="Select Type..."
                 />
               </div>
-              <div className="col-4" style={{ zIndex: 99 }}>
+              <div className="col-3" style={{ zIndex: 99 }}>
               <label htmlFor="Search Type">Search In Duration</label>
                 <Select
                   options={durations}
                   onChange={this.handleDurationChange}
                   value={durations.find(
-                    (option) => option.value === this.state.duration
+                    (option) => option.value === this.state.duration.value
                   )}
                   placeholder="Select Duration..."
                 />
+              </div>
+              <div className="col-3">
+                <button className="btn btn-sm btn-primary mt-4" onClick={() => this.handleDownload()}>Download All Reports</button>
               </div>
             </div>
             <Link to={'/help'}>
