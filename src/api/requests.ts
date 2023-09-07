@@ -10,7 +10,7 @@ import {
   getToken } from 'utils/auth.token';
 import api from "./api";
 
-const baseURL = process.env.NODE_ENV === 'development' ? `http://${window.location.hostname}:8000/peleza-backend-server/api/` : '/api/'
+const baseURL = process.env.NODE_ENV === 'development' ? `http://${window.location.hostname}:8000/peleza-backend-server/api/` : '/peleza-backend-server/api/'
 export const apiGetRequests = (
   store: any,
   location: any,
