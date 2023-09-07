@@ -424,7 +424,24 @@ class DataTable extends Component<{
 
   processKycRespData = async (kyc_type: any, data: []) => {
     let dt: {}[] = [];
+    
     dt = data.map(function (num) {
+      let report_status = ''
+      if (num[27] === '00') {
+        report_status = "NEW"
+      } else if (num[27] === '11') {
+        report_status = "COMPLETED"
+      } else if (num[27] === '22') {
+        report_status = "UNREVIEW"
+      } else if (num[27] === '33') {
+        report_status = ""
+      } else if (num[27] === '44') {
+        report_status = "IN PROGRESS"
+      } else if (num[27] === '55') {
+        report_status = "INVALID"
+      } else {
+        report_status = "PENDING"
+      }
       return {
         id: num[0],
         request_id: num[2],
@@ -434,14 +451,15 @@ class DataTable extends Component<{
         email_address: num[5],
         registration_number: num[8],
         request_plan: num[3],
-        request_date: addHours(num[20], 2),
+        request_date: moment(num[20]).format("YYYY-MM-DD HH:mm"),
+        verified_date: num[22] ? moment(num[22]).format("YYYY-MM-DD HH:mm") : '-',
         module_code: num[16],
         package_id: num[21],
         url: num[3] || kyc_type,
         request_ref_number: num[0],
         country: num[4],
         medium: num[25],
-        status: num[27],
+        status: report_status,
       };
     });
 

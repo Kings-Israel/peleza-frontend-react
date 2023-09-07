@@ -1,12 +1,13 @@
 import * as React from 'react';
-import { DataGrid, GridToolbarContainer, GridToolbarExport ,gridClasses } from '@mui/x-data-grid';
+import { DataGrid, GridToolbarContainer, GridToolbarExport, gridClasses, GridToolbarQuickFilter } from '@mui/x-data-grid';
 import { useHistory ,withRouter} from "react-router-dom";
 
 
 function CustomToolbar() {
   return (
-    <GridToolbarContainer className={gridClasses.toolbarContainer}>
+    <GridToolbarContainer className={gridClasses.toolbarContainer} style={{ display: "flex", justifyContent: 'space-between' }}>
       <GridToolbarExport />
+      <GridToolbarQuickFilter style={{ fontSize: "16px", fontWeight: "bolder" }} />
     </GridToolbarContainer>
   );
 }
@@ -26,7 +27,7 @@ function DTable(props) {
   }
 
   return (
-    <div style={{ height: 400, width: '100%' }}>
+    <div style={{ height: 500, width: '100%' }}>
       <DataGrid
         title={"Data search .."}
         components={{
@@ -35,8 +36,8 @@ function DTable(props) {
         disableMultipleSelection={false}
         rows={props.rows}
         columns={props.columns}
-        pageSize={5}
-        rowsPerPageOptions={[5]}
+        pageSize={10}
+        rowsPerPageOptions={[10]}
         onRowClick = {handleRowSelection}
       />
     </div>
