@@ -1,4 +1,4 @@
-import { filterObjectArray, getQueryString, sortBy, addHours } from "utils/functions";
+import { filterObjectArray, getQueryString, sortBy } from "utils/functions";
 import BarChartIcon from "@material-ui/icons/BarChart";
 import { Component } from "react";
 import { store } from "store";
@@ -432,13 +432,15 @@ class DataTable extends Component<{
       } else if (num[27] === '11') {
         report_status = "COMPLETED"
       } else if (num[27] === '22') {
-        report_status = "UNREVIEW"
+        report_status = "UNREVIEWED"
       } else if (num[27] === '33') {
         report_status = ""
       } else if (num[27] === '44') {
         report_status = "IN PROGRESS"
       } else if (num[27] === '55') {
         report_status = "INVALID"
+      } else if (num[27] === '66') {
+        report_status = "MANUAL"
       } else {
         report_status = "PENDING"
       }
@@ -666,7 +668,6 @@ class DataTable extends Component<{
           </div>
           <br />
           <div className="d-flex justify-content-end mb-1">
-            {/* View CSV */}
             <div style={{ paddingRight: "10px" }}>
               <CSVLink
                 data={data}
@@ -679,15 +680,7 @@ class DataTable extends Component<{
                   height: "5vh",
                 }}
               >
-                {/* <Button variant="contained" color="secondary" style={{ height: '100%' }}>
-                CSV (Export by Kyc Search type)
-              </Button> */}
               </CSVLink>
-              {/* <CSVLink {...csvReport}>
-              <Button variant="outlined" color="primary">
-                Export Csv
-              </Button></CSVLink> */}
-              {/* </CSVLink> */}
             </div>
           </div>
           <div>

@@ -56,6 +56,13 @@ function _Row(props: any) {
               >
                 INVALID
               </span>
+  } else if (String(props.obj.status).toString() === "66") {
+    button = <span
+                className="p-1 rounded"
+                style={{ borderRadius: "2px", background: color ? color : "pink", }}
+              >
+                MANUAL
+              </span>
   } else {
     button = <span
                 className="p-1 rounded"
@@ -72,12 +79,11 @@ function _Row(props: any) {
         if(reportURL.url !== props.obj.request_plan) {
           reportURL.url = props.obj.request_plan
         }
-        // console.log(props.obj)
         let url = ''
-        if (props.obj.status !== "55") {
-          url = `/reports/${reportURL.url}/?request_ref=${props.obj.request_ref_number}&package_id=${props.obj.package_id}&dataset_name=${props.obj.dataset_name}`;
-        } else {
+        if (props.obj.status === "55") {
           url = `reports/invalid/?request_ref=${props.obj.request_ref_number}&package_id=${props.obj.package_id}`
+        } else {
+          url = `/reports/${reportURL.url}/?request_ref=${props.obj.request_ref_number}&package_id=${props.obj.package_id}&dataset_name=${props.obj.dataset_name}`;
         }
         props.history.push(url);
       }}

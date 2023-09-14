@@ -24,6 +24,7 @@ let defaultState: any = {
     33: "#FEBA4F",
     44: "#E2D7F4",
     55: "#FF9E91",
+    66: "#FCD116",
     "00": "#01EAFF",
   },
   requests_duration_filter: "all",
@@ -34,6 +35,7 @@ let defaultState: any = {
     final: 0,
     in_progress: 0,
     invalid: 0,
+    manual: 0,
     recent: [],
   },
   modules: {

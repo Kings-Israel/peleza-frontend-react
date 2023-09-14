@@ -49,6 +49,7 @@ export interface StatsInterface {
   in_progress: number;
   interim: number;
   invalid: number;
+  manual: number;
   recent?: RequestInterface[];
 }
 

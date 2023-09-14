@@ -14,6 +14,7 @@ interface Props extends RouteComponentProps {
   interim: number;
   final: number;
   invalid: number;
+  manual: number;
 } 
 class _DashBoardStats extends Component<Props> {
   render() {
@@ -96,7 +97,7 @@ class _DashBoardStats extends Component<Props> {
                   <div className="card-body text-center d-flex flex-column" style={{ color: '#153F56' }}>
                     <AirlineStopsIcon style={{ fontSize: "3em" }} className="mx-auto" />
                     <span style={{ fontSize: "2em" }}>
-                      <span>0</span>
+                      <span>{this.props.manual}</span>
                     </span>
                     <div className="widget-subheading">Manual</div>
                   </div>
@@ -136,6 +137,7 @@ const mapStateToProps = (state: any): StatsInterface => {
     interim: state.global.stats?.interim | 0,
     final: state.global.stats?.final | 0,
     invalid: state.global.stats?.invalid | 0,
+    manual: state.global.stats?.manual | 0,
   };
 };
 
